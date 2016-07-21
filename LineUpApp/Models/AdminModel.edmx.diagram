@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7ed8ffb90b87432fa88409b7abf44eb8" Name="Diagram1" ZoomLevel="73">
+        <EntityTypeShape EntityType="AdminModel.user" Width="1.5" PointX="10.375" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdminModel.game_type" Width="1.5" PointX="3.25" PointY="8.375" />
+        <EntityTypeShape EntityType="AdminModel.league" Width="1.5" PointX="5.25" PointY="12.625" />
+        <AssociationConnector Association="AdminModel.FK_league_game_type" />
+        <EntityTypeShape EntityType="AdminModel.league_team" Width="1.5" PointX="8.25" PointY="12.875" />
+        <EntityTypeShape EntityType="AdminModel.match_type" Width="1.5" PointX="13.75" PointY="3.5" />
+        <EntityTypeShape EntityType="AdminModel.pick" Width="1.5" PointX="12.125" PointY="10.25" />
+        <EntityTypeShape EntityType="AdminModel.round" Width="1.5" PointX="8.125" PointY="8.375" />
+        <EntityTypeShape EntityType="AdminModel.team" Width="1.5" PointX="13.75" PointY="6.75" />
+        <AssociationConnector Association="AdminModel.FK_round_game_type" />
+        <AssociationConnector Association="AdminModel.FK_League_ToLeague" />
+        <AssociationConnector Association="AdminModel.FK_LeagueTeam_ToUser" />
+        <AssociationConnector Association="AdminModel.FK_pick_Toleagueteam" />
+        <AssociationConnector Association="AdminModel.FK_pick_Toteam" />
+        <EntityTypeShape EntityType="AdminModel.match" Width="1.5" PointX="10.375" PointY="3.375" />
+        <AssociationConnector Association="AdminModel.FK_match_round" />
+        <AssociationConnector Association="AdminModel.FK_match_Tomatchtype" />
+        <AssociationConnector Association="AdminModel.FK_match_ToOption1Team" />
+        <AssociationConnector Association="AdminModel.FK_match_ToOption2Team" />
+        <AssociationConnector Association="AdminModel.FK_match_ToWinner" />
+        <AssociationConnector Association="AdminModel.FK_pick_Tomatch" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

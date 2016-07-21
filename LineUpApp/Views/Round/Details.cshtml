@@ -1,0 +1,82 @@
+﻿@model LineUpApp.Models.round
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Round Details</h2>
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.short_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.short_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.round_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.round_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.start_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.start_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.end_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.end_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lock_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lock_date)
+        </dd>
+
+        <dt>
+            Game Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.game_type.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

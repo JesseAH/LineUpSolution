@@ -1,0 +1,97 @@
+﻿@model IEnumerable<LineUpApp.Models.match>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Matches</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id)
+        </th>
+        <th>
+            Round
+        </th>
+        <th>
+            Team1
+        </th>
+        <th>
+            Team1 Start Date
+        </th>
+        <th>
+            Team2
+        </th>
+        <th>
+            Team2 Start Date
+        </th>
+        <th>
+            Match Outcome
+        </th>
+        <th>
+            Descriptoin
+        </th>
+        <th>
+            Match Type
+        </th>
+        <th>
+            Winning Team
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.round.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.team.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.team1_start_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.team1.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.team2_start_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.match_outcome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.match_type.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.team2.name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,1049 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="game_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="250" />
+          <Property Name="admin_user_id" Type="int" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="league">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="game_type_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="max_players" Type="int" />
+          <Property Name="price" Type="money" />
+          <Property Name="is_private" Type="bit" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="is_completed" Type="bit" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="250" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+          <Property Name="lock_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="league_team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="league_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="is_paid_up" Type="bit" Nullable="false" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="match">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="match_type_id" Type="int" />
+          <Property Name="round_id" Type="int" Nullable="false" />
+          <Property Name="team1_id" Type="int" Nullable="false" />
+          <Property Name="team2_id" Type="int" Nullable="false" />
+          <Property Name="winning_team_id" Type="int" />
+          <Property Name="description" Type="nvarchar" MaxLength="150" />
+          <Property Name="team1_start_date" Type="datetime" />
+          <Property Name="team2_start_date" Type="datetime" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+          <Property Name="match_outcome" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="match_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="pick">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="match_id" Type="int" Nullable="false" />
+          <Property Name="league_team_id" Type="int" Nullable="false" />
+          <Property Name="picked_team_id" Type="int" Nullable="false" />
+          <Property Name="confidence_value" Type="int" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="round">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="round_number" Type="int" />
+          <Property Name="start_date" Type="datetime" />
+          <Property Name="end_date" Type="datetime" />
+          <Property Name="lock_date" Type="datetime" />
+          <Property Name="game_type_id" Type="int" Nullable="false" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+          <Property Name="short_name" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="150" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.league_calculations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="league_calculations">
+          <Key>
+            
+            <PropertyRef Name="is_completed" />
+            <PropertyRef Name="league_team_id" />
+          </Key>
+          <Property Name="league_id" Type="int" Nullable="false" />
+          <Property Name="league_name" Type="varchar" MaxLength="50" />
+          <Property Name="league_team_id" Type="int" Nullable="false" />
+          <Property Name="league_team_name" Type="varchar" MaxLength="50" />
+          <Property Name="game_type_id" Type="int" />
+          <Property Name="league_team_sum" Type="int" />
+          <Property Name="correct_pick_count" Type="int" />
+          <Property Name="points_per_pick" Type="numeric" Precision="24" Scale="12" />
+          <Property Name="is_completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.objects_with_open_rounds' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="objects_with_open_rounds">
+          <Key>
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+          </Key>
+          <Property Name="user_id" Type="int" />
+          <Property Name="league_id" Type="int" />
+          <Property Name="league_name" Type="varchar" MaxLength="50" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="league_team_name" Type="varchar" MaxLength="50" />
+          <Property Name="round_id" Type="int" Nullable="false" />
+          <Property Name="round_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="end_date" Type="datetime" />
+          <Property Name="lock_date" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.round_calculations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="round_calculations">
+          <Key>
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+            <PropertyRef Name="game_type_id" />
+          </Key>
+          <Property Name="round_id" Type="int" Nullable="false" />
+          <Property Name="round_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="round_number" Type="int" />
+          <Property Name="game_type_id" Type="int" Nullable="false" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="league_id" Type="int" />
+          <Property Name="correct_pick_count" Type="int" />
+          <Property Name="round_sum" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="round_winnings_calculations">
+          <Key>
+            <PropertyRef Name="round_id" />
+          </Key>
+          <Property Name="league_id" Type="int" />
+          <Property Name="round_id" Type="int" Nullable="false" />
+          <Property Name="winning_score" Type="int" />
+          <Property Name="round_pot_value" Type="numeric" Precision="22" Scale="6" />
+        </EntityType>
+        <Association Name="FK_league_game_type">
+          <End Role="game_type" Type="Self.game_type" Multiplicity="1" />
+          <End Role="league" Type="Self.league" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_League_ToLeague">
+          <End Role="league" Type="Self.league" Multiplicity="1" />
+          <End Role="league_team" Type="Self.league_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league_team">
+              <PropertyRef Name="league_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeagueTeam_ToUser">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="league_team" Type="Self.league_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league_team">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_round">
+          <End Role="round" Type="Self.round" Multiplicity="1" />
+          <End Role="match" Type="Self.match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="round">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="round_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_Tomatchtype">
+          <End Role="match_type" Type="Self.match_type" Multiplicity="0..1" />
+          <End Role="match" Type="Self.match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="match_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="match_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToOption1Team">
+          <End Role="team" Type="Self.team" Multiplicity="1" />
+          <End Role="match" Type="Self.match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="team1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToOption2Team">
+          <End Role="team" Type="Self.team" Multiplicity="1" />
+          <End Role="match" Type="Self.match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="team2_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToWinner">
+          <End Role="team" Type="Self.team" Multiplicity="0..1" />
+          <End Role="match" Type="Self.match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="winning_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Toleagueteam">
+          <End Role="league_team" Type="Self.league_team" Multiplicity="1" />
+          <End Role="pick" Type="Self.pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Tomatch">
+          <End Role="match" Type="Self.match" Multiplicity="1" />
+          <End Role="pick" Type="Self.pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="match">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="match_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Toteam">
+          <End Role="team" Type="Self.team" Multiplicity="1" />
+          <End Role="pick" Type="Self.pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="picked_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_round_game_type">
+          <End Role="game_type" Type="Self.game_type" Multiplicity="1" />
+          <End Role="round" Type="Self.round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="round">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="game_type" EntityType="Self.game_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="league" EntityType="Self.league" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="league_team" EntityType="Self.league_team" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="match" EntityType="Self.match" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="match_type" EntityType="Self.match_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pick" EntityType="Self.pick" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="round" EntityType="Self.round" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="team" EntityType="Self.team" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="league_calculations" EntityType="Self.league_calculations" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [league_calculations].[league_id] AS [league_id], 
+    [league_calculations].[league_name] AS [league_name], 
+    [league_calculations].[league_team_id] AS [league_team_id], 
+    [league_calculations].[league_team_name] AS [league_team_name], 
+    [league_calculations].[game_type_id] AS [game_type_id], 
+    [league_calculations].[league_team_sum] AS [league_team_sum], 
+    [league_calculations].[correct_pick_count] AS [correct_pick_count], 
+    [league_calculations].[points_per_pick] AS [points_per_pick], 
+    [league_calculations].[is_completed] AS [is_completed]
+    FROM [dbo].[league_calculations] AS [league_calculations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="objects_with_open_rounds" EntityType="Self.objects_with_open_rounds" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [objects_with_open_rounds].[user_id] AS [user_id], 
+    [objects_with_open_rounds].[league_id] AS [league_id], 
+    [objects_with_open_rounds].[league_name] AS [league_name], 
+    [objects_with_open_rounds].[league_team_id] AS [league_team_id], 
+    [objects_with_open_rounds].[league_team_name] AS [league_team_name], 
+    [objects_with_open_rounds].[round_id] AS [round_id], 
+    [objects_with_open_rounds].[round_name] AS [round_name], 
+    [objects_with_open_rounds].[end_date] AS [end_date], 
+    [objects_with_open_rounds].[lock_date] AS [lock_date]
+    FROM [dbo].[objects_with_open_rounds] AS [objects_with_open_rounds]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="round_calculations" EntityType="Self.round_calculations" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [round_calculations].[round_id] AS [round_id], 
+    [round_calculations].[round_name] AS [round_name], 
+    [round_calculations].[round_number] AS [round_number], 
+    [round_calculations].[game_type_id] AS [game_type_id], 
+    [round_calculations].[league_team_id] AS [league_team_id], 
+    [round_calculations].[league_id] AS [league_id], 
+    [round_calculations].[correct_pick_count] AS [correct_pick_count], 
+    [round_calculations].[round_sum] AS [round_sum]
+    FROM [dbo].[round_calculations] AS [round_calculations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="round_winnings_calculations" EntityType="Self.round_winnings_calculations" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [round_winnings_calculations].[league_id] AS [league_id], 
+    [round_winnings_calculations].[round_id] AS [round_id], 
+    [round_winnings_calculations].[winning_score] AS [winning_score], 
+    [round_winnings_calculations].[round_pot_value] AS [round_pot_value]
+    FROM [dbo].[round_winnings_calculations] AS [round_winnings_calculations]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_league_game_type" Association="Self.FK_league_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="league" EntitySet="league" />
+          </AssociationSet>
+          <AssociationSet Name="FK_League_ToLeague" Association="Self.FK_League_ToLeague">
+            <End Role="league" EntitySet="league" />
+            <End Role="league_team" EntitySet="league_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeagueTeam_ToUser" Association="Self.FK_LeagueTeam_ToUser">
+            <End Role="user" EntitySet="user" />
+            <End Role="league_team" EntitySet="league_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_round" Association="Self.FK_match_round">
+            <End Role="round" EntitySet="round" />
+            <End Role="match" EntitySet="match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_Tomatchtype" Association="Self.FK_match_Tomatchtype">
+            <End Role="match_type" EntitySet="match_type" />
+            <End Role="match" EntitySet="match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToOption1Team" Association="Self.FK_match_ToOption1Team">
+            <End Role="team" EntitySet="team" />
+            <End Role="match" EntitySet="match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToOption2Team" Association="Self.FK_match_ToOption2Team">
+            <End Role="team" EntitySet="team" />
+            <End Role="match" EntitySet="match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToWinner" Association="Self.FK_match_ToWinner">
+            <End Role="team" EntitySet="team" />
+            <End Role="match" EntitySet="match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Toleagueteam" Association="Self.FK_pick_Toleagueteam">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="pick" EntitySet="pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Tomatch" Association="Self.FK_pick_Tomatch">
+            <End Role="match" EntitySet="match" />
+            <End Role="pick" EntitySet="pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Toteam" Association="Self.FK_pick_Toteam">
+            <End Role="team" EntitySet="team" />
+            <End Role="pick" EntitySet="pick" />
+          </AssociationSet>
+          <AssociationSet Name="FK_round_game_type" Association="Self.FK_round_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="round" EntitySet="round" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="league_team" Relationship="Model.FK_LeagueTeam_ToUser" FromRole="user" ToRole="league_team" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="users" EntityType="Self.user" />
+          <EntitySet Name="game_type" EntityType="Model.game_type" />
+          <EntitySet Name="leagues" EntityType="Model.league" />
+          <EntitySet Name="league_team" EntityType="Model.league_team" />
+          <EntitySet Name="matches" EntityType="Model.match" />
+          <EntitySet Name="match_type" EntityType="Model.match_type" />
+          <EntitySet Name="picks" EntityType="Model.pick" />
+          <EntitySet Name="rounds" EntityType="Model.round" />
+          <EntitySet Name="teams" EntityType="Model.team" />
+          <AssociationSet Name="FK_league_game_type" Association="Model.FK_league_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="league" EntitySet="leagues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_round_game_type" Association="Model.FK_round_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="round" EntitySet="rounds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_League_ToLeague" Association="Model.FK_League_ToLeague">
+            <End Role="league" EntitySet="leagues" />
+            <End Role="league_team" EntitySet="league_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeagueTeam_ToUser" Association="Model.FK_LeagueTeam_ToUser">
+            <End Role="user" EntitySet="users" />
+            <End Role="league_team" EntitySet="league_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Toleagueteam" Association="Model.FK_pick_Toleagueteam">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="pick" EntitySet="picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_round" Association="Model.FK_match_round">
+            <End Role="round" EntitySet="rounds" />
+            <End Role="match" EntitySet="matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_Tomatchtype" Association="Model.FK_match_Tomatchtype">
+            <End Role="match_type" EntitySet="match_type" />
+            <End Role="match" EntitySet="matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToOption1Team" Association="Model.FK_match_ToOption1Team">
+            <End Role="team" EntitySet="teams" />
+            <End Role="match" EntitySet="matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToOption2Team" Association="Model.FK_match_ToOption2Team">
+            <End Role="team" EntitySet="teams" />
+            <End Role="match" EntitySet="matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_match_ToWinner" Association="Model.FK_match_ToWinner">
+            <End Role="team" EntitySet="teams" />
+            <End Role="match" EntitySet="matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Tomatch" Association="Model.FK_pick_Tomatch">
+            <End Role="match" EntitySet="matches" />
+            <End Role="pick" EntitySet="picks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pick_Toteam" Association="Model.FK_pick_Toteam">
+            <End Role="team" EntitySet="teams" />
+            <End Role="pick" EntitySet="picks" />
+          </AssociationSet>
+          <EntitySet Name="round_calculations" EntityType="Model.round_calculations" />
+          <EntitySet Name="league_calculations" EntityType="Model.league_calculations" />
+          <EntitySet Name="round_winnings_calculations" EntityType="Model.round_winnings_calculations" />
+          <EntitySet Name="objects_with_open_rounds" EntityType="Model.objects_with_open_rounds" />
+        </EntityContainer>
+        <EntityType Name="game_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="admin_user_id" Type="Int32" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="leagues" Relationship="Model.FK_league_game_type" FromRole="game_type" ToRole="league" />
+          <NavigationProperty Name="rounds" Relationship="Model.FK_round_game_type" FromRole="game_type" ToRole="round" />
+        </EntityType>
+        <EntityType Name="league">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="game_type_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="max_players" Type="Int32" />
+          <Property Name="price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="is_private" Type="Boolean" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_completed" Type="Boolean" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="game_type" Relationship="Model.FK_league_game_type" FromRole="league" ToRole="game_type" />
+          <NavigationProperty Name="league_team" Relationship="Model.FK_League_ToLeague" FromRole="league" ToRole="league_team" />
+          <Property Name="lock_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="league_team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="league_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_paid_up" Type="Boolean" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="league" Relationship="Model.FK_League_ToLeague" FromRole="league_team" ToRole="league" />
+          <NavigationProperty Name="user" Relationship="Model.FK_LeagueTeam_ToUser" FromRole="league_team" ToRole="user" />
+          <NavigationProperty Name="picks" Relationship="Model.FK_pick_Toleagueteam" FromRole="league_team" ToRole="pick" />
+        </EntityType>
+        <EntityType Name="match">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="match_type_id" Type="Int32" />
+          <Property Name="round_id" Type="Int32" Nullable="false" />
+          <Property Name="team1_id" Type="Int32" Nullable="false" />
+          <Property Name="team2_id" Type="Int32" Nullable="false" />
+          <Property Name="winning_team_id" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="team1_start_date" Type="DateTime" Precision="3" />
+          <Property Name="team2_start_date" Type="DateTime" Precision="3" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="round" Relationship="Model.FK_match_round" FromRole="match" ToRole="round" />
+          <NavigationProperty Name="match_type" Relationship="Model.FK_match_Tomatchtype" FromRole="match" ToRole="match_type" />
+          <NavigationProperty Name="team" Relationship="Model.FK_match_ToOption1Team" FromRole="match" ToRole="team" />
+          <NavigationProperty Name="team1" Relationship="Model.FK_match_ToOption2Team" FromRole="match" ToRole="team" />
+          <NavigationProperty Name="team2" Relationship="Model.FK_match_ToWinner" FromRole="match" ToRole="team" />
+          <NavigationProperty Name="picks" Relationship="Model.FK_pick_Tomatch" FromRole="match" ToRole="pick" />
+          <Property Name="match_outcome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="match_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="matches" Relationship="Model.FK_match_Tomatchtype" FromRole="match_type" ToRole="match" />
+        </EntityType>
+        <EntityType Name="pick">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="match_id" Type="Int32" Nullable="false" />
+          <Property Name="league_team_id" Type="Int32" Nullable="false" />
+          <Property Name="picked_team_id" Type="Int32" Nullable="false" />
+          <Property Name="confidence_value" Type="Int32" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="league_team" Relationship="Model.FK_pick_Toleagueteam" FromRole="pick" ToRole="league_team" />
+          <NavigationProperty Name="match" Relationship="Model.FK_pick_Tomatch" FromRole="pick" ToRole="match" />
+          <NavigationProperty Name="team" Relationship="Model.FK_pick_Toteam" FromRole="pick" ToRole="team" />
+        </EntityType>
+        <EntityType Name="round">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="round_number" Type="Int32" />
+          <Property Name="start_date" Type="DateTime" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Precision="3" />
+          <Property Name="lock_date" Type="DateTime" Precision="3" />
+          <Property Name="game_type_id" Type="Int32" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="game_type" Relationship="Model.FK_round_game_type" FromRole="round" ToRole="game_type" />
+          <NavigationProperty Name="matches" Relationship="Model.FK_match_round" FromRole="round" ToRole="match" />
+          <Property Name="short_name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="matches" Relationship="Model.FK_match_ToOption1Team" FromRole="team" ToRole="match" />
+          <NavigationProperty Name="matches1" Relationship="Model.FK_match_ToOption2Team" FromRole="team" ToRole="match" />
+          <NavigationProperty Name="matches2" Relationship="Model.FK_match_ToWinner" FromRole="team" ToRole="match" />
+          <NavigationProperty Name="picks" Relationship="Model.FK_pick_Toteam" FromRole="team" ToRole="pick" />
+        </EntityType>
+        <Association Name="FK_league_game_type">
+          <End Type="Model.game_type" Role="game_type" Multiplicity="1" />
+          <End Type="Model.league" Role="league" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_round_game_type">
+          <End Type="Model.game_type" Role="game_type" Multiplicity="1" />
+          <End Type="Model.round" Role="round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="round">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_League_ToLeague">
+          <End Type="Model.league" Role="league" Multiplicity="1" />
+          <End Type="Model.league_team" Role="league_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league_team">
+              <PropertyRef Name="league_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeagueTeam_ToUser">
+          <End Type="Model.user" Role="user" Multiplicity="1" />
+          <End Type="Model.league_team" Role="league_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="league_team">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Toleagueteam">
+          <End Type="Model.league_team" Role="league_team" Multiplicity="1" />
+          <End Type="Model.pick" Role="pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_round">
+          <End Type="Model.round" Role="round" Multiplicity="1" />
+          <End Type="Model.match" Role="match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="round">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="round_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_Tomatchtype">
+          <End Type="Model.match_type" Role="match_type" Multiplicity="0..1" />
+          <End Type="Model.match" Role="match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="match_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="match_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToOption1Team">
+          <End Type="Model.team" Role="team" Multiplicity="1" />
+          <End Type="Model.match" Role="match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="team1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToOption2Team">
+          <End Type="Model.team" Role="team" Multiplicity="1" />
+          <End Type="Model.match" Role="match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="team2_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_match_ToWinner">
+          <End Type="Model.team" Role="team" Multiplicity="0..1" />
+          <End Type="Model.match" Role="match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="match">
+              <PropertyRef Name="winning_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Tomatch">
+          <End Type="Model.match" Role="match" Multiplicity="1" />
+          <End Type="Model.pick" Role="pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="match">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="match_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pick_Toteam">
+          <End Type="Model.team" Role="team" Multiplicity="1" />
+          <End Type="Model.pick" Role="pick" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pick">
+              <PropertyRef Name="picked_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="round_calculations">
+          <Key>
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+            <PropertyRef Name="game_type_id" />
+          </Key>
+          <Property Name="round_id" Type="Int32" Nullable="false" />
+          <Property Name="round_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="game_type_id" Type="Int32" Nullable="false" />
+          <Property Name="league_team_id" Type="Int32" />
+          <Property Name="correct_pick_count" Type="Int32" />
+          <Property Name="round_sum" Type="Int32" />
+          <Property Name="round_number" Type="Int32" />
+          <Property Name="league_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="league_calculations">
+          <Key>
+            <PropertyRef Name="league_team_id" />
+            <PropertyRef Name="is_completed" />
+          </Key>
+          <Property Name="league_id" Type="Int32" Nullable="false" />
+          <Property Name="league_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="league_team_id" Type="Int32" Nullable="false" />
+          <Property Name="league_team_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="game_type_id" Type="Int32" />
+          <Property Name="league_team_sum" Type="Int32" />
+          <Property Name="correct_pick_count" Type="Int32" />
+          <Property Name="points_per_pick" Type="Decimal" Precision="24" Scale="12" />
+          <Property Name="is_completed" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="round_winnings_calculations">
+          <Key>
+            <PropertyRef Name="round_id" />
+          </Key>
+          <Property Name="league_id" Type="Int32" />
+          <Property Name="round_id" Type="Int32" Nullable="false" />
+          <Property Name="winning_score" Type="Int32" />
+          <Property Name="round_pot_value" Type="Decimal" Precision="22" Scale="6" />
+        </EntityType>
+        <EntityType Name="objects_with_open_rounds">
+          <Key>
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+          </Key>
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="league_id" Type="Int32" />
+          <Property Name="league_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="league_team_id" Type="Int32" />
+          <Property Name="league_team_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="round_id" Type="Int32" Nullable="false" />
+          <Property Name="round_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="end_date" Type="DateTime" Precision="3" />
+          <Property Name="lock_date" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="Model.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="game_type">
+            <EntityTypeMapping TypeName="Model.game_type">
+              <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="admin_user_id" ColumnName="admin_user_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="leagues">
+            <EntityTypeMapping TypeName="Model.league">
+              <MappingFragment StoreEntitySet="league">
+                <ScalarProperty Name="lock_date" ColumnName="lock_date" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="is_completed" ColumnName="is_completed" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="is_private" ColumnName="is_private" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="max_players" ColumnName="max_players" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="league_team">
+            <EntityTypeMapping TypeName="Model.league_team">
+              <MappingFragment StoreEntitySet="league_team">
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="is_paid_up" ColumnName="is_paid_up" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="matches">
+            <EntityTypeMapping TypeName="Model.match">
+              <MappingFragment StoreEntitySet="match">
+                <ScalarProperty Name="match_outcome" ColumnName="match_outcome" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="team2_start_date" ColumnName="team2_start_date" />
+                <ScalarProperty Name="team1_start_date" ColumnName="team1_start_date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="winning_team_id" ColumnName="winning_team_id" />
+                <ScalarProperty Name="team2_id" ColumnName="team2_id" />
+                <ScalarProperty Name="team1_id" ColumnName="team1_id" />
+                <ScalarProperty Name="round_id" ColumnName="round_id" />
+                <ScalarProperty Name="match_type_id" ColumnName="match_type_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="match_type">
+            <EntityTypeMapping TypeName="Model.match_type">
+              <MappingFragment StoreEntitySet="match_type">
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="picks">
+            <EntityTypeMapping TypeName="Model.pick">
+              <MappingFragment StoreEntitySet="pick">
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="confidence_value" ColumnName="confidence_value" />
+                <ScalarProperty Name="picked_team_id" ColumnName="picked_team_id" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="match_id" ColumnName="match_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rounds">
+            <EntityTypeMapping TypeName="Model.round">
+              <MappingFragment StoreEntitySet="round">
+                <ScalarProperty Name="short_name" ColumnName="short_name" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+                <ScalarProperty Name="lock_date" ColumnName="lock_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="round_number" ColumnName="round_number" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="teams">
+            <EntityTypeMapping TypeName="Model.team">
+              <MappingFragment StoreEntitySet="team">
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="round_calculations">
+            <EntityTypeMapping TypeName="Model.round_calculations">
+              <MappingFragment StoreEntitySet="round_calculations">
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="round_number" ColumnName="round_number" />
+                <ScalarProperty Name="round_sum" ColumnName="round_sum" />
+                <ScalarProperty Name="correct_pick_count" ColumnName="correct_pick_count" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+                <ScalarProperty Name="round_name" ColumnName="round_name" />
+                <ScalarProperty Name="round_id" ColumnName="round_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="league_calculations">
+            <EntityTypeMapping TypeName="Model.league_calculations">
+              <MappingFragment StoreEntitySet="league_calculations">
+                <ScalarProperty Name="is_completed" ColumnName="is_completed" />
+                <ScalarProperty Name="points_per_pick" ColumnName="points_per_pick" />
+                <ScalarProperty Name="correct_pick_count" ColumnName="correct_pick_count" />
+                <ScalarProperty Name="league_team_sum" ColumnName="league_team_sum" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+                <ScalarProperty Name="league_team_name" ColumnName="league_team_name" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="league_name" ColumnName="league_name" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="round_winnings_calculations">
+            <EntityTypeMapping TypeName="Model.round_winnings_calculations">
+              <MappingFragment StoreEntitySet="round_winnings_calculations">
+                <ScalarProperty Name="round_pot_value" ColumnName="round_pot_value" />
+                <ScalarProperty Name="winning_score" ColumnName="winning_score" />
+                <ScalarProperty Name="round_id" ColumnName="round_id" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="objects_with_open_rounds">
+            <EntityTypeMapping TypeName="Model.objects_with_open_rounds">
+              <MappingFragment StoreEntitySet="objects_with_open_rounds">
+                <ScalarProperty Name="lock_date" ColumnName="lock_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="round_name" ColumnName="round_name" />
+                <ScalarProperty Name="round_id" ColumnName="round_id" />
+                <ScalarProperty Name="league_team_name" ColumnName="league_team_name" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="league_name" ColumnName="league_name" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

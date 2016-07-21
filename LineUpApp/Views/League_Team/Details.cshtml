@@ -1,0 +1,56 @@
+﻿@model LineUpApp.Models.league_team
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>League Team Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            Has Paid?
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_paid_up)
+        </dd>
+
+        <dt>
+            League
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.league.name)
+        </dd>
+
+        <dt>
+            Username
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

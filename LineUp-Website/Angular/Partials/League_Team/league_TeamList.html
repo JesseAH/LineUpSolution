@@ -1,0 +1,29 @@
+﻿
+<div class="container-fluid" ng-controller="league_teamListCtrl">
+    <h3>
+        {{header}}
+    </h3>
+    <!-- Contacts Grid -->
+    <div class="row">
+
+        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="name">League</th>
+                    <th st-sort="description">Team</th>
+                    <th st-sort="is_completed">Ranking</th>
+                    <th st-sort="price">Completed?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in displayedCollection">
+                    <td><a href="/user/league/details/{{row.league_id}}">{{row.league_name}}</a> </td>
+                    <td><a href="/user/team/details/{{row.id}}">{{row.name}}</a></td>
+                    <td>{{row.league_ranking}}</td>
+                    <td>{{row.is_completed}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

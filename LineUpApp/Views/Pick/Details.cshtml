@@ -1,0 +1,57 @@
+﻿@model LineUpApp.Models.pick
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Pick Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id)
+        </dd>
+
+        <dt>
+            Confidence Value
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.confidence_value)
+        </dd>
+
+        <dt>
+            League's Team Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.league_team.name)
+        </dd>
+
+        <dt>
+            Picked
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.team.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.match.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.match.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd21b53d94bc47fe81c79bf4e206422e" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="Model.user" Width="1.5" PointX="6.5" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.game_type" Width="1.5" PointX="3" PointY="7" />
+        <EntityTypeShape EntityType="Model.league" Width="1.5" PointX="2.75" PointY="10.875" />
+        <EntityTypeShape EntityType="Model.league_team" Width="1.5" PointX="5.375" PointY="11.25" />
+        <EntityTypeShape EntityType="Model.match" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="Model.match_type" Width="1.5" PointX="8.875" PointY="4.5" />
+        <EntityTypeShape EntityType="Model.pick" Width="1.5" PointX="5.25" PointY="1.875" />
+        <EntityTypeShape EntityType="Model.round" Width="1.5" PointX="0.5" PointY="7" />
+        <EntityTypeShape EntityType="Model.team" Width="1.5" PointX="0.75" PointY="2" />
+        <AssociationConnector Association="Model.FK_league_game_type" />
+        <AssociationConnector Association="Model.FK_round_game_type" />
+        <AssociationConnector Association="Model.FK_League_ToLeague" />
+        <AssociationConnector Association="Model.FK_LeagueTeam_ToUser" />
+        <AssociationConnector Association="Model.FK_pick_Toleagueteam" />
+        <AssociationConnector Association="Model.FK_match_round" />
+        <AssociationConnector Association="Model.FK_match_Tomatchtype" />
+        <AssociationConnector Association="Model.FK_match_ToOption1Team" />
+        <AssociationConnector Association="Model.FK_match_ToOption2Team" />
+        <AssociationConnector Association="Model.FK_match_ToWinner" />
+        <AssociationConnector Association="Model.FK_pick_Tomatch" />
+        <AssociationConnector Association="Model.FK_pick_Toteam" />
+        <EntityTypeShape EntityType="Model.round_calculations" Width="1.5" PointX="9.75" PointY="1" />
+        <EntityTypeShape EntityType="Model.league_calculations" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="Model.round_winnings_calculations" Width="1.5" PointX="9.375" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.objects_with_open_rounds" Width="1.5" PointX="7.375" PointY="10.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

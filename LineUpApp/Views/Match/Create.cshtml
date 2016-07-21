@@ -1,0 +1,95 @@
+﻿@model LineUpApp.Models.match
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Match</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <text class="control-label col-md-2">Match Type</text>
+            <div class="col-md-10">
+                @Html.DropDownList("match_type_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.match_type_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Round</text>
+            <div class="col-md-10">
+                @Html.DropDownList("round_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.round_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Team 1</text>
+            <div class="col-md-10">
+                @Html.DropDownList("team1_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.team1_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Team 2</text>
+            <div class="col-md-10">
+                @Html.DropDownList("team2_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.team2_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Description</text>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Team1 Start Date</text>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.team1_start_date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.team1_start_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Team2 Start Date</text>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.team2_start_date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.team2_start_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <text class="control-label col-md-2">Match Outcome</text>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.match_outcome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.match_outcome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

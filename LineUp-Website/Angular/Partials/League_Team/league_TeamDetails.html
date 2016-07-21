@@ -1,0 +1,64 @@
+﻿<div class="container-fluid" ng-controller="league_teamDetailsCtrl">
+
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span><span class="price">{{detailsScope.detailsObject.league_ranking}}nd</span><span class="month">of 5</span></p>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>League: <a href="/user/league/details/{{detailsScope.detailsObject.league_id}}">{{detailsScope.detailsObject.league_name}}</a></li>
+                                    <li>League Pot: XXXXXXXX</li>
+                                    <li>League Rank: XXXXXXXX</li>
+
+                                </ul>
+                            </div>
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>Total Points: XXXXXXX  </li>
+                                    <li>Total Winnings: XXXXXXX</li>
+                                    <li>Round Average/Point Per Pick/Correct Count</li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/#price-table2-->
+
+    </div>
+
+    <div class="row">
+        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table">
+            <thead>
+                <tr ng-repeat="round in detailsScope.detailsObject.rounds">
+                    <td>
+                        <table st-table="round.picks" st-safe-src="rowCollection" class="table table-striped">
+                            <tr>
+                                <th>{{round.name}}</th>
+                            </tr>
+                            <tr>
+                                <th>{{round}}</th>
+                            </tr>
+                            <tr ng-repeat="pick in round.picks">
+                                <td>{{pick.picked_team_name}}</td>
+                                <td>{{pick.confidence_value}}</td>
+                                <td>{{pick.is_winner}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </thead>
+
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@model LineUpApp.Models.league_team
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete League Team</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            Has Paid?
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_paid_up)
+        </dd>
+
+        <dt>
+            League
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.league.name)
+        </dd>
+
+        <dt>
+            Username
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.username)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

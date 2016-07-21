@@ -1,0 +1,81 @@
+﻿@model IEnumerable<LineUpApp.Models.pick>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Picks</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id)
+        </th>
+        <th>
+            Confidence Value
+        </th>
+        <th>
+            League's Team Name
+        </th>
+        <th>
+            Match-up
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Picked
+        </th>
+        <th>
+            Winner?
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.confidence_value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.league_team.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.match._match_descriptor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.match.description)
+            </td>
+            <td>
+                <b> @Html.DisplayFor(modelItem => item.team.name)</b>
+            </td>
+            <td>
+                <b>@Html.DisplayFor(modelItem => item._winner_name)</b>
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>

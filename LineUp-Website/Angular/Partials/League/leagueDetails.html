@@ -1,0 +1,59 @@
+﻿<div class="container-fluid" ng-controller="leagueDetailsCtrl">
+
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>League Pot: XXXXXXXX</li>
+                                    <li>Round Pot: XXXXXXXX</li>
+                                </ul>
+                            </div>
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>Total Teams: XXXXXXX  </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/#price-table2-->
+
+    </div>
+    <!-- Contacts Grid -->
+    <div class="row">
+
+        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="name">Team Name</th>
+                    <th st-sort="round_points_sum">Total Points</th>
+                    <!--<th st-sort="round_points_sum" ng-repeat="row in displayedCollection">
+                        {{row.short_name}}
+                    </th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="team in detailsScope.detailsObject.league_teams">
+                    <td><a href="/user/team/details/{{team.id}}">{{team.name}}</a></td>
+                    <td>{{team.league_team_points_sum}}</td>
+                    <td st-sort="round_points_sum" ng-repeat="round in team.rounds">
+                        {{round.round_points_sum}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
