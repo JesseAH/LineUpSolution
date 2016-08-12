@@ -17,15 +17,15 @@
         @Html.HiddenFor(model => model.id)
 
         <div class="form-group">
-            Game Type
+            <span class="control-label col-md-2">Game Type</span>
             <div class="col-md-10">
-                @Html.DropDownList("game_type_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("game_type_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.game_type_id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Name</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.max_players, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Max Teams</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.max_players, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.max_players, "", new { @class = "text-danger" })
@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Price</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
@@ -49,17 +49,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.is_private, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Round Winnings Percentage</span>
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.is_private)
-                    @Html.ValidationMessageFor(model => model.is_private, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.round_winnings_percentage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.round_winnings_percentage, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Password</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
@@ -67,7 +65,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.lock_date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Lock Date</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.lock_date, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.lock_date, "", new { @class = "text-danger" })
@@ -75,7 +73,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.is_completed, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Description</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Completed</span>
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.is_completed)
@@ -85,10 +91,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Private?</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.is_private)
+                    @Html.ValidationMessageFor(model => model.is_private, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 

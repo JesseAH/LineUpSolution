@@ -74,7 +74,7 @@ namespace LineUpLibrary.DALs
                 first_name = model.First_Name,
                 last_name = model.Last_Name,
                 username = model.Username,
-                created_on = DateTime.Now
+                created_on = DateTime.Now.ToUniversalTime()
             };
 
             db.users.Add(newUser);
@@ -87,6 +87,7 @@ namespace LineUpLibrary.DALs
         public int Create(userDTO dto)
         {
             user newUser = DTOtoEF(dto);
+            newUser.created_on = DateTime.Now.ToUniversalTime();
             db.users.Add(newUser);
             db.SaveChanges();
 

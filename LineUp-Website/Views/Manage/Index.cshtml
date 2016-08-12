@@ -10,74 +10,25 @@
                 <div class="sidebar-item categories">
                     <ul class="nav navbar-stacked">
                         <li><a href="/user/team/list">My Leagues<span class="pull-right"></span></a></li>
-                        <li><a href="/user/league/join">Join League<span class="pull-right"></span></a></li>
+                        <li><a href="/user/league/select">Join League<span class="pull-right"></span></a></li>
                         <li><a href="/user/league/create">Create League<span class="pull-right"></span></a></li>
                     </ul>
                 </div>
                 <div class="sidebar blog-sidebar" ng-controller="make_PicksCtrl">
                     <div class="sidebar-item  recent">
                         <h3>Make Picks</h3>
-                        <div class="media">
-                            <div class="pull-left">
-                                <a href="#"><img src="~/Template/images/portfolio/project1.jpg" alt=""></a>
+                        <div class="media" ng-repeat="row in pickableList">
+                            <div id="boxlink" class="pull-left box-round" >
+                                <h7><a href="#" style="color:white">{{row.round_short_name}}</a></h7>
                             </div>
                             <div class="media-body">
-                                <h4><a href="#">Team A</a></h4>
-                                <p>pick by 07 March 2016</p>
+                                <h4><a href="~/user/round/details/{{row.league_team_id}}/{{row.round_id}}">{{row.league_team_name}}</a></h4>
+                                <p>pick by {{row.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm' }} UTC</p>
                             </div>
                         </div>
-                        <div class="media">
-                            <div class="pull-left">
-                                <a href="#"><img src="~/Template/images/portfolio/project2.jpg" alt=""></a>
-                            </div>
-                            <div class="media-body">
-                                <h4><a href="#">Team B</a></h4>
-                                <p>pick by 07 March 2016</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="pull-left">
-                                <a href="#"><img src="~/Template/images/portfolio/project3.jpg" alt=""></a>
-                            </div>
-                            <div class="media-body">
-                                <h4><a href="#">Team C</a></h4>
-                                <p>pick by 07 March 2016</p>
-                            </div>
-                        </div>
+                   
                     </div>
                 </div>
-
-
-                @*<div class="container-fluid" ng-controller="league_teamListCtrl">
-                    <h3>
-                        {{header}}
-                    </h3>
-                
-                    <div class="row">
-
-                        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th st-sort="name">League</th>
-                                    <th st-sort="description">Team</th>
-                                    <th st-sort="is_completed">Ranking</th>
-                                    <th st-sort="price">Completed?</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="row in displayedCollection">
-                                    <td><a href="/user/league/details/{{row.league_id}}">{{row.league_name}}</a> </td>
-                                    <td><a href="/user/team/details/{{row.id}}">{{row.name}}</a></td>
-                                    <td>{{row.league_ranking}}</td>
-                                    <td>{{row.is_completed}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>*@
-
-
 
             </div>
             <div class="col-md-9 col-sm-7">
@@ -87,4 +38,7 @@
             </div>
         </div>
     </div>
+
 </section>
+
+

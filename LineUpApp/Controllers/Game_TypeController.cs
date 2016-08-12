@@ -47,7 +47,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name,description,admin_user_id,created_on,modified_on")] game_type game_type)
+        public ActionResult Create([Bind(Include = "id,name,description,admin_user_id,number_of_rounds,created_on,modified_on")] game_type game_type)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,name,description,admin_user_id,created_on,modified_on")] game_type game_type)
+        public ActionResult Edit([Bind(Include = "id,name,description,admin_user_id,number_of_rounds,created_on,modified_on")] game_type game_type)
         {
             if (ModelState.IsValid)
             {

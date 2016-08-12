@@ -1,0 +1,84 @@
+﻿<div ng-controller="roundDetailsCtrl">
+    <div class="container-fluid">
+
+        <div class="row">
+            <button type="button" class="btn btn-primary col-xs-3"ng-click="savePicks()" ng-disabled="!valid || picks.length < detailsScope.detailsObject.matches.length" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
+            <div class="alert alert-info  col-xs-9 col-md-10" ng-show="valid  && picks.length < detailsScope.detailsObject.matches.length">
+                Please make a pick for each match.
+            </div>
+            <div class="alert alert-danger  col-xs-9 col-md-10" ng-show="!valid">
+                <strong>Pick count error.</strong> Each value can only be used {{detailsScope.detailsObject.max_pick_count}} times.
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="container-fluid">
+                <div class="row" ng-repeat="match in detailsScope.detailsObject.matches">
+                    <div class="row pick-header col-xs-12 col-sm-12 col-md-9" ng-show="match.description"><b>{{match.description}}</b> </div>
+                    <div class="row pick-header col-xs-12 col-sm-12 col-md-9" ng-hide="match.description"><b>{{match.team1_name}} vs. {{match.team2_name}}</b> </div>
+
+                    <div class="row">
+                        <span class="col-xs-12 col-sm-12 col-md-5">{{match.team1_name}} </span>
+                        <span class="col-xs-12 col-sm-12 col-md-4">
+
+                            <!--1-->
+                            <img src="../../../Template/Icons8 Circles/Circled 1.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value != 1" ng-click="match.ui_picks[0].confidence_value = 1; match.ui_picks[1].confidence_value = null; pointSelected(match.id, match.team1_id ,1)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 1 Filled.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value == 1" />
+                            <!--2-->
+                            <img src="../../../Template/Icons8 Circles/Circled 2 .png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value != 2" ng-click="match.ui_picks[0].confidence_value = 2; match.ui_picks[1].confidence_value = null; pointSelected(match.id, match.team1_id ,2)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 2  Filled.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value == 2" />
+                            <!--3-->
+                            <img src="../../../Template/Icons8 Circles/Circled 3 .png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value != 3" ng-click="match.ui_picks[0].confidence_value = 3; match.ui_picks[1].confidence_value = null; pointSelected(match.id, match.team1_id ,3)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 3 C.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value == 3" />
+                            <!--4-->
+                            <img src="../../../Template/Icons8 Circles/Circled 4.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value != 4" ng-click="match.ui_picks[0].confidence_value = 4; match.ui_picks[1].confidence_value = null; pointSelected(match.id, match.team1_id ,4)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 4 Filled.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value == 4" />
+                            <!--5-->
+                            <img src="../../../Template/Icons8 Circles/Circled 5 .png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value != 5" ng-click="match.ui_picks[0].confidence_value = 5; match.ui_picks[1].confidence_value = null; pointSelected(match.id, match.team1_id ,5)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 5  Filled.png" class="confidence-circles" ng-show="match.ui_picks[0].confidence_value == 5" />
+
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="col-xs-12 col-sm-12 col-md-5">{{match.team2_name}} </span>
+                        <span class="col-xs-12 col-sm-12 col-md-4">
+                            <!--1-->
+                            <img src="../../../Template/Icons8 Circles/Circled 1.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value != 1" ng-click="match.ui_picks[1].confidence_value = 1; match.ui_picks[0].confidence_value = null; pointSelected(match.id, match.team2_id ,1)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 1 Filled.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value == 1" />
+                            <!--2-->
+                            <img src="../../../Template/Icons8 Circles/Circled 2 .png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value != 2" ng-click="match.ui_picks[1].confidence_value = 2; match.ui_picks[0].confidence_value = null; pointSelected(match.id, match.team2_id ,2)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 2  Filled.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value == 2" />
+                            <!--3-->
+                            <img src="../../../Template/Icons8 Circles/Circled 3 .png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value != 3" ng-click="match.ui_picks[1].confidence_value = 3; match.ui_picks[0].confidence_value = null; pointSelected(match.id, match.team2_id ,3)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 3 C.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value == 3" />
+                            <!--4-->
+                            <img src="../../../Template/Icons8 Circles/Circled 4.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value != 4" ng-click="match.ui_picks[1].confidence_value = 4; match.ui_picks[0].confidence_value = null; pointSelected(match.id, match.team2_id ,4)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 4 Filled.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value == 4" />
+                            <!--5-->
+                            <img src="../../../Template/Icons8 Circles/Circled 5 .png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value != 5" ng-click="match.ui_picks[1].confidence_value = 5; match.ui_picks[0].confidence_value = null; pointSelected(match.id, match.team2_id ,5)" />
+                            <img src="../../../Template/Icons8 Circles/Circled 5  Filled.png" class="confidence-circles" ng-show="match.ui_picks[1].confidence_value == 5" />
+                        </span>
+
+                    </div>
+               
+                 </div>
+            </div>
+
+        </div>
+
+
+        <div class="row hidden-sm hidden-md hidden-lg">
+            <br />
+            <button type="button" class="btn btn-primary col-xs-3" ng-click="savePicks()" ng-disabled="!valid || picks.length < detailsScope.detailsObject.matches.length" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
+            <div class="alert alert-info  col-xs-9 col-md-10" ng-show="valid  && picks.length < detailsScope.detailsObject.matches.length">
+                Please make a pick for each match.
+            </div>
+            <div class="alert alert-danger  col-xs-9 col-md-10" ng-show="!valid">
+                <strong>Pick count error.</strong> Each value can only be used {{detailsScope.detailsObject.max_pick_count}} times.
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,1 +1,56 @@
-﻿<h3>Select a league to join here</h3>
+﻿<div class="container-fluid" ng-controller="leagueJoinCtrl">
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-hide="detailsScope.loaded"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-show="detailsScope.loaded" ng-form="detailsForm">
+
+        <div class="row" ng-show="detailsScope.detailsObject.lock_date">
+            <div class="form-group">
+                <div class="col-md-3">
+                    Lock Date
+                </div>
+                <div class="col-md-9">
+                    {{detailsScope.detailsObject.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm'}} UTC
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-3">
+                    Team Name
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" type="text" ng-model="joinObject.league_team_name">
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="detailsScope.detailsObject.is_private" ng-class="{ 'has-error' : detailsScope.detailsObject.is_private && detailsForm.pass.$invalid && detailsScope.submitted }">
+            <div class="form-group">
+                <div class="col-md-3">
+                    Password
+                </div>
+                <div class="col-md-9">
+                    <input name="pass" type="password" class="form-control" ng-model="joinObject.password" ng-required="detailsScope.detailsObject.is_private">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>
+    </div>
+</div>

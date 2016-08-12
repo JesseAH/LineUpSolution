@@ -49,7 +49,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,is_private,password,is_completed,description,created_on,modified_on")] league league)
+        public ActionResult Create([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,is_private,password,is_completed,description,created_on,modified_on")] league league)
+        public ActionResult Edit([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
         {
             if (ModelState.IsValid)
             {

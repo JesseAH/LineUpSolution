@@ -1,1 +1,105 @@
-﻿<h3>Create a league here</h3>
+﻿<div class="container-fluid" ng-controller="leagueCreateCtrl">
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div ng-hide="detailsScope.loading" ng-form="detailsForm" >
+        <div class="col-md-8">
+            <div class="row">
+
+                <div class="form-group" ng-class="{ 'has-error' : detailsForm.gameTypeID.$invalid && detailsScope.submitted }">
+                    <div class="col-md-3">
+                        League Type
+                    </div>
+                    <div class="col-md-9">
+                        <select name="gameTypeID" class="form-control" ng-model="detailsScope.detailsObject.game_type_id" ng-change="gameChange(detailsScope.detailsObject.game_type_id)" required>
+                            <option ng-repeat="option in lookupOptions.GameTypes" value="{{option.Lookup_ID}}">{{option.Lookup_Name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-class="{ 'has-error' : detailsForm.name.$invalid && detailsScope.submitted }">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        League Name
+                    </div>
+                    <div class="col-md-9">
+                        <input name="name" class="form-control" type="text" ng-model="detailsScope.detailsObject.name" required maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Max Number of Players
+                    </div>
+                    <div class="col-md-9">
+                        <input type="number" class="form-control" ng-model="detailsScope.detailsObject.max_players">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Buy-In
+                    </div>
+                    <div class="col-md-9">
+                        <input type="number" class="form-control" ng-model="detailsScope.detailsObject.price" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Percent Used for Weekly Winnings
+                    </div>
+                    <div class="col-md-9">
+                        <input type="number" class="form-control" ng-model="detailsScope.detailsObject.round_winnings_percentage" min="0" max="100" required>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Private League?
+                    </div>
+                    <div class="col-md-9">
+                        <input type="checkbox" ng-model="detailsScope.detailsObject.is_private">
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="detailsScope.detailsObject.is_private" ng-class="{ 'has-error' : detailsForm.pass.$invalid && detailsScope.submitted }">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Password
+                    </div>
+                    <div class="col-md-9">
+                        <input name="pass" type="password" class="form-control" ng-model="detailsScope.detailsObject.password" ng-required='detailsScope.detailsObject.is_private'>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <button type="button" class="btn btn-primary" ng-click="create(detailsForm.$valid)" >Create</button>
+        </div>
+        <div class="col-md-4 hidden-xs" ng-show="gameDescription">
+            <u>Game Description: </u>
+            <br />
+            {{gameDescription}}
+        </div>
+    </div>
+</div>

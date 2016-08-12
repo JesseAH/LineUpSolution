@@ -54,6 +54,7 @@
     <Compile Include="DALs\Game_TypeDAL.cs" />
     <Compile Include="DALs\LeagueDAL.cs" />
     <Compile Include="DALs\League_TeamDAL.cs" />
+    <Compile Include="DALs\LookupSimpleDTO.cs" />
     <Compile Include="DALs\MatchDAL.cs" />
     <Compile Include="DALs\PickDAL.cs" />
     <Compile Include="DALs\RoundDAL.cs" />
@@ -72,6 +73,9 @@
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\league_calculations.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\league_summary.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\league_team.cs">
@@ -109,6 +113,9 @@
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\round_calculations.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\round_summary.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\round_winnings_calculations.cs">

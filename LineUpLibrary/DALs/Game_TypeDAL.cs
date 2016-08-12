@@ -9,15 +9,29 @@ using System.Threading.Tasks;
 
 namespace LineUpLibrary.DALs
 {
+
     public class Game_TypeDAL
     {
         Entities db = new Entities();
+
+        public IList<LookupSimpleDTO> DTOGetAsLookupList()
+        {
+            IList<LookupSimpleDTO> theList = db.game_type.Select(g => new LookupSimpleDTO()
+            {
+                Lookup_ID = g.id,
+                Lookup_Name = g.name,
+                Description = g.description
+            }).OrderBy(gt => gt.Lookup_Name).ToList();
+
+            return theList;
+        }
 
         public Game_TypeDTO Get(int id)
         {
             game_type gt = db.game_type.Where(g => g.id == id).FirstOrDefault();
 
-            return new Game_TypeDTO() {
+            return new Game_TypeDTO()
+            {
                 id = gt.id,
                 name = gt.name,
                 description = gt.description

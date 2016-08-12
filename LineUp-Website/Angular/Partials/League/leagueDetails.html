@@ -7,19 +7,21 @@
                 <div>
                     <div class="single-table table-one">
                         <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
                             <h2>{{detailsScope.header}}</h2>
                             <p class="plan-price"><span class="dollar-sign"></span></p>
                         </div>
                         <div class="container-fluid">
                             <div class="row col-md-6">
                                 <ul>
-                                    <li>League Pot: XXXXXXXX</li>
-                                    <li>Round Pot: XXXXXXXX</li>
+                                    <li>League Pot: {{detailsScope.detailsObject.total_pot | currency }}</li>
+                                    <li>Total Teams: {{detailsScope.detailsObject.league_teams.length }} </li>
                                 </ul>
                             </div>
                             <div class="row col-md-6">
                                 <ul>
-                                    <li>Total Teams: XXXXXXX  </li>
+                                    <li>Round Pot: {{detailsScope.detailsObject.round_winnings_percentage}}% </li>                                
+                                    <li>Total Rounds: {{detailsScope.detailsObject.number_of_rounds}} </li>
                                 </ul>
                             </div>
 
@@ -31,26 +33,31 @@
         </div><!--/#price-table2-->
 
     </div>
-    <!-- Contacts Grid -->
-    <div class="row">
+
+    <div class="row" ng-hide="detailsScope.loading">
 
         <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
             <thead>
                 <tr>
                     <th st-sort="name">Team Name</th>
-                    <th st-sort="round_points_sum">Total Points</th>
-                    <!--<th st-sort="round_points_sum" ng-repeat="row in displayedCollection">
-                        {{row.short_name}}
-                    </th>-->
+                    <th ng-repeat="round in detailsScope.detailsObject.league_teams[0].rounds| limitTo:-3">
+                        {{round.short_name}}
+                    </th>                    
+                    <th st-sort="league_team_points_sum">Correct Picks</th>
+                    <th st-sort="league_team_points_sum">Total Points</th>
+                    <th st-sort="total_winnings">Winings</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="team in detailsScope.detailsObject.league_teams">
-                    <td><a href="/user/team/details/{{team.id}}">{{team.name}}</a></td>
-                    <td>{{team.league_team_points_sum}}</td>
-                    <td st-sort="round_points_sum" ng-repeat="round in team.rounds">
+                    <td>{{team.league_ranking}}. <b><a href="/user/team/details/{{team.id}}">{{team.name}}</a></b></td>  
+                         <td st-sort="round_points_sum" ng-repeat="round in team.rounds | limitTo:-3">
                         {{round.round_points_sum}}
-                    </td>
+                    </td>  
+                    <td style="width:50px;">{{team.league_points_per_pick}}</td>                     
+                    <td style="width:50px;">{{team.league_team_points_sum}}</td>
+                    <td style="width:75px;">{{team.total_winnings | currency}}</td>
+               
                 </tr>
             </tbody>
         </table>

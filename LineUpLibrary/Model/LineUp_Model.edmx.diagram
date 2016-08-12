@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cd21b53d94bc47fe81c79bf4e206422e" Name="Diagram1" ZoomLevel="72">
+      <Diagram DiagramId="cd21b53d94bc47fe81c79bf4e206422e" Name="Diagram1" ZoomLevel="94">
         <EntityTypeShape EntityType="Model.user" Width="1.5" PointX="6.5" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.game_type" Width="1.5" PointX="3" PointY="7" />
         <EntityTypeShape EntityType="Model.league" Width="1.5" PointX="2.75" PointY="10.875" />
@@ -26,10 +26,12 @@
         <AssociationConnector Association="Model.FK_match_ToWinner" />
         <AssociationConnector Association="Model.FK_pick_Tomatch" />
         <AssociationConnector Association="Model.FK_pick_Toteam" />
-        <EntityTypeShape EntityType="Model.round_calculations" Width="1.5" PointX="9.75" PointY="1" />
+        <EntityTypeShape EntityType="Model.round_calculations" Width="1.375" PointX="9.75" PointY="1" />
         <EntityTypeShape EntityType="Model.league_calculations" Width="1.5" PointX="8" PointY="1" />
-        <EntityTypeShape EntityType="Model.round_winnings_calculations" Width="1.5" PointX="9.375" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.round_winnings_calculations" Width="1.5" PointX="13.125" PointY="1" />
         <EntityTypeShape EntityType="Model.objects_with_open_rounds" Width="1.5" PointX="7.375" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.round_summary" Width="1.5" PointX="14.75" PointY="1" />
+        <EntityTypeShape EntityType="Model.league_summary" Width="1.5" PointX="11.375" PointY="1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

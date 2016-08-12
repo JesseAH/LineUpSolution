@@ -2,6 +2,7 @@
 using LineUpLibrary.DALs;
 using LineUpLibrary.DTOs;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 
@@ -35,6 +36,25 @@ namespace LineUp_Website.APIs
             {
                 return null;
             }
+        }
+
+        [HttpPost]
+        public JsonResult Post(IList<PickDTO> dtos)
+        {
+            try
+            {
+                foreach (PickDTO pick in dtos)
+                {
+                    myDAL.DeleteDuplicatePicks(pick.league_team_id, pick.match_id);
+                    myDAL.Create(pick);
+                }
+                return this.Json(true);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
     }
 }

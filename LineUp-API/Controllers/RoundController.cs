@@ -14,7 +14,7 @@ namespace LineUp_API.Controllers
     /// <summary>
     /// Rounds belong to a Game Type (formerly known as weeks)
     /// </summary>
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/Round")]
     public class RoundController : ApiController
     {

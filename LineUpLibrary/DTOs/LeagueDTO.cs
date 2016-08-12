@@ -31,6 +31,8 @@ namespace LineUpLibrary.DTOs
         public string game_type_name { get; set; }
         public Nullable<System.DateTime> lock_date { get; set; }
         public bool has_round_payouts { get; set; }
+        public int round_winnings_percentage { get; set; }
+        public int number_of_rounds { get; set; }
 
         public int team_count { get { return league_teams.Count(); } }
         public bool is_full { get { return league_teams.Count() >= max_players; } }

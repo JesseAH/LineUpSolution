@@ -1,5 +1,6 @@
-﻿body {
-    padding-top: 50px;
+﻿
+body {
+    padding-top: 5px;
     padding-bottom: 20px;
 }
 
@@ -21,4 +22,160 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.box-round {
+    width: 58px;
+    height: 58px;
+    padding-left: 5px;
+    padding-top: 21px;
+    text-align:center;
+    background-color: lightslategrey;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    font-family: arial black, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0pt;
+    line-height: 1;
+}
+
+a:link, a:visited {
+    color: #0E76BC;
+}
+
+.pick-points {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: left;
+    font-family: arial black, sans-serif;
+    color: #778899;
+    margin-left: 30px;
+}
+
+.form-group {
+    margin: 5px;
+}
+
+.locked-league {
+    color: darkslateblue;
+    margin-right: 5px;
+}
+
+/*custom tab2*/
+.customtab2 {
+    border-bottom: 1px solid #f7fafc;
+    border-top: 1px solid #f7fafc;
+    padding: 10px 0;
+}
+
+    .customtab2 li.active a,
+    .customtab2 li.active a:hover,
+    .customtab2 li.active a:focus {
+        background: #ff6849;
+        border: 1px solid #ff6849;
+        color: #ffffff;
+    }
+
+    .customtab2 li a,
+    .customtab2 li a:hover,
+    .customtab2 li a:focus {
+        border: 0px;
+    }
+/*Vertical tabs*/
+.vtabs {
+    display: table;
+}
+
+    .vtabs .tabs-vertical {
+        width: 150px;
+        border-right: 1px solid rgba(120, 130, 140, 0.13);
+        display: table-cell;
+        vertical-align: top;
+    }
+
+        .vtabs .tabs-vertical li a {
+            color: #2b2b2b;
+            margin-bottom: 10px;
+        }
+
+    .vtabs .tab-content {
+        display: table-cell;
+        padding: 20px;
+        vertical-align: top;
+    }
+
+.tabs-vertical li.active a,
+.tabs-vertical li.active a:hover,
+.tabs-vertical li.active a:focus {
+    background: #ff6849;
+    border: 0px;
+    border-right: 2px solid #ff6849;
+    margin-right: -1px;
+    color: #ffffff;
+}
+/*Custom vertical tab*/
+.customvtab .tabs-vertical li.active a,
+.customvtab .tabs-vertical li.active a:hover,
+.customvtab .tabs-vertical li.active a:focus {
+    background: #ffffff;
+    border: 0px;
+    border-right: 2px solid #ff6849;
+    margin-right: -1px;
+    color: #2b2b2b;
+}
+/*Nav pills*/
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+    background: #ff6849;
+    color: #ffffff;
+}
+
+.nav-pills > li > a {
+    color: #2b2b2b;
+    border-radius: 0px;
+}
+
+/*Loader Spinner*/
+
+.loader.ng-animate {
+    -webkit-animation: none 0s;
+}
+
+.loader {
+    -webkit-animation: spinner 2s infinite linear;
+}
+
+/*confidence circles*/
+.confidence-circles {
+    height: 30px;
+    width: 30px;
+}
+
+.pick-header {
+    border-style: solid;
+    border-width: medium;
+    border-radius: 50px;
+    color: #686868;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+/*faq*/
+.faq-body{
+    padding-top: 50px;
+}
+
+.faq-text{
+    text-align:center;
+}
+
+.faq-question{
+    font-weight: bold;
+}
+
+.faq-answer{
+    padding-left:15px;
 }

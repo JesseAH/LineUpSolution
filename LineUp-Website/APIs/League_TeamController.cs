@@ -30,7 +30,8 @@ namespace LineUp_Website.APIs
             try
             {
                 var x = myDAL.Get(id);
-                return this.Json(x, JsonRequestBehavior.AllowGet);
+                var y = this.Json(x, JsonRequestBehavior.AllowGet);
+                return y;
             }
             catch (Exception ex)
             {

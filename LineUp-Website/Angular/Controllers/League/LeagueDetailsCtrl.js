@@ -7,7 +7,8 @@ app.controller("leagueDetailsCtrl", function ($scope, $rootScope, $routeParams, 
 
     $scope.detailsScope = {
         detailsObject: null,
-        header: "League: "
+        header: "League: ",
+        loading: true
     };
 
     //#endregion
@@ -20,6 +21,7 @@ app.controller("leagueDetailsCtrl", function ($scope, $rootScope, $routeParams, 
             $scope.detailsScope.detailsObject = dto;
             $scope.detailsScope.header = "League: " + dto.name;
             $scope.displayedCollection = dto.rounds;
+            $scope.detailsScope.loading = false;
         });
 
     //#endregion

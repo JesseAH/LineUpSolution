@@ -18,7 +18,7 @@
         <div class="form-group">
             <div class="col-md-2 text-danger">Match</div>
             <div class="col-md-10">
-                @Html.DropDownList("match_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("match_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.match_id, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -28,7 +28,7 @@
                 League's Team Name
             </div>
                 <div class="col-md-10">
-                    @Html.DropDownList("league_team_id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("league_team_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.league_team_id, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -39,7 +39,7 @@
             </div>
             
             <div class="col-md-10">
-                @Html.DropDownList("picked_team_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("picked_team_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.picked_team_id, "", new { @class = "text-danger" })
             </div>
         </div>

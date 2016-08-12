@@ -1,0 +1,66 @@
+﻿<div class="container-fluid" ng-controller="leagueSelectCtrl">
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-hide="detailsScope.loading">
+        <div class="row">
+            Select your league
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <v-tabs class="vTabs--default" vertical active="activeTabIndex">
+                    <v-tab ng-click="select(league)" ng-repeat="league in lookupOptions.Leagues">
+                        <i class="fa fa-lock locked-league" ng-show="league.is_private"></i><span>{{league.name}}</span>
+                    </v-tab>
+                </v-tabs>
+            </div>
+
+
+            <div class="col-md-6">
+                <v-pages class="vPages--default" active="activeTabIndex">
+                    <v-page ng-repeat="league in lookupOptions.Leagues">
+                        <p>
+                            <b> Game Type: {{league.game_type_name}}</b>
+                        </p>
+                        <p>
+                            {{league.description}}
+                        </p>
+                        <p>
+                            Teams: {{league.league_teams.length}} <span ng-show="league.max_players"> of {{league.max_players}}</span>
+                        </p>
+                        <p ng-show="league.lock_date">
+                            Lock Date: {{league.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm'}}
+                        </p>
+                    </v-page>
+                </v-pages>
+            </div>
+            <div class="col-md-2">
+                <div class="row form-group">
+                    <a href="/user/league/join/{{detailsScope.detailsObject.id}}" class="btn btn-primary" style="color:white">Join</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

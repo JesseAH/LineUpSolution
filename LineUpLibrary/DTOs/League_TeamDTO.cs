@@ -27,7 +27,12 @@ namespace LineUpLibrary.DTOs
         public bool is_paid_up { get; set; }
         public string league_name { get; set; }
         public Nullable<int> league_team_points_sum { get; set; }
+        public Nullable<int> leagues_league_team_count { get; set; }
+        public Nullable<long> league_ranking { get; set; }
+        public bool league_is_completed { get; set; }
         public decimal? total_winnings { get; set; }
+        public decimal? league_points_per_pick { get; set; }
+
 
         //public virtual IList<PickDTO> picks { get; set; }
         public virtual IList<RoundDTO> rounds { get; set; }
@@ -53,14 +58,14 @@ namespace LineUpLibrary.DTOs
         public bool is_paid_up { get; set; }
         public string league_name { get; set; }
         public Nullable<int> league_team_points_sum { get; set; }
-        public int ranking { get; set; }
         public string league_team_name { get; set; }
         public int league_team_id { get; set; }
-        public bool is_completed { get; set; }
-
-        //TODO
-        public int league_ranking { get { return 2; } }
-        public decimal? total_winnings { get { return 100; } }
+        public bool league_is_completed { get; set; }
+        public decimal? league_total_pot { get; set; }
+        public Nullable<int> leagues_league_team_count { get; set; }
+        public Nullable<long> league_ranking { get; set; }
+        public decimal? total_winnings { get; set; }
+        public decimal? league_points_per_pick { get; set; }
 
         //public virtual IList<PickDTO> picks { get; set; }
         public virtual IList<RoundDTO> rounds { get; set; }

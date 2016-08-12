@@ -15,6 +15,7 @@
           <Property Name="admin_user_id" Type="int" />
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
+          <Property Name="number_of_rounds" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -32,6 +33,8 @@
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
           <Property Name="lock_date" Type="datetime" />
+          <Property Name="round_winnings_percentage" Type="int" Nullable="false" />
+          <Property Name="admin_user_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="league_team">
           <Key>
@@ -138,6 +141,28 @@ warning 6002: The table/view 'LineUp-Database.dbo.league_calculations' does not 
           <Property Name="correct_pick_count" Type="int" />
           <Property Name="points_per_pick" Type="numeric" Precision="24" Scale="12" />
           <Property Name="is_completed" Type="bit" Nullable="false" />
+          <Property Name="total_winnings" Type="money" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.league_summary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="league_summary">
+          
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="league_id" Type="int" Nullable="false" />
+          <Property Name="league_name" Type="varchar" MaxLength="50" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="league_team_name" Type="varchar" MaxLength="50" />
+          <Property Name="game_type_id" Type="int" />
+          <Property Name="league_team_sum" Type="int" />
+          <Property Name="correct_pick_count" Type="int" />
+          <Property Name="points_per_pick" Type="numeric" Precision="24" Scale="12" />
+          <Property Name="is_completed" Type="bit" Nullable="false" />
+          <Property Name="total_winnings" Type="money" />
+          <Property Name="league_team_rank" Type="bigint" />
+          <Property Name="league_team_count" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'LineUp-Database.dbo.objects_with_open_rounds' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -153,6 +178,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.objects_with_open_rounds' does
           <Property Name="league_team_name" Type="varchar" MaxLength="50" />
           <Property Name="round_id" Type="int" Nullable="false" />
           <Property Name="round_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="round_short_name" Type="varchar" MaxLength="10" />
           <Property Name="end_date" Type="datetime" />
           <Property Name="lock_date" Type="datetime" />
         </EntityType>
@@ -174,6 +200,28 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_calculations' does not h
           <Property Name="round_sum" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'LineUp-Database.dbo.round_summary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="round_summary">
+          <Key>
+            <PropertyRef Name="game_type_id" />
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+            <PropertyRef Name="is_winner" />
+          </Key>
+          <Property Name="game_type_id" Type="int" Nullable="false" />
+          <Property Name="league_id" Type="int" />
+          <Property Name="round_id" Type="int" Nullable="false" />
+          <Property Name="round_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="round_number" Type="int" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="correct_pick_count" Type="int" />
+          <Property Name="round_sum" Type="int" />
+          <Property Name="is_winner" Type="int" Nullable="false" />
+          <Property Name="round_pot_value" Type="numeric" Precision="22" Scale="6" />
+          <Property Name="winning_score_count" Type="int" />
+          <Property Name="winnings_sum" Type="numeric" Precision="33" Scale="17" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="round_winnings_calculations">
           <Key>
@@ -182,7 +230,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="league_id" Type="int" />
           <Property Name="round_id" Type="int" Nullable="false" />
           <Property Name="winning_score" Type="int" />
-          <Property Name="round_pot_value" Type="numeric" Precision="22" Scale="6" />
+          <Property Name="round_pot_value" Type="money" />
         </EntityType>
         <Association Name="FK_league_game_type">
           <End Role="game_type" Type="Self.game_type" Multiplicity="1" />
@@ -348,8 +396,26 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
     [league_calculations].[league_team_sum] AS [league_team_sum], 
     [league_calculations].[correct_pick_count] AS [correct_pick_count], 
     [league_calculations].[points_per_pick] AS [points_per_pick], 
-    [league_calculations].[is_completed] AS [is_completed]
+    [league_calculations].[is_completed] AS [is_completed], 
+    [league_calculations].[total_winnings] AS [total_winnings]
     FROM [dbo].[league_calculations] AS [league_calculations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="league_summary" EntityType="Self.league_summary" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [league_summary].[id] AS [id], 
+    [league_summary].[league_id] AS [league_id], 
+    [league_summary].[league_name] AS [league_name], 
+    [league_summary].[league_team_id] AS [league_team_id], 
+    [league_summary].[league_team_name] AS [league_team_name], 
+    [league_summary].[game_type_id] AS [game_type_id], 
+    [league_summary].[league_team_sum] AS [league_team_sum], 
+    [league_summary].[correct_pick_count] AS [correct_pick_count], 
+    [league_summary].[points_per_pick] AS [points_per_pick], 
+    [league_summary].[is_completed] AS [is_completed], 
+    [league_summary].[total_winnings] AS [total_winnings], 
+    [league_summary].[league_team_rank] AS [league_team_rank], 
+    [league_summary].[league_team_count] AS [league_team_count]
+    FROM [dbo].[league_summary] AS [league_summary]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="objects_with_open_rounds" EntityType="Self.objects_with_open_rounds" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -360,6 +426,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
     [objects_with_open_rounds].[league_team_name] AS [league_team_name], 
     [objects_with_open_rounds].[round_id] AS [round_id], 
     [objects_with_open_rounds].[round_name] AS [round_name], 
+    [objects_with_open_rounds].[round_short_name] AS [round_short_name], 
     [objects_with_open_rounds].[end_date] AS [end_date], 
     [objects_with_open_rounds].[lock_date] AS [lock_date]
     FROM [dbo].[objects_with_open_rounds] AS [objects_with_open_rounds]</DefiningQuery>
@@ -375,6 +442,22 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
     [round_calculations].[correct_pick_count] AS [correct_pick_count], 
     [round_calculations].[round_sum] AS [round_sum]
     FROM [dbo].[round_calculations] AS [round_calculations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="round_summary" EntityType="Self.round_summary" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [round_summary].[game_type_id] AS [game_type_id], 
+    [round_summary].[league_id] AS [league_id], 
+    [round_summary].[round_id] AS [round_id], 
+    [round_summary].[round_name] AS [round_name], 
+    [round_summary].[round_number] AS [round_number], 
+    [round_summary].[league_team_id] AS [league_team_id], 
+    [round_summary].[correct_pick_count] AS [correct_pick_count], 
+    [round_summary].[round_sum] AS [round_sum], 
+    [round_summary].[is_winner] AS [is_winner], 
+    [round_summary].[round_pot_value] AS [round_pot_value], 
+    [round_summary].[winning_score_count] AS [winning_score_count], 
+    [round_summary].[winnings_sum] AS [winnings_sum]
+    FROM [dbo].[round_summary] AS [round_summary]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="round_winnings_calculations" EntityType="Self.round_winnings_calculations" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -512,6 +595,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySet Name="league_calculations" EntityType="Model.league_calculations" />
           <EntitySet Name="round_winnings_calculations" EntityType="Model.round_winnings_calculations" />
           <EntitySet Name="objects_with_open_rounds" EntityType="Model.objects_with_open_rounds" />
+          <EntitySet Name="round_summary" EntityType="Model.round_summary" />
+          <EntitySet Name="league_summary" EntityType="Model.league_summary" />
         </EntityContainer>
         <EntityType Name="game_type">
           <Key>
@@ -525,6 +610,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="modified_on" Type="DateTime" Precision="3" />
           <NavigationProperty Name="leagues" Relationship="Model.FK_league_game_type" FromRole="game_type" ToRole="league" />
           <NavigationProperty Name="rounds" Relationship="Model.FK_round_game_type" FromRole="game_type" ToRole="round" />
+          <Property Name="number_of_rounds" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -544,6 +630,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <NavigationProperty Name="game_type" Relationship="Model.FK_league_game_type" FromRole="league" ToRole="game_type" />
           <NavigationProperty Name="league_team" Relationship="Model.FK_League_ToLeague" FromRole="league" ToRole="league_team" />
           <Property Name="lock_date" Type="DateTime" Precision="3" />
+          <Property Name="round_winnings_percentage" Type="Int32" Nullable="false" />
+          <Property Name="admin_user_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="league_team">
           <Key>
@@ -813,6 +901,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="correct_pick_count" Type="Int32" />
           <Property Name="points_per_pick" Type="Decimal" Precision="24" Scale="12" />
           <Property Name="is_completed" Type="Boolean" Nullable="false" />
+          <Property Name="total_winnings" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="round_winnings_calculations">
           <Key>
@@ -821,7 +910,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="league_id" Type="Int32" />
           <Property Name="round_id" Type="Int32" Nullable="false" />
           <Property Name="winning_score" Type="Int32" />
-          <Property Name="round_pot_value" Type="Decimal" Precision="22" Scale="6" />
+          <Property Name="round_pot_value" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="objects_with_open_rounds">
           <Key>
@@ -837,6 +926,45 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="round_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="end_date" Type="DateTime" Precision="3" />
           <Property Name="lock_date" Type="DateTime" Precision="3" />
+          <Property Name="round_short_name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="round_summary">
+          <Key>
+            <PropertyRef Name="game_type_id" />
+            <PropertyRef Name="round_id" />
+            <PropertyRef Name="round_name" />
+            <PropertyRef Name="is_winner" />
+          </Key>
+          <Property Name="game_type_id" Type="Int32" Nullable="false" />
+          <Property Name="league_id" Type="Int32" />
+          <Property Name="round_id" Type="Int32" Nullable="false" />
+          <Property Name="round_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="round_number" Type="Int32" />
+          <Property Name="league_team_id" Type="Int32" />
+          <Property Name="correct_pick_count" Type="Int32" />
+          <Property Name="round_sum" Type="Int32" />
+          <Property Name="is_winner" Type="Int32" Nullable="false" />
+          <Property Name="round_pot_value" Type="Decimal" Precision="22" Scale="6" />
+          <Property Name="winning_score_count" Type="Int32" />
+          <Property Name="winnings_sum" Type="Decimal" Precision="33" Scale="17" />
+        </EntityType>
+        <EntityType Name="league_summary">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="league_id" Type="Int32" Nullable="false" />
+          <Property Name="league_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="league_team_id" Type="Int32" />
+          <Property Name="league_team_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="game_type_id" Type="Int32" />
+          <Property Name="league_team_sum" Type="Int32" />
+          <Property Name="correct_pick_count" Type="Int32" />
+          <Property Name="points_per_pick" Type="Decimal" Precision="24" Scale="12" />
+          <Property Name="is_completed" Type="Boolean" Nullable="false" />
+          <Property Name="total_winnings" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="league_team_rank" Type="Int64" />
+          <Property Name="league_team_count" Type="Int32" />
+          <Property Name="id" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -860,6 +988,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="game_type">
             <EntityTypeMapping TypeName="Model.game_type">
               <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="number_of_rounds" ColumnName="number_of_rounds" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="admin_user_id" ColumnName="admin_user_id" />
@@ -872,6 +1001,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="leagues">
             <EntityTypeMapping TypeName="Model.league">
               <MappingFragment StoreEntitySet="league">
+                <ScalarProperty Name="admin_user_id" ColumnName="admin_user_id" />
+                <ScalarProperty Name="round_winnings_percentage" ColumnName="round_winnings_percentage" />
                 <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
@@ -986,6 +1117,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="league_calculations">
             <EntityTypeMapping TypeName="Model.league_calculations">
               <MappingFragment StoreEntitySet="league_calculations">
+                <ScalarProperty Name="total_winnings" ColumnName="total_winnings" />
                 <ScalarProperty Name="is_completed" ColumnName="is_completed" />
                 <ScalarProperty Name="points_per_pick" ColumnName="points_per_pick" />
                 <ScalarProperty Name="correct_pick_count" ColumnName="correct_pick_count" />
@@ -1011,6 +1143,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="objects_with_open_rounds">
             <EntityTypeMapping TypeName="Model.objects_with_open_rounds">
               <MappingFragment StoreEntitySet="objects_with_open_rounds">
+                <ScalarProperty Name="round_short_name" ColumnName="round_short_name" />
                 <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="end_date" ColumnName="end_date" />
                 <ScalarProperty Name="round_name" ColumnName="round_name" />
@@ -1020,6 +1153,43 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
                 <ScalarProperty Name="league_name" ColumnName="league_name" />
                 <ScalarProperty Name="league_id" ColumnName="league_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="round_summary">
+            <EntityTypeMapping TypeName="Model.round_summary">
+              <MappingFragment StoreEntitySet="round_summary">
+                <ScalarProperty Name="winnings_sum" ColumnName="winnings_sum" />
+                <ScalarProperty Name="winning_score_count" ColumnName="winning_score_count" />
+                <ScalarProperty Name="round_pot_value" ColumnName="round_pot_value" />
+                <ScalarProperty Name="is_winner" ColumnName="is_winner" />
+                <ScalarProperty Name="round_sum" ColumnName="round_sum" />
+                <ScalarProperty Name="correct_pick_count" ColumnName="correct_pick_count" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="round_number" ColumnName="round_number" />
+                <ScalarProperty Name="round_name" ColumnName="round_name" />
+                <ScalarProperty Name="round_id" ColumnName="round_id" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="league_summary">
+            <EntityTypeMapping TypeName="Model.league_summary">
+              <MappingFragment StoreEntitySet="league_summary">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="league_team_count" ColumnName="league_team_count" />
+                <ScalarProperty Name="league_team_rank" ColumnName="league_team_rank" />
+                <ScalarProperty Name="total_winnings" ColumnName="total_winnings" />
+                <ScalarProperty Name="is_completed" ColumnName="is_completed" />
+                <ScalarProperty Name="points_per_pick" ColumnName="points_per_pick" />
+                <ScalarProperty Name="correct_pick_count" ColumnName="correct_pick_count" />
+                <ScalarProperty Name="league_team_sum" ColumnName="league_team_sum" />
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
+                <ScalarProperty Name="league_team_name" ColumnName="league_team_name" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="league_name" ColumnName="league_name" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

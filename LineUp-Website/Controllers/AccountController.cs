@@ -214,6 +214,7 @@ namespace LineUp_Website.Controllers
             return View();
         }
 
+        private readonly AuthMessageSender _message = new AuthMessageSender();
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
@@ -224,22 +225,63 @@ namespace LineUp_Website.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    // The user does not exist or is not confirmed
+                    throw new ArgumentOutOfRangeException("user");
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                await _message.SendEmailAsync(model.Email, "Reset Password",
+                   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // POST: /Account/ForgotPasswordOutsider
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<string> ForgotPasswordOutsider(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await UserManager.FindByNameAsync(model.Email);
+                    if (user == null)
+                    {
+                        // The user does not exist or is not confirmed
+                        throw new ArgumentOutOfRangeException("user");
+                    }
+
+                    //For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    //Send an email with this link
+                    string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                    await _message.SendEmailAsync(model.Email, "Reset Password",
+                       "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                    return "success";
+                }
+
+                // If we got this far, something failed, redisplay form
+                // The email does not exist or is not confirmed
+                throw new ArgumentNullException("email");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message.ToString();
+            }
         }
 
         //

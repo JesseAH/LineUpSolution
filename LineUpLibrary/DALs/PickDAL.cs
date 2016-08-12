@@ -59,7 +59,8 @@ namespace LineUpLibrary.DALs
 
         public IList<objects_with_open_rounds> GetTeamsWhoNeedToMakePicks(int userID)
         {
-            return db.objects_with_open_rounds.Where(o => o.user_id == userID).ToList();
+            IList<objects_with_open_rounds> list = db.objects_with_open_rounds.Where(o => o.user_id == userID).ToList();
+            return list;
         }
 
         public IList<PickDTO> GetListByTeam(int teamID)
@@ -96,17 +97,21 @@ namespace LineUpLibrary.DALs
             pick existingpick = db.picks.Where(l => l.id == dto.id).FirstOrDefault();
 
             existingpick = DTOtoEF(dto, existingpick);
-            existingpick.modified_on = DateTime.Today;
+            existingpick.modified_on = DateTime.Now.ToUniversalTime();
 
             db.SaveChanges();
         }
 
         public int Create(PickDTO dto)
         {
+            if (!Match_Open(dto.match_id))
+                throw new Exception("This round is locked");
+
             pick newpick = new pick();
 
             newpick = DTOtoEF(dto, newpick);
-            newpick.created_on = DateTime.Today;
+            newpick.created_on = DateTime.Now.ToUniversalTime();
+            newpick.modified_on = DateTime.Now.ToUniversalTime();
 
             db.picks.Add(newpick);
             db.SaveChanges();
@@ -118,6 +123,43 @@ namespace LineUpLibrary.DALs
         {
             db.picks.Remove(db.picks.Where(l => l.id == id).FirstOrDefault());
             db.SaveChanges();
+        }
+
+        public void DeleteDuplicatePicks(int leagueTeamID, int matchID)
+        {
+            pick oldPick = db.picks.Where(p => p.league_team_id == leagueTeamID && p.match_id == matchID).FirstOrDefault();
+
+            if (oldPick != null)
+                db.picks.Remove(oldPick);
+
+            db.SaveChanges();
+        }
+
+        //Is this pick's league open for changes
+        public bool Match_Open(int matchID)
+        {
+            match myMatch = db.matches.Where(m => m.id == matchID).Include(r => r.round).FirstOrDefault();
+
+            if (myMatch == null || myMatch.round.lock_date == null)
+                return true;
+
+            if (DateTime.Now.ToUniversalTime() <= myMatch.round.lock_date)
+                return true;
+
+            return false;
+        }
+
+        public bool Round_Open(int roundID)
+        {
+            objects_with_open_rounds myObj = db.objects_with_open_rounds.Where(o => o.round_id == roundID).First();
+
+            if (myObj == null || myObj.lock_date == null)
+                return true;
+
+            if (DateTime.Now.ToUniversalTime() <= myObj.lock_date)
+                return true;
+
+            return false;
         }
 
     }

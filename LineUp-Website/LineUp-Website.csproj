@@ -186,43 +186,78 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="APIs\RoundController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IEmailSender.cs" />
+    <Compile Include="Models\ISmsSender.cs" />
     <Compile Include="Models\JoinLeagueRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MessageServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\Controllers\League\LeagueCreateCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueDetailsCtrl.js" />
+    <Content Include="Angular\Controllers\League\LeagueJoinCtrl.js" />
+    <Content Include="Angular\Controllers\League\leagueSelectCtrl.js" />
     <Content Include="Angular\Controllers\League_Team\League_TeamDetailsCtrl.js" />
     <Content Include="Angular\Controllers\League_Team\League_TeamListCtrl.js" />
+    <Content Include="Angular\Controllers\Pick\PickDetailsCtrl.js" />
+    <Content Include="Angular\Controllers\Round\RoundDetailsCtrl.js" />
+    <Content Include="Angular\Controllers\Round\RoundListCtrl.js" />
     <Content Include="Angular\Controllers\SideBar\Make_PicksCtrl.js" />
     <Content Include="Angular\Factories\DefaultFactory.js" />
     <Content Include="Angular\Partials\dashboard.html" />
     <Content Include="Angular\Partials\League\leagueCreate.html" />
     <Content Include="Angular\Partials\League\leagueDetails.html" />
-    <Content Include="Angular\Partials\League\leagueJoin.html" />
+    <Content Include="Angular\Partials\League\LeagueJoin.html" />
+    <Content Include="Angular\Partials\League\leagueSelect.html" />
     <Content Include="Angular\Partials\League_Team\league_TeamDetails.html" />
     <Content Include="Angular\Partials\League_Team\league_TeamList.html" />
     <Content Include="Angular\Partials\Pick\pickDetails.html" />
     <Content Include="Angular\Partials\Pick\pickList.html" />
+    <Content Include="Angular\Partials\Round\roundDetails.html" />
+    <Content Include="Angular\Partials\Round\roundList.html" />
     <Content Include="Angular\Partials\SideBar\make_picks.html" />
+    <Content Include="Content\angular-input-stars.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
+    <Content Include="Content\v-accordion.css" />
+    <Content Include="Content\v-accordion.min.css" />
+    <Content Include="Content\v-tabs.css" />
+    <Content Include="Content\v-tabs.min.css" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-input-stars.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\flowtype.js" />
     <Content Include="Scripts\smart-table.js" />
     <Content Include="Scripts\smart-table.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\v-accordion.js" />
+    <Content Include="Scripts\v-accordion.min.js" />
+    <Content Include="Scripts\v-tabs.js" />
+    <Content Include="Scripts\v-tabs.min.js" />
     <Content Include="Template\css\animate.min.css" />
     <Content Include="Template\css\bootstrap.min.css" />
     <Content Include="Template\css\font-awesome.min.css" />
@@ -236,6 +271,16 @@
     <Content Include="Template\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Template\Icons8 Circles\Circled 1 Filled.png" />
+    <Content Include="Template\Icons8 Circles\Circled 1.png" />
+    <Content Include="Template\Icons8 Circles\Circled 2  Filled.png" />
+    <Content Include="Template\Icons8 Circles\Circled 2 .png" />
+    <Content Include="Template\Icons8 Circles\Circled 3 .png" />
+    <Content Include="Template\Icons8 Circles\Circled 3 C.png" />
+    <Content Include="Template\Icons8 Circles\Circled 4 Filled.png" />
+    <Content Include="Template\Icons8 Circles\Circled 4.png" />
+    <Content Include="Template\Icons8 Circles\Circled 5  Filled.png" />
+    <Content Include="Template\Icons8 Circles\Circled 5 .png" />
     <Content Include="Template\images\404-bg.png" />
     <Content Include="Template\images\404.png" />
     <Content Include="Template\images\aboutus\1.jpg" />
@@ -388,10 +433,13 @@
     <Content Include="Template\fonts\fontawesome-webfont.woff2" />
     <Content Include="Template\fonts\FontAwesome.otf" />
     <Content Include="Template\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -442,12 +490,12 @@
     <Content Include="Views\Home\MobileHelp.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Angular\Controllers\Pick\" />
     <Folder Include="Angular\Directives\" />
     <Folder Include="App_Data\" />
     <Folder Include="Template\images\ico\" />
     <Folder Include="Views\League\" />
     <Folder Include="Views\Pick\" />
+    <Folder Include="Views\Round\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Template\fonts\glyphicons-halflings-regular.woff" />

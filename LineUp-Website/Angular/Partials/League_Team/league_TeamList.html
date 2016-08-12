@@ -1,10 +1,26 @@
 ﻿
 <div class="container-fluid" ng-controller="league_teamListCtrl">
-    <h3>
-        {{header}}
-    </h3>
-    <!-- Contacts Grid -->
+
     <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="loading"></i>
+                            <h2>My Leagues and Teams</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/#price-table2-->
+
+    </div>
+
+
+    <div class="row" ng-hide="loading">
 
         <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
             <thead>
@@ -19,8 +35,8 @@
                 <tr ng-repeat="row in displayedCollection">
                     <td><a href="/user/league/details/{{row.league_id}}">{{row.league_name}}</a> </td>
                     <td><a href="/user/team/details/{{row.id}}">{{row.name}}</a></td>
-                    <td>{{row.league_ranking}}</td>
-                    <td>{{row.is_completed}}</td>
+                    <td>{{row.league_ranking}} of {{row.leagues_league_team_count}}</td>
+                    <td>{{row.league_is_completed}}</td>
                 </tr>
             </tbody>
         </table>

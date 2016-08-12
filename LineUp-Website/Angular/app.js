@@ -1,7 +1,7 @@
 ﻿
 
 
-var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
+var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', 'angular-input-stars', 'vAccordion', 'ngAnimate', 'vTabs'])
 
         // run is similar to a C# class constructor.  we will set our application/constant variables here
         .run(function ($rootScope, $http) {
@@ -11,8 +11,7 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
                 if (myValue == null)
                     return null;
 
-                var jsonDate = myValue;
-                var value = new Date(jsonDate);
+                var value = new Date(parseInt(myValue.replace('/Date(', '')));
                 return value;
             }
 
@@ -99,6 +98,14 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
             }
 
         })
+        .filter("jsonDate", function () {
+            return function (x) {
+                if (x == null)
+                    return null;
+
+                return new Date(parseInt(x.substr(6)));
+            };
+        })
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 
         $routeProvider
@@ -112,7 +119,10 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
         .when('/user/league/details/:id', {
             templateUrl: 'Angular/Partials/League/leagueDetails.html'
         })
-        .when('/user/league/join', {
+        .when('/user/league/select', {
+            templateUrl: 'Angular/Partials/League/leagueSelect.html'
+        })
+        .when('/user/league/join/:id', {
             templateUrl: 'Angular/Partials/League/leagueJoin.html'
         })
         .when('/user/league/create', {
@@ -127,12 +137,9 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
             templateUrl: 'Angular/Partials/League_Team/league_TeamDetails.html'
         })
 
-        //Pick routes
-        .when('/user/pick/list', {
-            templateUrl: 'Angular/Partials/pick/pickList.html'
-        })
-        .when('/user/pick/details/:id', {
-            templateUrl: 'Angular/Partials/pick/pickDetails.html'
+        //Round routes
+        .when('/user/round/details/:leagueTeamID/:roundID', {
+            templateUrl: 'Angular/Partials/round/roundDetails.html'
         })
 
         //Default route is dashboard
@@ -140,35 +147,3 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table'])
 
         $locationProvider.html5Mode(true);
     }]);
-
-
-    //app.controller("leagueListCtrl", function ($scope) {
-    //    alert();
-    //});
-
-    //angular
-    //    .module('myApp')
-    //    .controller('leagueListCtrl', leagueListCtrl) // list controller
-
-    ////League List - shows list
-    //leagueListCtrl.$inject = ['$scope', '$rootScope', 'DefaultFactory'];
-    //function contactListCtrl($scope, $rootScope, DefaultFactory) {
-
-    //    //#region Variables
-
-    //    $scope.header = "My Leagues";
-
-    //    //#endregion
-
-    //    //#region Get Data
-
-    //    DefaultFactory.defaultList("League")
-    //        .then(function (dtos) {
-
-    //            $scope.originalDataSource = dtos;
-
-    //        });
-
-    //    //#endregion
-
-    //}

@@ -1,6 +1,7 @@
 ﻿using LineUp_API.Models;
 using LineUpLibrary.DALs;
 using LineUpLibrary.DTOs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace LineUp_API.Controllers
     /// <summary>
     /// Leagues
     /// </summary>
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/League")]
     public class LeagueController : ApiController
     {
@@ -53,7 +54,7 @@ namespace LineUp_API.Controllers
         {
             try
             {
-                return this.Ok(myDAL.Get(id, myUserDAL.GetUserID(User.Identity.Name)));
+                return this.Ok(myDAL.Get(id));
             }
             catch (Exception ex)
             {
@@ -74,7 +75,6 @@ namespace LineUp_API.Controllers
             try
             {
                 return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name)));
-
             }
             catch (Exception ex)
             {
@@ -94,8 +94,7 @@ namespace LineUp_API.Controllers
         {
             try
             {
-                LeagueDTO newLeague = myDAL.Create(dto);
-                return Content(HttpStatusCode.Created, newLeague);
+                return Content(HttpStatusCode.Created, myDAL.Create(dto));
             }
             catch (Exception ex)
             {
@@ -138,7 +137,7 @@ namespace LineUp_API.Controllers
                 if (myDAL.leagueAuthorization(req.league_id, req.password) == false)
                     return new StatusCodeResult(HttpStatusCode.Forbidden, Request);
 
-                myDAL.AddLeagueTeam(req.league_team_name, req.league_id, myUserDAL.GetUserID(User.Identity.Name));
+                var id = myDAL.AddLeagueTeam(req.league_team_name, req.league_id, myUserDAL.GetUserID(User.Identity.Name));
                 return new StatusCodeResult(HttpStatusCode.Created, Request);
 
             }

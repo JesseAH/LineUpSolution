@@ -32,6 +32,8 @@ namespace LineUpApp.Models
         public Nullable<System.DateTime> created_on { get; set; }
         public Nullable<System.DateTime> modified_on { get; set; }
         public Nullable<System.DateTime> lock_date { get; set; }
+        public int round_winnings_percentage { get; set; }
+        public int admin_user_id { get; set; }
     
         public virtual game_type game_type { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

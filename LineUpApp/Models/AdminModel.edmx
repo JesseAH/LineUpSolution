@@ -15,6 +15,7 @@
           <Property Name="admin_user_id" Type="int" />
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
+          <Property Name="number_of_rounds" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -32,6 +33,8 @@
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
           <Property Name="lock_date" Type="datetime" />
+          <Property Name="round_winnings_percentage" Type="int" Nullable="false" />
+          <Property Name="admin_user_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="league_team">
           <Key>
@@ -412,6 +415,7 @@
           <Property Name="modified_on" Type="DateTime" Precision="3" />
           <NavigationProperty Name="leagues" Relationship="AdminModel.FK_league_game_type" FromRole="game_type" ToRole="league" />
           <NavigationProperty Name="rounds" Relationship="AdminModel.FK_round_game_type" FromRole="game_type" ToRole="round" />
+          <Property Name="number_of_rounds" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -431,6 +435,8 @@
           <NavigationProperty Name="game_type" Relationship="AdminModel.FK_league_game_type" FromRole="league" ToRole="game_type" />
           <NavigationProperty Name="league_team" Relationship="AdminModel.FK_League_ToLeague" FromRole="league" ToRole="league_team" />
           <Property Name="lock_date" Type="DateTime" Precision="3" />
+          <Property Name="round_winnings_percentage" Type="Int32" Nullable="false" />
+          <Property Name="admin_user_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_league_game_type">
           <End Type="AdminModel.game_type" Role="game_type" Multiplicity="1" />
@@ -693,6 +699,7 @@
           <EntitySetMapping Name="game_type">
             <EntityTypeMapping TypeName="AdminModel.game_type">
               <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="number_of_rounds" ColumnName="number_of_rounds" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="admin_user_id" ColumnName="admin_user_id" />
@@ -705,6 +712,8 @@
           <EntitySetMapping Name="leagues">
             <EntityTypeMapping TypeName="AdminModel.league">
               <MappingFragment StoreEntitySet="league">
+                <ScalarProperty Name="admin_user_id" ColumnName="admin_user_id" />
+                <ScalarProperty Name="round_winnings_percentage" ColumnName="round_winnings_percentage" />
                 <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />

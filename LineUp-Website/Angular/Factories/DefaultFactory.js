@@ -17,10 +17,6 @@
                    deferred.resolve(dto.data);
                })
                .catch(function (error) {
-                   //if (error == null)
-                   //    notie.alert(3, "Error deleting utility account.", 3);
-                   //else
-                   //    notie.alert(3, error, 3);
                });
 
             return deferred.promise;
@@ -35,10 +31,6 @@
                    deferred.resolve(dtos.data);
                })
                .catch(function (error) {
-                   //if (error == null)
-                   //    notie.alert(3, "Error getting list.", 3);
-                   //else
-                   //    notie.alert(3, error, 3);
                });
 
             return deferred.promise;
@@ -47,17 +39,11 @@
         //Save
         DefaultFactory.Save = function (object, dataSource) {
             var deferred = $q.defer();
-            return $http.post('../../api/' + dataSource, object)
-               .success(function (id) {
-                   if (dataSource != 'User_Link_MRU_Record')
-                       notie.alert(1, "Save Successful!", 3);
-                   deferred.resolve(id);
+            return $http.post('../' + dataSource + '/Post', object)
+               .success(function () {
+                   deferred.resolve(true);
                })
                .error(function (error) {
-                   //if (error == null)
-                   //    notie.alert(3, "Error saving.", 3);
-                   //else
-                   //    notie.alert(3, error, 3);
                });
 
             return deferred.promise;
@@ -66,17 +52,27 @@
         //Update
         DefaultFactory.Update = function (object, dataSource) {
             var deferred = $q.defer();
-            return $http.post('../../api/' + dataSource, object)
+            return $http.post('../' + dataSource, object)
                .success(function (id) {
                    if (dataSource != 'User_Link_MRU_Record')
                        notie.alert(1, "Save Successful!", 3);
                    deferred.resolve(id);
                })
                .error(function (error) {
-                   //if (error == null)
-                   //    notie.alert(3, "Error saving.", 3);
-                   //else
-                   //    notie.alert(3, error, 3);
+               });
+
+            return deferred.promise;
+        };
+
+        //Get Lookup Options List
+        DefaultFactory.ObjectLookupList = function (dataSource) {
+            var deferred = $q.defer();
+
+            $http.get('../' + dataSource + '/GetLookupOptions')
+               .then(function (dtos) {
+                   deferred.resolve(dtos.data);
+               })
+               .catch(function (error) {
                });
 
             return deferred.promise;

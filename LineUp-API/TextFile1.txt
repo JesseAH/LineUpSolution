@@ -1,0 +1,13 @@
+﻿/api/Account/Register
+/token
+/api/Account/ForgotPassword
+/api/Account/UserInfo
+/api/Game_Type
+/api/League
+/api/League/User
+/api/League/{leagueID}
+/api/League
+/api/League/Join
+/api/Round/League/{leagueID}
+/api/Pick
+/api/Pick/{pickID}

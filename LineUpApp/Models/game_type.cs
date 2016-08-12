@@ -27,6 +27,7 @@ namespace LineUpApp.Models
         public Nullable<int> admin_user_id { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }
         public Nullable<System.DateTime> modified_on { get; set; }
+        public int number_of_rounds { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<league> leagues { get; set; }

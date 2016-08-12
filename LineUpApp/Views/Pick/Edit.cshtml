@@ -17,31 +17,31 @@
         @Html.HiddenFor(model => model.id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.match_id, "match_id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2 text-danger">Match</div>
             <div class="col-md-10">
-                @Html.DropDownList("match_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("match_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.match_id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            League's Team Name
+            <div class="col-md-2 text-danger">League Team</div>
             <div class="col-md-10">
-                @Html.DropDownList("league_team_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("league_team_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.league_team_id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            Picked
+            <div class="col-md-2 text-danger">Picked Team</div>
             <div class="col-md-10">
-                @Html.DropDownList("picked_team_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("picked_team_id", (IEnumerable<SelectListItem>)ViewData["Menu"], string.Empty, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.picked_team_id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            Confidence Value
+            <div class="col-md-2 text-danger">Confidence Value</div>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.confidence_value, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.confidence_value, "", new { @class = "text-danger" })

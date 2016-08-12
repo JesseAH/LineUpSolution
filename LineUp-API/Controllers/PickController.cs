@@ -72,6 +72,9 @@ namespace LineUp_API.Controllers
         {
             try
             {
+                //if(!myDAL.Pick_Open(dto.match_id))
+                //    return this.BadRequest("This match is no longer open to make picks.");
+
                 int id = myDAL.Create(dto);
                 return Content(HttpStatusCode.Created, id);
             }
@@ -92,6 +95,9 @@ namespace LineUp_API.Controllers
         {
             try
             {
+                //if (!myDAL.Pick_Open(dto.match_id))
+                //    return this.BadRequest("This match is no longer open to make picks.");
+
                 myDAL.Save(dto);
                 return this.Ok();
             }

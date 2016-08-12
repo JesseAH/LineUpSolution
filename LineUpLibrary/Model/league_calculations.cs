@@ -23,5 +23,6 @@ namespace LineUpLibrary.Model
         public Nullable<int> correct_pick_count { get; set; }
         public Nullable<decimal> points_per_pick { get; set; }
         public bool is_completed { get; set; }
+        public Nullable<decimal> total_winnings { get; set; }
     }
 }

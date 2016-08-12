@@ -7,23 +7,23 @@
                 <div>
                     <div class="single-table table-one">
                         <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
                             <h2>{{detailsScope.header}}</h2>
-                            <p class="plan-price"><span class="dollar-sign"></span><span class="price">{{detailsScope.detailsObject.league_ranking}}nd</span><span class="month">of 5</span></p>
+                            <p class="plan-price" ng-hide="detailsScope.loading"><span class="dollar-sign"></span><span class="price">{{detailsScope.detailsObject.league_ranking}}</span><span class="month">of {{detailsScope.detailsObject.leagues_league_team_count}}</span></p>
                         </div>
                         <div class="container-fluid">
                             <div class="row col-md-6">
                                 <ul>
-                                    <li>League: <a href="/user/league/details/{{detailsScope.detailsObject.league_id}}">{{detailsScope.detailsObject.league_name}}</a></li>
-                                    <li>League Pot: XXXXXXXX</li>
-                                    <li>League Rank: XXXXXXXX</li>
-
+                                    <li>Username: {{detailsScope.detailsObject.user_name}}  </li>
+                                    <li>Total Points: {{detailsScope.detailsObject.league_team_points_sum}}  </li>
+                                    <li>Total Winnings: {{detailsScope.detailsObject.total_winnings | currency}}</li>
                                 </ul>
                             </div>
                             <div class="row col-md-6">
                                 <ul>
-                                    <li>Total Points: XXXXXXX  </li>
-                                    <li>Total Winnings: XXXXXXX</li>
-                                    <li>Round Average/Point Per Pick/Correct Count</li>
+                                    <li>League: <a href="/user/league/details/{{detailsScope.detailsObject.league_id}}">{{detailsScope.detailsObject.league_name}}</a></li>
+                                    <li>League Pot: {{detailsScope.detailsObject.league_total_pot | currency}}</li>
+                                    <li>Points Per Pick: {{detailsScope.detailsObject.league_points_per_pick}}</li>
                                 </ul>
                             </div>
 
@@ -36,29 +36,66 @@
 
     </div>
 
-    <div class="row">
-        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table">
-            <thead>
-                <tr ng-repeat="round in detailsScope.detailsObject.rounds">
-                    <td>
+    <div class="row" ng-hide="detailsScope.loading">
+
+        <v-accordion class="vAccordion--default" multiple>
+
+            <v-pane ng-repeat="round in displayedCollection" >
+                <v-pane-header>
+
+                    <i class="fa fa-lock" ng-show="round.is_locked"> {{ ::round.name }}</i>
+                    <a href="#" style="color:green; margin-left: 3px;" ng-hide="round.is_locked">
+                        <b><i class="fa fa-circle-o" style="color:green; margin-right: 5px;"></i>{{ ::round.name }}</b>
+                    </a>
+
+                </v-pane-header>
+
+                <v-pane-content>
+
+                    <div class="form-group">
+                        <a href="../user/round/details/{{detailsScope.detailsObject.id}}/{{round.id}}" ng-hide="round.is_locked" class="btn btn-primary" style="color:white">Make Picks</a>
+                    </div>
+                    <div class="form-group">
                         <table st-table="round.picks" st-safe-src="rowCollection" class="table table-striped">
                             <tr>
+                                <th></th>
                                 <th>{{round.name}}</th>
+                                <th></th>
+                                <th>Picked</th>
+                                <th>Points</th>
+                            </tr>
+                            <tr ng-repeat="match in round.matches">
+                                <th>
+                                    <i class="fa fa-check" ng-show="match.picks[0].is_winner" style="color:green"></i>
+                                    <i class="fa fa-times" ng-show="match.picks[0].is_winner == false" style="color:red"></i>
+                                </th>
+                                <td>{{match.team1_name}} vs. {{match.team2_name}}</td>
+                                <td></td>
+                                <td>{{match.picks[0].picked_team_name}}</td>
+                                <td>{{match.picks[0].pick_points}}</td>
                             </tr>
                             <tr>
-                                <th>{{round}}</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Total:</td>
+                                <td>{{round.round_points_sum}}</td>
                             </tr>
-                            <tr ng-repeat="pick in round.picks">
-                                <td>{{pick.picked_team_name}}</td>
-                                <td>{{pick.confidence_value}}</td>
-                                <td>{{pick.is_winner}}</td>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Winnings:</td>
+                                <td>{{round.round_winnings | currency}}</td>
                             </tr>
                         </table>
-                    </td>
-                </tr>
-            </thead>
+                    </div>
+                </v-pane-content>
+            </v-pane>
 
-        </table>
+        </v-accordion>
 
     </div>
+
+
 </div>

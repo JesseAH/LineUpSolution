@@ -22,13 +22,13 @@ namespace LineUpLibrary.DTOs
 
         public string league_team_name { get; set; }
         public string picked_team_name { get; set; }
-        public bool is_winner { get; set; }
+        public Nullable<bool> is_winner { get; set; }
         public int round_id { get; set; }
         public string round_name { get; set; }
         public int match_teams { get; set; }
         public int pick_points {
             get {
-                if (is_winner && confidence_value != null)
+                if (is_winner == true && confidence_value != null)
                     return (int)confidence_value;
                 else
                     return 0; }

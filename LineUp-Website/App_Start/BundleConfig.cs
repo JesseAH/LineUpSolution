@@ -25,16 +25,23 @@ namespace LineUp_Website
 
             bundles.Add(new Bundle("~/bundles/angular").Include(
                       "~/Scripts/smart-table.min.js",
+                      "~/Scripts/angular -input-stars.js",
                       "~/Angular/app.js",
                       "~/Angular/Factories/DefaultFactory.js",
                       "~/Angular/Controllers/League/LeagueDetailsCtrl.js",
+                      "~/Angular/Controllers/League/LeagueCreateCtrl.js",
+                      "~/Angular/Controllers/League/LeagueJoinCtrl.js",
+                      "~/Angular/Controllers/League/LeagueSelectCtrl.js",
                       "~/Angular/Controllers/League_Team/League_TeamListCtrl.js",
                       "~/Angular/Controllers/League_Team/League_TeamDetailsCtrl.js",
+                      "~/Angular/Controllers/Round/RoundDetailsCtrl.js",
+                      "~/Angular/Controllers/Round/RoundListCtrl.js",
                       "~/Angular/Controllers/SideBar/Make_PicksCtrl.js"
-                      ));
+                      )); 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/angular-input-stars.css",
                       "~/Content/site.css"));
 
         }

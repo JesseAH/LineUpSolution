@@ -399,7 +399,7 @@ namespace LineUp_API.Controllers
             if (ModelState.IsValid)
             {
 
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://lineup-admin.azurewebsites.net/Account/ForgotPasswordOutsider");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://lineupconfidence.com/Account/ForgotPasswordOutsider");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
 

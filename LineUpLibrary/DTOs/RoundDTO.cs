@@ -22,7 +22,7 @@ namespace LineUpLibrary.DTOs
         [Required]
         public Nullable<int> round_number { get; set; }
         [Required]
-        public Nullable<System.DateTime> start_date { get; set; }
+        public DateTime? start_date { get; set; }
         [Required]
         public Nullable<System.DateTime> end_date { get; set; }
         [Required]
@@ -33,7 +33,10 @@ namespace LineUpLibrary.DTOs
         public string game_type_name { get; set; }
         public Nullable<int> round_points_sum { get; set; }
         public decimal? round_winnings { get; set; }
+        public bool is_winner { get; set; }
         public double max_pick_count { get; set; }
+
+        public bool is_locked { get; set; }
 
         public virtual IList<MatchDTO> matches { get; set; }
         public virtual IList<PickDTO> picks { get; set; }
