@@ -483,7 +483,7 @@
         </member>
         <member name="T:LineUp_API.Controllers.AccountController">
             <summary>
-            Login at xxxxxxx.com/token and Register users with below call
+            Register users with below call
             </summary>
         </member>
         <member name="M:LineUp_API.Controllers.AccountController.Register(LineUpLibrary.Model.RegisterBindingModel)">
@@ -496,9 +496,9 @@
         </member>
         <member name="M:LineUp_API.Controllers.AccountController.ForgotPassword(LineUp_API.Models.ForgotPasswordViewModel)">
             <summary>
-            Not Yet Implemented.
+            Now Implemented.
             </summary>
-            <remarks>Not Yet Implemented.</remarks>
+            <remarks>Now Implemented.</remarks>
         </member>
         <member name="M:LineUp_API.Controllers.Game_TypeController.Get(System.Int32)">
             <summary>
@@ -522,24 +522,52 @@
         </member>
         <member name="M:LineUp_API.Controllers.LeagueController.Get">
             <summary>
-            Get list of all leagues
+            List of Leagues
             </summary>
-            <remarks>Get list of all leagues</remarks>
+            <remarks>List of Leagues</remarks>
             <returns></returns>
         </member>
         <member name="M:LineUp_API.Controllers.LeagueController.Get(System.Int32)">
             <summary>
-            Get a league by its id
+            Get League
             </summary>
-            <remarks>Get a league by its id</remarks>
+            <remarks>Get League</remarks>
             <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:LineUp_API.Controllers.LeagueController.UserID">
             <summary>
-            Get a list of all leagues that the current user is in
+            User's List of Leagues
             </summary>
-            <remarks>Get a list of all leagues that the current user is in</remarks>
+            <remarks>User's List of Leagues</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.LeagueController.UserTeams">
+            <summary>
+            User's List of Leagues + Teams
+            </summary>
+            <remarks>User's List of Leagues + Teams</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.LeagueController.UserTeamsCalculations">
+            <summary>
+            User's List of Leagues + Teams + Calculations
+            </summary>
+            <remarks>User's List of Leagues + Teams + Calculations</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.LeagueController.Teams">
+            <summary>
+            List of Leagues + Teams
+            </summary>
+            <remarks>List of Leagues + Teams</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.LeagueController.TeamCalculations">
+            <summary>
+            List of Leagues + Teams + Calculations
+            </summary>
+            <remarks>List of Leagues + Teams + Calculations</remarks>
             <returns></returns>
         </member>
         <member name="M:LineUp_API.Controllers.LeagueController.Post(LineUpLibrary.DTOs.LeagueDTO)">
@@ -573,10 +601,23 @@
         </member>
         <member name="M:LineUp_API.Controllers.League_TeamController.Get(System.Int32)">
             <summary>
-            Get a team by its id
+            Get League Team
             </summary>
-            <remarks>Get a team by its id</remarks>
-            <param name="id"></param>
+            <remarks>Get League Team</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.League_TeamController.Calculations(System.Int32)">
+            <summary>
+            Get League Team + Calculations
+            </summary>
+            <remarks>Get League Team + Calculations</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.League_TeamController.Rounds(System.Int32)">
+            <summary>
+            Get League Team + Calculations + Rounds
+            </summary>
+            <remarks>Get League Team + Calculations + Rounds</remarks>
             <returns></returns>
         </member>
         <member name="M:LineUp_API.Controllers.League_TeamController.Post(LineUpLibrary.DTOs.League_TeamDTO)">
@@ -589,9 +630,23 @@
         </member>
         <member name="M:LineUp_API.Controllers.League_TeamController.UserID">
             <summary>
-            Get a list of all teams that the current user is in
+            User's List of League Teams
             </summary>
-            <remarks>Get a list of all teams that the current user is in</remarks>
+            <remarks>User's List of League Teams</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.League_TeamController.UserCalculations">
+            <summary>
+            User's List of League Teams + Calculations
+            </summary>
+            <remarks>User's List of League Teams + Calculations</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:LineUp_API.Controllers.League_TeamController.UserRounds">
+            <summary>
+            User's List of League Teams + Calculations + Rounds
+            </summary>
+            <remarks>User's List of League Teams + Calculations + Rounds</remarks>
             <returns></returns>
         </member>
         <member name="M:LineUp_API.Controllers.League_TeamController.Put(LineUpLibrary.DTOs.League_TeamDTO)">
@@ -600,14 +655,6 @@
             </summary>
             <remarks>CEdit an existing team</remarks>
             <param name="dto"></param>
-            <returns></returns>
-        </member>
-        <member name="M:LineUp_API.Controllers.League_TeamController.Delete(System.Int32)">
-            <summary>
-            Delete a team by its id
-            </summary>
-            <remarks>Delete a team by its id</remarks>
-            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:LineUp_API.Controllers.MatchController">

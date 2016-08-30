@@ -51,7 +51,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                match_type.created_on = DateTime.Now;
+                match_type.created_on = DateTime.UtcNow;
                 db.match_type.Add(match_type);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,7 +84,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                match_type.modified_on = DateTime.Now;
+                match_type.modified_on = DateTime.UtcNow;
                 db.Entry(match_type).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

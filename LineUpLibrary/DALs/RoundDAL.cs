@@ -62,6 +62,7 @@ namespace LineUpLibrary.DALs
                 dto.matches.Add(m_dto);
             }
 
+
             if (dto.matches.Count() > 0)
                 dto.max_pick_count = Math.Ceiling((double)dto.matches.Count() / 5);
 

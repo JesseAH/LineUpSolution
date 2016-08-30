@@ -24,9 +24,9 @@ namespace LineUp_API.Controllers
         UserDAL myUserDAL = new UserDAL();
 
         /// <summary>
-        /// Get list of all leagues
+        /// List of Leagues
         /// </summary>
-        /// <remarks>Get list of all leagues</remarks>
+        /// <remarks>List of Leagues</remarks>
         /// <returns></returns>
         // GET api/League
         [ResponseType(typeof(IList<LeagueDTO>))]
@@ -43,9 +43,9 @@ namespace LineUp_API.Controllers
         }
 
         /// <summary>
-        /// Get a league by its id
+        /// Get League
         /// </summary>
-        /// <remarks>Get a league by its id</remarks>
+        /// <remarks>Get League</remarks>
         /// <param name="id"></param>
         /// <returns></returns>
         // GET api/League/5
@@ -63,9 +63,9 @@ namespace LineUp_API.Controllers
         }
 
         /// <summary>
-        /// Get a list of all leagues that the current user is in
+        /// User's List of Leagues
         /// </summary>
-        /// <remarks>Get a list of all leagues that the current user is in</remarks>
+        /// <remarks>User's List of Leagues</remarks>
         /// <returns></returns>
         [HttpGet]
         [System.Web.Http.Route("User")]
@@ -74,7 +74,87 @@ namespace LineUp_API.Controllers
         {
             try
             {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name)));
+                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), false, false, false));
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message.ToString());
+            }
+        }
+
+        /// <summary>
+        /// User's List of Leagues + Teams
+        /// </summary>
+        /// <remarks>User's List of Leagues + Teams</remarks>
+        /// <returns></returns>
+        [HttpGet]
+        [System.Web.Http.Route("User/Teams")]
+        [ResponseType(typeof(IList<LeagueDTO>))]
+        public IHttpActionResult UserTeams()
+        {
+            try
+            {
+                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, false));
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message.ToString());
+            }
+        }
+
+        /// <summary>
+        /// User's List of Leagues + Teams + Calculations
+        /// </summary>
+        /// <remarks>User's List of Leagues + Teams + Calculations</remarks>
+        /// <returns></returns>
+        [HttpGet]
+        [System.Web.Http.Route("User/Teams/Calculations")]
+        [ResponseType(typeof(IList<LeagueDTO>))]
+        public IHttpActionResult UserTeamsCalculations()
+        {
+            try
+            {
+                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, true));
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message.ToString());
+            }
+        }
+
+        /// <summary>
+        /// List of Leagues + Teams
+        /// </summary>
+        /// <remarks>List of Leagues + Teams</remarks>
+        /// <returns></returns>
+        [HttpGet]
+        [System.Web.Http.Route("Teams")]
+        [ResponseType(typeof(IList<LeagueDTO>))]
+        public IHttpActionResult Teams()
+        {
+            try
+            {
+                return this.Ok(myDAL.GetList(true, false, false));
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message.ToString());
+            }
+        }
+
+        /// <summary>
+        /// List of Leagues + Teams + Calculations
+        /// </summary>
+        /// <remarks>List of Leagues + Teams + Calculations</remarks>
+        /// <returns></returns>
+        [HttpGet]
+        [System.Web.Http.Route("Teams/Calculations")]
+        [ResponseType(typeof(IList<LeagueDTO>))]
+        public IHttpActionResult TeamCalculations()
+        {
+            try
+            {
+                return this.Ok(myDAL.GetList(true, true, false));
             }
             catch (Exception ex)
             {

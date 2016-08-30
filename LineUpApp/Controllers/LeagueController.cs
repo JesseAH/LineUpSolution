@@ -53,7 +53,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                league.created_on = DateTime.Now;
+                league.created_on = DateTime.UtcNow;
                 db.leagues.Add(league);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -88,7 +88,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                league.modified_on = DateTime.Now;
+                league.modified_on = DateTime.UtcNow;
                 db.Entry(league).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

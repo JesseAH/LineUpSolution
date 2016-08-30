@@ -125,6 +125,19 @@ namespace LineUpLibrary.DALs
             db.SaveChanges();
         }
 
+        public bool IsMyTeam(int leagueTeamID, int userid)
+        {
+            league_team team = db.league_team.Where(t => t.id == leagueTeamID).FirstOrDefault();
+
+            if (team == null)
+                return false;
+
+            if (team.user_id != userid)
+                return false;
+
+            return true;
+        }
+
         public void DeleteDuplicatePicks(int leagueTeamID, int matchID)
         {
             pick oldPick = db.picks.Where(p => p.league_team_id == leagueTeamID && p.match_id == matchID).FirstOrDefault();

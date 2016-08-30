@@ -43,10 +43,19 @@ namespace LineUp_Website.APIs
         {
             try
             {
+                int myID = myUserDAL.GetUserID(User.Identity.Name);
+
                 foreach (PickDTO pick in dtos)
                 {
-                    myDAL.DeleteDuplicatePicks(pick.league_team_id, pick.match_id);
-                    myDAL.Create(pick);
+                    if (myDAL.IsMyTeam(pick.league_team_id, myID))
+                    {
+                        myDAL.DeleteDuplicatePicks(pick.league_team_id, pick.match_id);
+                        myDAL.Create(pick);
+                    }
+                    else
+                    {
+                        return this.Json(false);
+                    }
                 }
                 return this.Json(true);
             }

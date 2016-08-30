@@ -53,7 +53,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                round.created_on = DateTime.Now;
+                round.created_on = DateTime.UtcNow;
                 db.rounds.Add(round);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -88,7 +88,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                round.modified_on = DateTime.Now;
+                round.modified_on = DateTime.UtcNow;
                 db.Entry(round).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

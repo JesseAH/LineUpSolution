@@ -68,7 +68,8 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                match.created_on = DateTime.Now;
+                match.modified_on = DateTime.UtcNow;
+                match.created_on = DateTime.UtcNow;
                 db.matches.Add(match);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -111,7 +112,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                match.modified_on = DateTime.Now;
+                match.modified_on = DateTime.UtcNow;
                 db.Entry(match).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

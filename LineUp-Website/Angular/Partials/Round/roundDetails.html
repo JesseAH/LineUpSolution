@@ -2,9 +2,9 @@
     <div class="container-fluid">
 
         <div class="row">
-            <button type="button" class="btn btn-primary col-xs-3"ng-click="savePicks()" ng-disabled="!valid || picks.length < detailsScope.detailsObject.matches.length" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
+            <button type="button" class="btn btn-primary col-xs-3"ng-click="savePicks()" ng-disabled="saving || (!valid || picks.length < detailsScope.detailsObject.matches.length)" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
             <div class="alert alert-info  col-xs-9 col-md-10" ng-show="valid  && picks.length < detailsScope.detailsObject.matches.length">
-                Please make a pick for each match.
+                Please make a pick for each match. You can select each value {{detailsScope.detailsObject.max_pick_count}} times.
             </div>
             <div class="alert alert-danger  col-xs-9 col-md-10" ng-show="!valid">
                 <strong>Pick count error.</strong> Each value can only be used {{detailsScope.detailsObject.max_pick_count}} times.
@@ -70,7 +70,7 @@
 
         <div class="row hidden-sm hidden-md hidden-lg">
             <br />
-            <button type="button" class="btn btn-primary col-xs-3" ng-click="savePicks()" ng-disabled="!valid || picks.length < detailsScope.detailsObject.matches.length" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
+            <button type="button" class="btn btn-primary col-xs-3" ng-click="savePicks()" ng-disabled="saving || (!valid || picks.length < detailsScope.detailsObject.matches.length)" style="margin-top:10px; margin-bottom:30px; margin-right:10px; width:100px;">Save Picks</button>
             <div class="alert alert-info  col-xs-9 col-md-10" ng-show="valid  && picks.length < detailsScope.detailsObject.matches.length">
                 Please make a pick for each match.
             </div>

@@ -40,22 +40,9 @@ namespace LineUp_Website.APIs
         {
             try
             {
-
-                LogEntry entry = new LogEntry
-                {
-                    LogDate = new DateTime(2009, 2, 15, 0, 0, 0, DateTimeKind.Utc),
-                    Details = "Application started."
-                };
-
-                // default as of Json.NET 4.5
-                string isoJson = JsonConvert.SerializeObject(entry);
-
-
-
-                var x = myDAL.Get(id);
-                var y = this.Json(x, JsonRequestBehavior.AllowGet);
-                var z = JsonConvert.SerializeObject(x);
-                return y;
+                var league = myDAL.Get(id);
+                var selrialized = this.Json(league, JsonRequestBehavior.AllowGet);
+                return selrialized;
             }
             catch (Exception ex)
             {
@@ -70,7 +57,7 @@ namespace LineUp_Website.APIs
                 var lookupOptions = new
                 {
                     GameTypes = myGameTypeDAL.DTOGetAsLookupList(),
-                    Leagues = myDAL.GetSimpleList()
+                    Leagues = myDAL.GetList()
                 };
 
                 return this.Json(lookupOptions, JsonRequestBehavior.AllowGet);
@@ -115,9 +102,4 @@ namespace LineUp_Website.APIs
 
     }
 
-    public class LogEntry
-    {
-        public string Details { get; set; }
-        public DateTime LogDate { get; set; }
-    }
 }

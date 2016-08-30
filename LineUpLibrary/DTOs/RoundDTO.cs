@@ -32,6 +32,7 @@ namespace LineUpLibrary.DTOs
         public string short_name { get; set; }
         public string game_type_name { get; set; }
         public Nullable<int> round_points_sum { get; set; }
+        public Nullable<int> round_open_sum { get; set; }
         public decimal? round_winnings { get; set; }
         public bool is_winner { get; set; }
         public double max_pick_count { get; set; }

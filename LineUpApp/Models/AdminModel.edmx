@@ -16,6 +16,7 @@
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
           <Property Name="number_of_rounds" Type="int" Nullable="false" />
+          <Property Name="lock_date" Type="datetime" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -416,6 +417,7 @@
           <NavigationProperty Name="leagues" Relationship="AdminModel.FK_league_game_type" FromRole="game_type" ToRole="league" />
           <NavigationProperty Name="rounds" Relationship="AdminModel.FK_round_game_type" FromRole="game_type" ToRole="round" />
           <Property Name="number_of_rounds" Type="Int32" Nullable="false" />
+          <Property Name="lock_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -699,6 +701,7 @@
           <EntitySetMapping Name="game_type">
             <EntityTypeMapping TypeName="AdminModel.game_type">
               <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="number_of_rounds" ColumnName="number_of_rounds" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />

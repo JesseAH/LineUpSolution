@@ -35,7 +35,7 @@ app.controller("leagueJoinCtrl", function ($scope, $rootScope, $http, $routePara
         if (isValid) {
             $http.post('../league/Join', $scope.joinObject).success(function (response) {
                 if (response == false)
-                    toastr.error('Incorrect Password')
+                    toastr.error('Incorrect Password');
                 else
                     window.location.href = '../user/team/details/' + response;
             });

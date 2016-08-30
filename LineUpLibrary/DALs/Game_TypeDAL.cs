@@ -16,12 +16,14 @@ namespace LineUpLibrary.DALs
 
         public IList<LookupSimpleDTO> DTOGetAsLookupList()
         {
-            IList<LookupSimpleDTO> theList = db.game_type.Select(g => new LookupSimpleDTO()
-            {
-                Lookup_ID = g.id,
-                Lookup_Name = g.name,
-                Description = g.description
-            }).OrderBy(gt => gt.Lookup_Name).ToList();
+            IList<LookupSimpleDTO> theList = db.game_type
+                .Where(g => g.lock_date == null || g.lock_date > DateTime.UtcNow)
+                .Select(g => new LookupSimpleDTO()
+                {
+                    Lookup_ID = g.id,
+                    Lookup_Name = g.name,
+                    Description = g.description
+                }).OrderBy(gt => gt.Lookup_Name).ToList();
 
             return theList;
         }
@@ -40,12 +42,14 @@ namespace LineUpLibrary.DALs
 
         public IList<Game_TypeDTO> GetList()
         {
-            return db.game_type.Select(g => new Game_TypeDTO()
-            {
-                id = g.id,
-                name = g.name,
-                description = g.description
-            }).ToList();
+            return db.game_type
+                .Where(g => g.lock_date == null || g.lock_date > DateTime.UtcNow)
+                .Select(g => new Game_TypeDTO()
+                {
+                    id = g.id,
+                    name = g.name,
+                    description = g.description
+                }).ToList();
         }
 
     }

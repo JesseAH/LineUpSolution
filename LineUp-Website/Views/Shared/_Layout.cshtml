@@ -9,6 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <link href="~/Template/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
     <link href="~/Template/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/Template/css/animate.min.css" rel="stylesheet">
     <link href="~/Template/css/lightbox.css" rel="stylesheet">
@@ -21,9 +22,10 @@
 
     <script type="text/javascript" src="~/Template/js/jquery.js"></script>
     <script type="text/javascript" src="~/Template/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="~/Template/js/lightbox.min.js"></script>
     <script type="text/javascript" src="~/Template/js/wow.min.js"></script>
-    
+
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
@@ -40,6 +42,11 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Template/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Template/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="~/Template/images/ico/apple-touch-icon-57-precomposed.png">
+
+    <script>
+        $('.datepicker').datepicker();
+    </script>
+
 
 </head>
 <body>
@@ -79,16 +86,16 @@
                         <li><a href="Home" target="_self"> Home </a></li>
                         <li><a href="Home/MobileHelp" target="_self"> FAQ </a></li>
                         @*<li><a href="Home/Contact" target="_self"> Contact </a></li>*@
-@if (Request.IsAuthenticated)
-{
-                        <li><a href="Manage/Index" target="_self"> Manage </a></li>
-                        <li><a href="Account/LogOff" target="_self"> Logout </a></li>
-}
-else
-{
-                        <li><a href="Account/Login" target="_self"> Sign In </a></li>
-}
-                       
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li><a href="Manage/Index" target="_self"> Manage </a></li>
+                            <li><a href="Account/LogOff" target="_self"> Logout </a></li>
+                        }
+                        else
+                        {
+                            <li><a href="Account/Login" target="_self"> Sign In </a></li>
+                        }
+
                     </ul>
                 </div>
             </div>

@@ -51,7 +51,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.created_on = DateTime.Now;
+                user.created_on = DateTime.UtcNow;
                 db.users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,7 +84,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.modified_on = DateTime.Now;
+                user.modified_on = DateTime.UtcNow;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,4 +1,7 @@
-﻿<div class="container-fluid" ng-controller="leagueDetailsCtrl">
+﻿
+
+
+<div class="container-fluid" ng-controller="leagueDetailsCtrl">
 
     <div class="row">
 
@@ -30,7 +33,7 @@
                     </div>
                 </div>
             </div>
-        </div><!--/#price-table2-->
+        </div><!--/#price-table2     8/27/2016 11:30:00 AM-->
 
     </div>
 
@@ -41,7 +44,16 @@
                 <tr>
                     <th st-sort="name">Team Name</th>
                     <th ng-repeat="round in detailsScope.detailsObject.league_teams[0].rounds| limitTo:-3">
-                        {{round.short_name}}
+                        {{round.short_name}} 
+                        <span ng-show="{{round.start_date | dateBeforeNow }} && {{round.end_date | dateAfterNow }}">
+                            <script>
+                                $(document).ready(function () {
+                                    $('[data-toggle="tooltip"]').tooltip();
+                                });
+                            </script>
+                            <span data-toggle="tooltip" title="Current Week. The possible score if the team wins all remaning open matches is shown as (x)." >*</span>
+
+                        </span>
                     </th>                    
                     <th st-sort="league_team_points_sum">Correct Picks</th>
                     <th st-sort="league_team_points_sum">Total Points</th>
@@ -52,7 +64,7 @@
                 <tr ng-repeat="team in detailsScope.detailsObject.league_teams">
                     <td>{{team.league_ranking}}. <b><a href="/user/team/details/{{team.id}}">{{team.name}}</a></b></td>  
                          <td st-sort="round_points_sum" ng-repeat="round in team.rounds | limitTo:-3">
-                        {{round.round_points_sum}}
+                        {{round.round_points_sum}} <span ng-show="round.round_open_sum">({{round.round_open_sum + round.round_points_sum}})</span> 
                     </td>  
                     <td style="width:50px;">{{team.league_points_per_pick}}</td>                     
                     <td style="width:50px;">{{team.league_team_points_sum}}</td>

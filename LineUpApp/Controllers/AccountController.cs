@@ -163,7 +163,7 @@ namespace LineUpApp.Controllers
                         last_name = model.Last_Name,
                         username = model.Username,
                         email = model.Email,
-                        created_on = DateTime.Now
+                        created_on = DateTime.UtcNow
                     };
 
                     db.users.Add(myNewUser);

@@ -63,7 +63,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                pick.created_on = DateTime.Now;
+                pick.created_on = DateTime.UtcNow;
                 db.picks.Add(pick);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -102,7 +102,7 @@ namespace LineUpApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                pick.modified_on = DateTime.Now;
+                pick.modified_on = DateTime.UtcNow;
                 db.Entry(pick).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -30,6 +30,16 @@
                 </div>
             </div>
         </div>
+        <div class="row" ng-show="detailsScope.detailsObject.is_private" ng-class="{ 'has-error' : detailsScope.detailsObject.is_private && detailsForm.pass.$invalid && detailsScope.submitted }">
+            <div class="form-group">
+                <div class="col-md-3">
+                    League Password
+                </div>
+                <div class="col-md-9">
+                    <input name="pass" type="password" class="form-control" ng-model="joinObject.password" ng-required="detailsScope.detailsObject.is_private">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="form-group">
                 <div class="col-md-3">
@@ -40,16 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" ng-show="detailsScope.detailsObject.is_private" ng-class="{ 'has-error' : detailsScope.detailsObject.is_private && detailsForm.pass.$invalid && detailsScope.submitted }">
-            <div class="form-group">
-                <div class="col-md-3">
-                    Password
-                </div>
-                <div class="col-md-9">
-                    <input name="pass" type="password" class="form-control" ng-model="joinObject.password" ng-required="detailsScope.detailsObject.is_private">
-                </div>
-            </div>
-        </div>
+
 
         <button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>
     </div>

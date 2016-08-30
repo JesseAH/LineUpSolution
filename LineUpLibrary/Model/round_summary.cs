@@ -26,5 +26,6 @@ namespace LineUpLibrary.Model
         public Nullable<decimal> round_pot_value { get; set; }
         public Nullable<int> winning_score_count { get; set; }
         public Nullable<decimal> winnings_sum { get; set; }
+        public Nullable<int> open_points { get; set; }
     }
 }

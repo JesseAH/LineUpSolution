@@ -17,7 +17,7 @@ namespace LineUp_Website.APIs
         {
             try
             {
-                return this.Json(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name)), JsonRequestBehavior.AllowGet);
+                return this.Json(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,false), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -29,8 +29,12 @@ namespace LineUp_Website.APIs
         {
             try
             {
-                var x = myDAL.Get(id);
-                var y = this.Json(x, JsonRequestBehavior.AllowGet);
+                var team = myDAL.Get(id, true, true);
+
+                if (team.user_id == myUserDAL.GetUserID(User.Identity.Name))
+                    team.is_logged_in_users_team = true;
+
+                var y = this.Json(team, JsonRequestBehavior.AllowGet);
                 return y;
             }
             catch (Exception ex)

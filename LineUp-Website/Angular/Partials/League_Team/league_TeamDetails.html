@@ -40,7 +40,7 @@
 
         <v-accordion class="vAccordion--default" multiple>
 
-            <v-pane ng-repeat="round in displayedCollection" >
+            <v-pane ng-repeat="round in displayedCollection">
                 <v-pane-header>
 
                     <i class="fa fa-lock" ng-show="round.is_locked"> {{ ::round.name }}</i>
@@ -53,42 +53,51 @@
                 <v-pane-content>
 
                     <div class="form-group">
-                        <a href="../user/round/details/{{detailsScope.detailsObject.id}}/{{round.id}}" ng-hide="round.is_locked" class="btn btn-primary" style="color:white">Make Picks</a>
+                        <div ng-if="detailsScope.detailsObject.is_logged_in_users_team">
+                            <a href="../user/round/details/{{detailsScope.detailsObject.id}}/{{round.id}}" ng-hide="round.is_locked" class="btn btn-primary" style="color:white">Make Picks</a>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <table st-table="round.picks" st-safe-src="rowCollection" class="table table-striped">
-                            <tr>
-                                <th></th>
-                                <th>{{round.name}}</th>
-                                <th></th>
-                                <th>Picked</th>
-                                <th>Points</th>
-                            </tr>
-                            <tr ng-repeat="match in round.matches">
-                                <th>
-                                    <i class="fa fa-check" ng-show="match.picks[0].is_winner" style="color:green"></i>
-                                    <i class="fa fa-times" ng-show="match.picks[0].is_winner == false" style="color:red"></i>
-                                </th>
-                                <td>{{match.team1_name}} vs. {{match.team2_name}}</td>
-                                <td></td>
-                                <td>{{match.picks[0].picked_team_name}}</td>
-                                <td>{{match.picks[0].pick_points}}</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Total:</td>
-                                <td>{{round.round_points_sum}}</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Winnings:</td>
-                                <td>{{round.round_winnings | currency}}</td>
-                            </tr>
-                        </table>
+                        <div ng-if="detailsScope.detailsObject.is_logged_in_users_team || round.is_locked">
+                            <table st-table="round.picks" st-safe-src="rowCollection" class="table table-striped">
+                                <tr>
+                                    <th></th>
+                                    <th>{{round.name}}</th>
+                                    <th></th>
+                                    <th>Picked</th>
+                                    <th>Confidence Value</th>
+                                    <th>Score</th>
+                                </tr>
+                                <tr ng-repeat="match in round.matches | orderBy:'-picks[0].confidence_value'">
+                                    <th>
+                                        <i class="fa fa-check" ng-show="match.picks[0].is_winner" style="color:green"></i>
+                                        <i class="fa fa-times" ng-show="match.picks[0].is_winner == false" style="color:red"></i>
+                                    </th>
+                                    <td>{{match.team1_name}} vs. {{match.team2_name}}</td>
+                                    <td></td>
+                                    <td>{{match.picks[0].picked_team_name}}</td>
+                                    <td>{{match.picks[0].confidence_value}}</td>
+                                    <td>{{match.picks[0].pick_points}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Total:</td>
+                                    <td>{{round.round_points_sum}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Winnings:</td>
+                                    <td>{{round.round_winnings | currency}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div ng-if="!detailsScope.detailsObject.is_logged_in_users_team && !round.is_locked">
+                            <span>You can not see the picks of this team for this round, until the round is locked.</span>
+                        </div>
                     </div>
                 </v-pane-content>
             </v-pane>

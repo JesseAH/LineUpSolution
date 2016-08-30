@@ -106,44 +106,74 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', '
                 return new Date(parseInt(x.substr(6)));
             };
         })
+            .filter("dateBeforeNow", function () {
+                return function (x) {
+                    if (x == null)
+                        return null;
+
+                    var dateToCompare = new Date(parseInt(x.substr(6)))
+                    var today = new Date();
+
+                    if (dateToCompare < today)
+                        return true;
+                    else
+                        return false;
+
+                };
+            })
+            .filter("dateAfterNow", function () {
+                return function (x) {
+                    if (x == null)
+                        return null;
+
+                    var dateToCompare = new Date(parseInt(x.substr(6)))
+                    var today = new Date();
+
+                    if (dateToCompare > today)
+                        return true;
+                    else
+                        return false;
+
+                };
+            })
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 
-        $routeProvider
+            $routeProvider
 
-        //user dashboard routes
-        .when('/user/dashboard', {
-            templateUrl: 'Angular/Partials/dashboard.html'
-        })
+            //user dashboard routes
+            .when('/user/dashboard', {
+                templateUrl: 'Angular/Partials/dashboard.html'
+            })
 
-        //League routes
-        .when('/user/league/details/:id', {
-            templateUrl: 'Angular/Partials/League/leagueDetails.html'
-        })
-        .when('/user/league/select', {
-            templateUrl: 'Angular/Partials/League/leagueSelect.html'
-        })
-        .when('/user/league/join/:id', {
-            templateUrl: 'Angular/Partials/League/leagueJoin.html'
-        })
-        .when('/user/league/create', {
-            templateUrl: 'Angular/Partials/League/leagueCreate.html'
-        })
+            //League routes
+            .when('/user/league/details/:id', {
+                templateUrl: 'Angular/Partials/League/leagueDetails.html'
+            })
+            .when('/user/league/select', {
+                templateUrl: 'Angular/Partials/League/leagueSelect.html'
+            })
+            .when('/user/league/join/:id', {
+                templateUrl: 'Angular/Partials/League/leagueJoin.html'
+            })
+            .when('/user/league/create', {
+                templateUrl: 'Angular/Partials/League/leagueCreate.html'
+            })
 
-        //League_Team routes
-        .when('/user/team/list', {
-            templateUrl: 'Angular/Partials/League_Team/league_TeamList.html'
-        })
-        .when('/user/team/details/:id', {
-            templateUrl: 'Angular/Partials/League_Team/league_TeamDetails.html'
-        })
+            //League_Team routes
+            .when('/user/team/list', {
+                templateUrl: 'Angular/Partials/League_Team/league_TeamList.html'
+            })
+            .when('/user/team/details/:id', {
+                templateUrl: 'Angular/Partials/League_Team/league_TeamDetails.html'
+            })
 
-        //Round routes
-        .when('/user/round/details/:leagueTeamID/:roundID', {
-            templateUrl: 'Angular/Partials/round/roundDetails.html'
-        })
+            //Round routes
+            .when('/user/round/details/:leagueTeamID/:roundID', {
+                templateUrl: 'Angular/Partials/round/roundDetails.html'
+            })
 
-        //Default route is dashboard
-        .otherwise({ redirectTo: '/user/dashboard' });
+            //Default route is dashboard
+            .otherwise({ redirectTo: '/user/dashboard' });
 
-        $locationProvider.html5Mode(true);
-    }]);
+            $locationProvider.html5Mode(true);
+        }]);

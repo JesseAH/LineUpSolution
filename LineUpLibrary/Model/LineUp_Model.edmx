@@ -16,6 +16,7 @@
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
           <Property Name="number_of_rounds" Type="int" Nullable="false" />
+          <Property Name="lock_date" Type="datetime" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -216,10 +217,11 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_summary' does not have a
           <Property Name="league_team_id" Type="int" />
           <Property Name="correct_pick_count" Type="int" />
           <Property Name="round_sum" Type="int" />
+          <Property Name="open_points" Type="int" />
           <Property Name="is_winner" Type="int" Nullable="false" />
-          <Property Name="round_pot_value" Type="numeric" Precision="22" Scale="6" />
+          <Property Name="round_pot_value" Type="money" />
           <Property Name="winning_score_count" Type="int" />
-          <Property Name="winnings_sum" Type="numeric" Precision="33" Scale="17" />
+          <Property Name="winnings_sum" Type="money" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -453,6 +455,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
     [round_summary].[league_team_id] AS [league_team_id], 
     [round_summary].[correct_pick_count] AS [correct_pick_count], 
     [round_summary].[round_sum] AS [round_sum], 
+    [round_summary].[open_points] AS [open_points], 
     [round_summary].[is_winner] AS [is_winner], 
     [round_summary].[round_pot_value] AS [round_pot_value], 
     [round_summary].[winning_score_count] AS [winning_score_count], 
@@ -611,6 +614,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <NavigationProperty Name="leagues" Relationship="Model.FK_league_game_type" FromRole="game_type" ToRole="league" />
           <NavigationProperty Name="rounds" Relationship="Model.FK_round_game_type" FromRole="game_type" ToRole="round" />
           <Property Name="number_of_rounds" Type="Int32" Nullable="false" />
+          <Property Name="lock_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -944,9 +948,10 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="correct_pick_count" Type="Int32" />
           <Property Name="round_sum" Type="Int32" />
           <Property Name="is_winner" Type="Int32" Nullable="false" />
-          <Property Name="round_pot_value" Type="Decimal" Precision="22" Scale="6" />
+          <Property Name="round_pot_value" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="winning_score_count" Type="Int32" />
-          <Property Name="winnings_sum" Type="Decimal" Precision="33" Scale="17" />
+          <Property Name="winnings_sum" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="open_points" Type="Int32" />
         </EntityType>
         <EntityType Name="league_summary">
           <Key>
@@ -988,6 +993,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="game_type">
             <EntityTypeMapping TypeName="Model.game_type">
               <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="number_of_rounds" ColumnName="number_of_rounds" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
@@ -1159,6 +1165,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="round_summary">
             <EntityTypeMapping TypeName="Model.round_summary">
               <MappingFragment StoreEntitySet="round_summary">
+                <ScalarProperty Name="open_points" ColumnName="open_points" />
                 <ScalarProperty Name="winnings_sum" ColumnName="winnings_sum" />
                 <ScalarProperty Name="winning_score_count" ColumnName="winning_score_count" />
                 <ScalarProperty Name="round_pot_value" ColumnName="round_pot_value" />

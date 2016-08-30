@@ -2,6 +2,11 @@
 
 app.controller("roundDetailsCtrl", function ($scope, $rootScope, $routeParams, $http, DefaultFactory) {
 
+    toastr.options = {
+        "closeButton": true,
+        "showDuration": "300"
+    };
+
     //#region Variables
 
     $scope.detailsScope = {
@@ -11,6 +16,7 @@ app.controller("roundDetailsCtrl", function ($scope, $rootScope, $routeParams, $
         leagueTeamID: $routeParams.leagueTeamID
     };
 
+    $scope.saving = false;
     $scope.valid = true;
     $scope.picks = [];
 
@@ -108,12 +114,16 @@ app.controller("roundDetailsCtrl", function ($scope, $rootScope, $routeParams, $
 
     $scope.savePicks = function()
     {
-
+        $scope.saving = true;
         DefaultFactory.Save($scope.picks, "Pick")
         .then(function (result) {
 
-            if(result.data == true)
+            if (result.data == true)
                 window.location.href = '../user/team/details/' + $scope.detailsScope.leagueTeamID;
+            else
+                toastr.error('You do not have permission to make picks for this team!');
+
+            $scope.saving = false;
         });
 
     }
