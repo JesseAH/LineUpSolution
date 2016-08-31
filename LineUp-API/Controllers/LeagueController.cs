@@ -30,11 +30,11 @@ namespace LineUp_API.Controllers
         /// <returns></returns>
         // GET api/League
         [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool getTeams = true, bool getTeamsCalculations = true, bool getRounds = true)
         {
             try
             {
-                return this.Ok(myDAL.GetList());
+                return this.Ok(myDAL.GetList(getTeams, getTeamsCalculations, getRounds));
             }
             catch (Exception ex)
             {
@@ -70,11 +70,11 @@ namespace LineUp_API.Controllers
         [HttpGet]
         [System.Web.Http.Route("User")]
         [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult UserID()
+        public IHttpActionResult UserID(bool getTeams = true, bool getTeamsCalculations = true, bool getRounds = true)
         {
             try
             {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), false, false, false));
+                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), getTeams, getTeamsCalculations, getRounds));
             }
             catch (Exception ex)
             {
@@ -82,45 +82,45 @@ namespace LineUp_API.Controllers
             }
         }
 
-        /// <summary>
-        /// User's List of Leagues + Teams
-        /// </summary>
-        /// <remarks>User's List of Leagues + Teams</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [System.Web.Http.Route("User/Teams")]
-        [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult UserTeams()
-        {
-            try
-            {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, false));
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        ///// <summary>
+        ///// User's List of Leagues + Teams
+        ///// </summary>
+        ///// <remarks>User's List of Leagues + Teams</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[System.Web.Http.Route("User/Teams")]
+        //[ResponseType(typeof(IList<LeagueDTO>))]
+        //public IHttpActionResult UserTeams()
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, false));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// User's List of Leagues + Teams + Calculations
-        /// </summary>
-        /// <remarks>User's List of Leagues + Teams + Calculations</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [System.Web.Http.Route("User/Teams/Calculations")]
-        [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult UserTeamsCalculations()
-        {
-            try
-            {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, true));
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        ///// <summary>
+        ///// User's List of Leagues + Teams + Calculations
+        ///// </summary>
+        ///// <remarks>User's List of Leagues + Teams + Calculations</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[System.Web.Http.Route("User/Teams/Calculations")]
+        //[ResponseType(typeof(IList<LeagueDTO>))]
+        //public IHttpActionResult UserTeamsCalculations()
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), true, true, true));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
         /// <summary>
         /// List of Leagues + Teams
@@ -130,11 +130,11 @@ namespace LineUp_API.Controllers
         [HttpGet]
         [System.Web.Http.Route("Teams")]
         [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult Teams()
+        public IHttpActionResult Teams(bool getTeamsCalculations = true, bool getRounds = true)
         {
             try
             {
-                return this.Ok(myDAL.GetList(true, false, false));
+                return this.Ok(myDAL.GetList(true, getTeamsCalculations, getRounds));
             }
             catch (Exception ex)
             {
@@ -142,25 +142,25 @@ namespace LineUp_API.Controllers
             }
         }
 
-        /// <summary>
-        /// List of Leagues + Teams + Calculations
-        /// </summary>
-        /// <remarks>List of Leagues + Teams + Calculations</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [System.Web.Http.Route("Teams/Calculations")]
-        [ResponseType(typeof(IList<LeagueDTO>))]
-        public IHttpActionResult TeamCalculations()
-        {
-            try
-            {
-                return this.Ok(myDAL.GetList(true, true, false));
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        ///// <summary>
+        ///// List of Leagues + Teams + Calculations
+        ///// </summary>
+        ///// <remarks>List of Leagues + Teams + Calculations</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[System.Web.Http.Route("Teams/Calculations")]
+        //[ResponseType(typeof(IList<LeagueDTO>))]
+        //public IHttpActionResult TeamCalculations()
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.GetList(true, true, false));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
         /// <summary>
         /// Create a new league

@@ -15,7 +15,7 @@ namespace LineUp_API.Controllers
     /// <summary>
     /// The Teams that make up a league.
     /// </summary>
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/League_Team")]
     public class League_TeamController : ApiController
     {
@@ -32,11 +32,11 @@ namespace LineUp_API.Controllers
         [HttpGet]
         [Route("{id}")]
         [ResponseType(typeof(League_TeamDTO))]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(int id, bool getCalculations = true, bool getRounds = true)
         {
             try
             {
-                return this.Ok(myDAL.Get(id, false, false));
+                return this.Ok(myDAL.Get(id, getCalculations, getRounds));
             }
             catch (Exception ex)
             {
@@ -44,45 +44,45 @@ namespace LineUp_API.Controllers
             }
         }
 
-        /// <summary>
-        /// Get League Team + Calculations
-        /// </summary>
-        /// <remarks>Get League Team + Calculations</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("{id}/Calculations")]
-        [ResponseType(typeof(League_TeamDTO))]
-        public IHttpActionResult Calculations(int id)
-        {
-            try
-            {
-                return this.Ok(myDAL.Get(id, true, false));
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        ///// <summary>
+        ///// Get League Team + Calculations
+        ///// </summary>
+        ///// <remarks>Get League Team + Calculations</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[Route("{id}/Calculations")]
+        //[ResponseType(typeof(League_TeamDTO))]
+        //public IHttpActionResult Calculations(int id)
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.Get(id, true, false));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// Get League Team + Calculations + Rounds
-        /// </summary>
-        /// <remarks>Get League Team + Calculations + Rounds</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("{id}/Calculations/Rounds")]
-        [ResponseType(typeof(League_TeamDTO))]
-        public IHttpActionResult Rounds(int id)
-        {
-            try
-            {
-                return this.Ok(myDAL.Get(id, true, true));
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        ///// <summary>
+        ///// Get League Team + Calculations + Rounds
+        ///// </summary>
+        ///// <remarks>Get League Team + Calculations + Rounds</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[Route("{id}/Calculations/Rounds")]
+        //[ResponseType(typeof(League_TeamDTO))]
+        //public IHttpActionResult Rounds(int id)
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.Get(id, true, true));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
         /// <summary>
         /// Create a new team
@@ -112,11 +112,11 @@ namespace LineUp_API.Controllers
         [HttpGet]
         [Route("User")]
         [ResponseType(typeof(IList<League_TeamDTO>))]
-        public IHttpActionResult UserID()
+        public IHttpActionResult UserID(bool getCalculations = true, bool getRounds = true)
         {
             try
             {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), false, false));
+                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name), getCalculations, getRounds));
 
             }
             catch (Exception ex)
@@ -126,47 +126,47 @@ namespace LineUp_API.Controllers
 
         }
 
-        /// <summary>
-        /// User's List of League Teams + Calculations
-        /// </summary>
-        /// <remarks>User's List of League Teams + Calculations</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("User/Calculations")]
-        [ResponseType(typeof(IList<League_TeamDTO>))]
-        public IHttpActionResult UserCalculations()
-        {
-            try
-            {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,false));
+        ///// <summary>
+        ///// User's List of League Teams + Calculations
+        ///// </summary>
+        ///// <remarks>User's List of League Teams + Calculations</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[Route("User/Calculations")]
+        //[ResponseType(typeof(IList<League_TeamDTO>))]
+        //public IHttpActionResult UserCalculations()
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,false));
 
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
-        /// <summary>
-        /// User's List of League Teams + Calculations + Rounds
-        /// </summary>
-        /// <remarks>User's List of League Teams + Calculations + Rounds</remarks>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("User/Calculations/Rounds")]
-        [ResponseType(typeof(IList<League_TeamDTO>))]
-        public IHttpActionResult UserRounds()
-        {
-            try
-            {
-                return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,true));
+        ///// <summary>
+        ///// User's List of League Teams + Calculations + Rounds
+        ///// </summary>
+        ///// <remarks>User's List of League Teams + Calculations + Rounds</remarks>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[Route("User/Calculations/Rounds")]
+        //[ResponseType(typeof(IList<League_TeamDTO>))]
+        //public IHttpActionResult UserRounds()
+        //{
+        //    try
+        //    {
+        //        return this.Ok(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,true));
 
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex.Message.ToString());
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return this.BadRequest(ex.Message.ToString());
+        //    }
+        //}
 
         /// <summary>
         /// Edit an existing team
