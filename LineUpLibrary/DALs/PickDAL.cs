@@ -59,7 +59,10 @@ namespace LineUpLibrary.DALs
 
         public IList<objects_with_open_rounds> GetTeamsWhoNeedToMakePicks(int userID)
         {
-            IList<objects_with_open_rounds> list = db.objects_with_open_rounds.Where(o => o.user_id == userID).ToList();
+            IList<objects_with_open_rounds> list = db.objects_with_open_rounds
+                .Where(o => o.user_id == userID)
+                .Where(o => o.start_date <= DateTime.UtcNow && o.end_date > DateTime.UtcNow)
+                .ToList();
             return list;
         }
 

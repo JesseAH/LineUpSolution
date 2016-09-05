@@ -12,8 +12,10 @@
         </div>
 
         <div class="row">
-
-            <div class="container-fluid">
+            <div class="container-fluid" ng-show="!detailsScope.detailsObject.matches.length">
+                Matches have not yet been added to this round. Check back later.
+            </div>
+            <div class="container-fluid" ng-show="detailsScope.detailsObject.matches.length">
                 <div class="row" ng-repeat="match in detailsScope.detailsObject.matches">
                     <div class="row pick-header col-xs-12 col-sm-12 col-md-9" ng-show="match.description"><b>{{match.description}}</b> </div>
                     <div class="row pick-header col-xs-12 col-sm-12 col-md-9" ng-hide="match.description"><b>{{match.team1_name}} vs. {{match.team2_name}}</b> </div>

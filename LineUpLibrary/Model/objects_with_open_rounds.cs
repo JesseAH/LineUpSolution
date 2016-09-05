@@ -24,5 +24,7 @@ namespace LineUpLibrary.Model
         public Nullable<System.DateTime> end_date { get; set; }
         public Nullable<System.DateTime> lock_date { get; set; }
         public string round_short_name { get; set; }
+        public long id { get; set; }
+        public Nullable<System.DateTime> start_date { get; set; }
     }
 }

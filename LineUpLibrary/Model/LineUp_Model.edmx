@@ -171,7 +171,9 @@ warning 6002: The table/view 'LineUp-Database.dbo.objects_with_open_rounds' does
           <Key>
             <PropertyRef Name="round_id" />
             <PropertyRef Name="round_name" />
+            <PropertyRef Name="id" />
           </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
           <Property Name="user_id" Type="int" />
           <Property Name="league_id" Type="int" />
           <Property Name="league_name" Type="varchar" MaxLength="50" />
@@ -180,6 +182,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.objects_with_open_rounds' does
           <Property Name="round_id" Type="int" Nullable="false" />
           <Property Name="round_name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="round_short_name" Type="varchar" MaxLength="10" />
+          <Property Name="start_date" Type="datetime" />
           <Property Name="end_date" Type="datetime" />
           <Property Name="lock_date" Type="datetime" />
         </EntityType>
@@ -421,6 +424,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           </EntitySet>
           <EntitySet Name="objects_with_open_rounds" EntityType="Self.objects_with_open_rounds" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [objects_with_open_rounds].[id] AS [id], 
     [objects_with_open_rounds].[user_id] AS [user_id], 
     [objects_with_open_rounds].[league_id] AS [league_id], 
     [objects_with_open_rounds].[league_name] AS [league_name], 
@@ -429,6 +433,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
     [objects_with_open_rounds].[round_id] AS [round_id], 
     [objects_with_open_rounds].[round_name] AS [round_name], 
     [objects_with_open_rounds].[round_short_name] AS [round_short_name], 
+    [objects_with_open_rounds].[start_date] AS [start_date], 
     [objects_with_open_rounds].[end_date] AS [end_date], 
     [objects_with_open_rounds].[lock_date] AS [lock_date]
     FROM [dbo].[objects_with_open_rounds] AS [objects_with_open_rounds]</DefiningQuery>
@@ -920,6 +925,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Key>
             <PropertyRef Name="round_id" />
             <PropertyRef Name="round_name" />
+            <PropertyRef Name="id" />
           </Key>
           <Property Name="user_id" Type="Int32" />
           <Property Name="league_id" Type="Int32" />
@@ -931,6 +937,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="end_date" Type="DateTime" Precision="3" />
           <Property Name="lock_date" Type="DateTime" Precision="3" />
           <Property Name="round_short_name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="round_summary">
           <Key>
@@ -1149,6 +1157,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="objects_with_open_rounds">
             <EntityTypeMapping TypeName="Model.objects_with_open_rounds">
               <MappingFragment StoreEntitySet="objects_with_open_rounds">
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="round_short_name" ColumnName="round_short_name" />
                 <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="end_date" ColumnName="end_date" />
