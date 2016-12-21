@@ -7,9 +7,12 @@
                 <div>
                     <div class="single-table table-one">
                         <div class="table-header">
-                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading || detailsScope.loadingRounds"></i>
                             <h2>{{detailsScope.header}}</h2>
-                            <p class="plan-price" ng-hide="detailsScope.loading"><span class="dollar-sign"></span><span class="price">{{detailsScope.detailsObject.league_ranking}}</span><span class="month">of {{detailsScope.detailsObject.leagues_league_team_count}}</span></p>
+                            <p class="plan-price" ng-hide="detailsScope.loading">
+                                <!--<span class="dollar-sign"></span><span class="price">{{detailsScope.detailsObject.league_ranking}}</span>
+                                <span class="month">of {{detailsScope.detailsObject.leagues_league_team_count}}</span>-->
+                            </p>
                         </div>
                         <div class="container-fluid">
                             <div class="row col-md-6">
@@ -36,7 +39,11 @@
 
     </div>
 
-    <div class="row" ng-hide="detailsScope.loading">
+    <div class="row" ng-show="detailsScope.loadingRounds">
+        <h3>Loading all rounds and picks...</h3>
+    </div>
+
+    <div class="row" ng-hide="detailsScope.loadingRounds">
 
         <v-accordion class="vAccordion--default" multiple>
 
@@ -73,7 +80,8 @@
                                         <i class="fa fa-check" ng-show="match.picks[0].is_winner" style="color:green"></i>
                                         <i class="fa fa-times" ng-show="match.picks[0].is_winner == false" style="color:red"></i>
                                     </th>
-                                    <td>{{match.team1_name}} vs. {{match.team2_name}}</td>
+                                    <td ng-show="match.description">{{match.description}}</td>
+                                    <td ng-hide="match.description">{{match.team1_name}} vs. {{match.team2_name}}</td>
                                     <td></td>
                                     <td>{{match.picks[0].picked_team_name}}</td>
                                     <td>{{match.picks[0].confidence_value}}</td>

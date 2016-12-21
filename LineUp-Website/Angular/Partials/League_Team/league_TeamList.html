@@ -27,7 +27,7 @@
                 <tr>
                     <th st-sort="name">League</th>
                     <th st-sort="description">Team</th>
-                    <th st-sort="is_completed">Ranking</th>
+                    <th st-sort="is_completed">Game</th>
                     <th st-sort="price">Completed?</th>
                 </tr>
             </thead>
@@ -35,7 +35,7 @@
                 <tr ng-repeat="row in displayedCollection">
                     <td><a href="/user/league/details/{{row.league_id}}">{{row.league_name}}</a> </td>
                     <td><a href="/user/team/details/{{row.id}}">{{row.name}}</a></td>
-                    <td>{{row.league_ranking}} of {{row.leagues_league_team_count}}</td>
+                    <td>{{row.game_name}}</td>
                     <td>{{row.league_is_completed}}</td>
                 </tr>
             </tbody>

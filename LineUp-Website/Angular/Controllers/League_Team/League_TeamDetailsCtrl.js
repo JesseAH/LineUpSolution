@@ -8,7 +8,8 @@ app.controller("league_teamDetailsCtrl", function ($scope, $rootScope, $http, $r
     $scope.detailsScope = {
         detailsObject: null,
         header: "Team: ",
-        loading: true
+        loading: true,
+        loadingRounds: true
     };
     $scope.leagueTeamID = $routeParams.id;
     $scope.today = new Date();
@@ -19,6 +20,7 @@ app.controller("league_teamDetailsCtrl", function ($scope, $rootScope, $http, $r
 
     $http.get('../Round/Team/' + $routeParams.id).then(function (results) {
         $scope.displayedCollection = results.data;
+        $scope.detailsScope.loadingRounds = false;
     });
 
     DefaultFactory.Details($routeParams.id, "League_Team")

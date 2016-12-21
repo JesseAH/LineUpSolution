@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ApplicationInsightsResourceId>/subscriptions/2495d548-0711-4769-90f2-687f130b515a/resourcegroups/LineUp-ResourceGroup/providers/microsoft.insights/components/LineUp-Website</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Braintree, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31b586f34d3e96c7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Braintree.3.3.0\lib\net452\Braintree.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.1.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.1.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.1.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.1.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.1.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +85,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -176,6 +210,7 @@
   <ItemGroup>
     <Compile Include="APIs\LeagueController.cs" />
     <Compile Include="APIs\League_TeamController.cs" />
+    <Compile Include="APIs\GameController.cs" />
     <Compile Include="APIs\PickController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -191,6 +226,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BraintreeConfig.cs" />
+    <Compile Include="Models\IBraintreeConfig.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IEmailSender.cs" />
     <Compile Include="Models\ISmsSender.cs" />
@@ -202,9 +239,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\Controllers\Game\GameDetailsCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueCreateCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueDetailsCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueJoinCtrl.js" />
+    <Content Include="Angular\Controllers\League\LeagueManageCtrl.js" />
     <Content Include="Angular\Controllers\League\leagueSelectCtrl.js" />
     <Content Include="Angular\Controllers\League_Team\League_TeamDetailsCtrl.js" />
     <Content Include="Angular\Controllers\League_Team\League_TeamListCtrl.js" />
@@ -212,11 +251,14 @@
     <Content Include="Angular\Controllers\Round\RoundDetailsCtrl.js" />
     <Content Include="Angular\Controllers\Round\RoundListCtrl.js" />
     <Content Include="Angular\Controllers\SideBar\Make_PicksCtrl.js" />
+    <Content Include="Angular\Controllers\test.js" />
     <Content Include="Angular\Factories\DefaultFactory.js" />
     <Content Include="Angular\Partials\dashboard.html" />
+    <Content Include="Angular\Partials\Game\gameDetails.html" />
     <Content Include="Angular\Partials\League\leagueCreate.html" />
     <Content Include="Angular\Partials\League\leagueDetails.html" />
     <Content Include="Angular\Partials\League\LeagueJoin.html" />
+    <Content Include="Angular\Partials\League\leagueManage.html" />
     <Content Include="Angular\Partials\League\leagueSelect.html" />
     <Content Include="Angular\Partials\League_Team\league_TeamDetails.html" />
     <Content Include="Angular\Partials\League_Team\league_TeamList.html" />
@@ -243,6 +285,8 @@
     <Content Include="Content\v-accordion.min.css" />
     <Content Include="Content\v-tabs.css" />
     <Content Include="Content\v-tabs.min.css" />
+    <Content Include="Scripts\ai.0.22.19-build00125.js" />
+    <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-input-stars.js" />
@@ -347,16 +391,21 @@
     <Content Include="Template\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Template\Icons8 Circles\Circled 1 Disabled.png" />
     <Content Include="Template\Icons8 Circles\Circled 1 Filled.png" />
     <Content Include="Template\Icons8 Circles\Circled 1.png" />
     <Content Include="Template\Icons8 Circles\Circled 2  Filled.png" />
     <Content Include="Template\Icons8 Circles\Circled 2 .png" />
+    <Content Include="Template\Icons8 Circles\Circled 2 Disabled.png" />
     <Content Include="Template\Icons8 Circles\Circled 3 .png" />
     <Content Include="Template\Icons8 Circles\Circled 3 C.png" />
+    <Content Include="Template\Icons8 Circles\Circled 3 Disabled.png" />
+    <Content Include="Template\Icons8 Circles\Circled 4 Disabled.png" />
     <Content Include="Template\Icons8 Circles\Circled 4 Filled.png" />
     <Content Include="Template\Icons8 Circles\Circled 4.png" />
     <Content Include="Template\Icons8 Circles\Circled 5  Filled.png" />
     <Content Include="Template\Icons8 Circles\Circled 5 .png" />
+    <Content Include="Template\Icons8 Circles\Circled 5 Disabled.png" />
     <Content Include="Template\images\404-bg.png" />
     <Content Include="Template\images\404.png" />
     <Content Include="Template\images\aboutus\1.jpg" />
@@ -519,11 +568,32 @@
     <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
     <Content Include="Content\bootstrap-datepicker.min.css.map" />
     <Content Include="Content\bootstrap-datepicker.css.map" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\PublishProfiles\LineUp-Website - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %2810%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %2811%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %2812%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %2813%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %285%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %286%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %287%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %288%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy %289%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website - Web Deploy.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %285%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %286%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -573,9 +643,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\smart-table.min.js.map" />
     <Content Include="Views\Home\MobileHelp.cshtml" />
+    <Content Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Angular\Directives\" />
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Template\images\ico\" />
     <Folder Include="Views\League\" />
@@ -596,6 +668,9 @@
       <Name>LineUpLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -614,7 +689,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59844</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56508/</IISUrl>
+          <IISUrl>http://localhost:56999/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -40,7 +40,9 @@ namespace LineUpApp.Controllers
         // GET: League/Create
         public ActionResult Create()
         {
-            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name");
+            ViewBag.admin_user_id = new SelectList(db.users, "id", "_user_descriptor").OrderBy(l => l.Text);
+            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name").OrderBy(l => l.Text);
+
             return View();
         }
 
@@ -49,7 +51,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
+        public ActionResult Create([Bind(Include = "id,admin_user_id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +61,9 @@ namespace LineUpApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id);
+            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id).OrderBy(l => l.Text);
+            ViewBag.admin_user_id = new SelectList(db.users, "id", "_user_descriptor", league.admin_user_id).OrderBy(l => l.Text);
+
             return View(league);
         }
 
@@ -75,7 +79,8 @@ namespace LineUpApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id);
+            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id).OrderBy(l => l.Text);
+            ViewBag.admin_user_id = new SelectList(db.users, "id", "_user_descriptor", league.admin_user_id).OrderBy(l => l.Text);
             return View(league);
         }
 
@@ -84,7 +89,7 @@ namespace LineUpApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
+        public ActionResult Edit([Bind(Include = "id,admin_user_id,game_type_id,name,max_players,lock_date,price,round_winnings_percentage,is_private,password,is_completed,description,created_on,modified_on")] league league)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +98,8 @@ namespace LineUpApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id);
+            ViewBag.game_type_id = new SelectList(db.game_type, "id", "name", league.game_type_id).OrderBy(l => l.Text);
+            ViewBag.admin_user_id = new SelectList(db.users, "id", "_user_descriptor", league.admin_user_id).OrderBy(l => l.Text);
             return View(league);
         }
 

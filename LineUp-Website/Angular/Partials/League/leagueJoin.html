@@ -50,8 +50,54 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-3">
+                    League Buy-In
+                </div>
+                <div class="col-md-9">
+                    <span>$10.00</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-3">
+                    LineUp Fee
+                </div>
+                <div class="col-md-9">
+                    <span>$2.00</span>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-3">
+                    Total
+                </div>
+                <div class="col-md-9">
+                    <span>$12.00</span>
+                </div>
+            </div>
+        </div>
 
+        <br />
+        <br />
+        <!--<button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>-->
 
-        <button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>
+        <div class="well" style="background-color:white">
+
+            <form id="checkout" method="post" action="/League/JoinAndPay">
+                <div id="payment-form"></div>
+                <br />
+                <input class="btn btn-primary" type="submit" value="Join and Pay $12" ng-disabled="disableJoin()">
+            </form>
+
+        </div>
+
     </div>
+
 </div>
+
+

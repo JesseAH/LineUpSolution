@@ -244,6 +244,7 @@ namespace LineUpLibrary.DALs
                 .Include(m => m.matches.Select(t => t.match_type))
                 .Include(m => m.matches.Select(t => t.picks))
                 .Include(m => m.matches.Select(t => t.picks.Select(p => p.team)))
+                .AsNoTracking()
                 .OrderByDescending(m => m.round_number)
                 .ToList();
 

@@ -19,11 +19,14 @@
                                 <ul>
                                     <li>League Pot: {{detailsScope.detailsObject.total_pot | currency }}</li>
                                     <li>Total Teams: {{detailsScope.detailsObject.league_teams.length }} </li>
+                                    <li ng-if="detailsScope.detailsObject.is_manager">
+                                        <b><a href="/user/league/manage/{{detailsScope.detailsObject.id}}">Manage League Settings (New!)</a></b>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="row col-md-6">
                                 <ul>
-                                    <li>Round Pot: {{detailsScope.detailsObject.round_winnings_percentage}}% </li>                                
+                                    <li>Round Pot: {{detailsScope.detailsObject.round_winnings_percentage}}% </li>
                                     <li>Total Rounds: {{detailsScope.detailsObject.number_of_rounds}} </li>
                                 </ul>
                             </div>
@@ -44,32 +47,32 @@
                 <tr>
                     <th st-sort="name">Team Name</th>
                     <th ng-repeat="round in detailsScope.detailsObject.league_teams[0].rounds| limitTo:-3">
-                        {{round.short_name}} 
+                        {{round.short_name}}
                         <span ng-show="{{round.start_date | dateBeforeNow }} && {{round.end_date | dateAfterNow }}">
                             <script>
                                 $(document).ready(function () {
                                     $('[data-toggle="tooltip"]').tooltip();
                                 });
                             </script>
-                            <span data-toggle="tooltip" title="Current Week. The possible score if the team wins all remaning open matches is shown as (x)." >*</span>
+                            <span data-toggle="tooltip" title="Current Week. The possible score if the team wins all remaning open matches is shown as (x).">*</span>
 
                         </span>
-                    </th>                    
+                    </th>
                     <th st-sort="league_team_points_sum">Correct Picks</th>
                     <th st-sort="league_team_points_sum">Total Points</th>
-                    <th st-sort="total_winnings">Winings</th>
+                    <th st-sort="total_winnings">Winnings</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="team in detailsScope.detailsObject.league_teams">
-                    <td>{{team.league_ranking}}. <b><a href="/user/team/details/{{team.id}}">{{team.name}}</a></b></td>  
-                         <td st-sort="round_points_sum" ng-repeat="round in team.rounds | limitTo:-3">
-                        {{round.round_points_sum}} <span ng-show="round.round_open_sum">({{round.round_open_sum + round.round_points_sum}})</span> 
-                    </td>  
-                    <td style="width:50px;">{{team.league_points_per_pick}}</td>                     
+                    <td>{{team.league_ranking}}. <b><a href="/user/team/details/{{team.id}}">{{team.name}}</a></b></td>
+                    <td st-sort="round_points_sum" ng-repeat="round in team.rounds | limitTo:-3">
+                        {{round.round_points_sum}} <span ng-show="round.round_open_sum">({{round.round_open_sum + round.round_points_sum}})</span>
+                    </td>
+                    <td style="width:50px;">{{team.league_points_per_pick}}</td>
                     <td style="width:50px;">{{team.league_team_points_sum}}</td>
                     <td style="width:75px;">{{team.total_winnings | currency}}</td>
-               
+
                 </tr>
             </tbody>
         </table>

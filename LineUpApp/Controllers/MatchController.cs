@@ -51,11 +51,11 @@ namespace LineUpApp.Controllers
         // GET: Match/Create
         public ActionResult Create()
         {
-            ViewBag.round_id = new SelectList(db.rounds, "id", "name");
-            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name");
-            ViewBag.team1_id = new SelectList(db.teams, "id", "name");
-            ViewBag.team2_id = new SelectList(db.teams, "id", "name");
-            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name");
+            ViewBag.round_id = new SelectList(db.rounds, "id", "name").OrderBy(l => l.Text);
+            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name").OrderBy(l => l.Text);
+            ViewBag.team1_id = new SelectList(db.teams, "id", "name").OrderBy(l => l.Text);
+            ViewBag.team2_id = new SelectList(db.teams, "id", "name").OrderBy(l => l.Text);
+            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name").OrderBy(l => l.Text);
             return View();
         }
 
@@ -75,11 +75,11 @@ namespace LineUpApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id);
-            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id);
-            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id);
-            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id);
-            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id);
+            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id).OrderBy(l => l.Text);
+            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id).OrderBy(l => l.Text);
+            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id).OrderBy(l => l.Text);
+            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id).OrderBy(l => l.Text);
+            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id).OrderBy(l => l.Text);
             return View(match);
         }
 
@@ -95,11 +95,11 @@ namespace LineUpApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id);
-            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id);
-            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id);
-            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id);
-            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id);
+            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id).OrderBy(l => l.Text);
+            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id).OrderBy(l => l.Text);
+            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id).OrderBy(l => l.Text);
+            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id).OrderBy(l => l.Text);
+            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id).OrderBy(l => l.Text);
             return View(match);
         }
 
@@ -117,11 +117,11 @@ namespace LineUpApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id);
-            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id);
-            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id);
-            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id);
-            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id);
+            ViewBag.round_id = new SelectList(db.rounds, "id", "name", match.round_id).OrderBy(l => l.Text);
+            ViewBag.match_type_id = new SelectList(db.match_type, "id", "name", match.match_type_id).OrderBy(l => l.Text);
+            ViewBag.team1_id = new SelectList(db.teams, "id", "name", match.team1_id).OrderBy(l => l.Text);
+            ViewBag.team2_id = new SelectList(db.teams, "id", "name", match.team2_id).OrderBy(l => l.Text);
+            ViewBag.winning_team_id = new SelectList(db.teams, "id", "name", match.winning_team_id).OrderBy(l => l.Text);
             return View(match);
         }
 

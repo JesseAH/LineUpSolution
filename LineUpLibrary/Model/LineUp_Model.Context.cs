@@ -40,5 +40,8 @@ namespace LineUpLibrary.Model
         public virtual DbSet<objects_with_open_rounds> objects_with_open_rounds { get; set; }
         public virtual DbSet<round_summary> round_summary { get; set; }
         public virtual DbSet<league_summary> league_summary { get; set; }
+        public virtual DbSet<Error> Errors { get; set; }
+        public virtual DbSet<league_calculations_team_count> league_calculations_team_count { get; set; }
+        public virtual DbSet<league_rank> league_rank { get; set; }
     }
 }

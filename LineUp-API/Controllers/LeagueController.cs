@@ -22,6 +22,14 @@ namespace LineUp_API.Controllers
     {
         LeagueDAL myDAL = new LeagueDAL();
         UserDAL myUserDAL = new UserDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public LeagueController()
+        {
+            err.controller = "League";
+            err.source = "lineup-api";
+        }
 
         /// <summary>
         /// List of Leagues
@@ -38,6 +46,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(" + getTeams + "," + getTeamsCalculations + "," + getRounds + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting league list");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -58,6 +70,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(" + id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting league " + id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -78,6 +94,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "UserID(" + getTeams + "," + getTeamsCalculations + "," + getRounds + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting user's league list");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -138,6 +158,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Teams(true," + getTeamsCalculations + "," + getRounds + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting team's league list");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -174,10 +198,14 @@ namespace LineUp_API.Controllers
         {
             try
             {
-                return Content(HttpStatusCode.Created, myDAL.Create(dto));
+                return Content(HttpStatusCode.Created, myDAL.Create(dto, myUserDAL.GetUserID(User.Identity.Name)));
             }
             catch (Exception ex)
             {
+                err.method = "Post";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error creating league");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -198,6 +226,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Put";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving league " + dto.id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -223,6 +255,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Join";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error joining league " + req.league_id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }

@@ -19,41 +19,49 @@
     </div>
 
     <div ng-hide="detailsScope.loading">
+
         <div class="row">
+            Select Game Type
+        </div>
+        <div class="row">
+
+            <select name="gameTypeID" class="form-control" ng-model="search.game_type_id">
+                <option ng-repeat="option in lookupOptions.GameTypes" value="{{option.Lookup_ID}}">{{option.Lookup_Name}}</option>
+            </select>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
             Select your league
         </div>
 
-        <div class="row">
+
+        <div class="row" ng-show="search.game_type_id">
 
             <div class="col-md-4">
 
                 <v-tabs class="vTabs--default" vertical active="activeTabIndex">
-                    <v-tab ng-click="select(league)" ng-repeat="league in lookupOptions.Leagues">
+                    <v-tab ng-click="select(league)" ng-repeat="league in lookupOptions.Leagues | filter:search:strict">
                         <i class="fa fa-lock locked-league" ng-show="league.is_private"></i><span>{{league.name}}</span>
                     </v-tab>
                 </v-tabs>
             </div>
 
 
-            <div class="col-md-6">
-                <v-pages class="vPages--default" active="activeTabIndex">
-                    <v-page ng-repeat="league in lookupOptions.Leagues">
-                        <p>
-                            <b> Game Type: {{league.game_type_name}}</b>
-                        </p>
-                        <p>
-                            {{league.description}}
-                        </p>
-                        <p>
-                            Teams: {{league.league_teams.length}} <span ng-show="league.max_players"> of {{league.max_players}}</span>
-                        </p>
-                        <p ng-show="league.lock_date">
-                            Lock Date: {{league.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm'}}
-                        </p>
-                    </v-page>
-                </v-pages>
+            <div class="col-md-6" ng-show="detailsScope.detailsObject">
+                <p>
+                    <b> {{detailsScope.detailsObject.name}}</b>
+                </p>
+                <p>
+                   Description: {{detailsScope.detailsObject.description}}
+                </p>
+                <p>
+                   Rounds: {{detailsScope.detailsObject.number_of_rounds}}
+                </p>
+                <p>
+                    Buy-In: ${{detailsScope.detailsObject.price}}
+                </p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" ng-show="detailsScope.detailsObject">
                 <div class="row form-group">
                     <a href="/user/league/join/{{detailsScope.detailsObject.id}}" class="btn btn-primary" style="color:white">Join</a>
                 </div>

@@ -19,170 +19,73 @@ namespace LineUpLibrary.DALs
         private League_TeamDTO EFtoDTO(league_team ef, bool getCalculations = false, bool getRounds = false)
         {
             League_TeamDTO dto = new League_TeamDTO();
-
+            IList<round> gameRounds = db.rounds.Where(r => r.game_type_id == ef.league.game_type_id).AsNoTracking().ToList();
 
             dto.id = ef.id;
+            dto.league_name = ef.league == null ? null : ef.league.name;
+            dto.league_id = ef.league_id;
             dto.name = ef.name;
             dto.user_id = ef.user_id;
-            dto.user_name = ef.user == null ? null : ef.user.username;
-            dto.league_id = ef.league_id;
-            dto.league_name = ef.league == null ? null : ef.league.name;
+            dto.user_name = ef == null ? null : ef.user.username;
+            dto.is_paid_up = ef.is_paid_up;
+
+            if (ef.league != null)
+            {
+                dto.leagues_league_team_count = db.league_team.Where(lt => lt.league_id == ef.league_id).Count();
+                dto.league_is_completed = ef.league.is_completed;
+            }
 
             if (getCalculations)
             {
-                league_summary ls = db.league_summary.Where(l => l.league_team_id == ef.id).FirstOrDefault();
-                dto.league_team_points_sum = ls == null ? 0 : ls.league_team_sum;
-                dto.total_winnings = ls.total_winnings == null ? 0 : ls.total_winnings;
-                dto.league_ranking = ls == null ? 0 : ls.league_team_rank;
-                dto.leagues_league_team_count = ls == null ? 0 : ls.league_team_count;
-                dto.league_is_completed = ls == null ? false : ls.is_completed;
-                dto.league_points_per_pick = ls == null ? null : ls.points_per_pick;
-                dto.league_total_pot = ef.league == null ? null : ls.league_team_count * ef.league.price;
-            }
+                IList<round_summary> roundSums = db.round_summary.Where(l => l.league_id == ef.league_id).AsNoTracking().ToList();
+                IList<round_summary> myRoundSums = roundSums.Where(r => r.league_team_id == ef.id).ToList();
+
+                dto.league_team_points_sum = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.round_sum);
+                dto.league_points_per_pick = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.correct_pick_count);
+                dto.total_winnings = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.winnings_sum);
+                dto.league_total_pot = ef.league == null ? null : dto.leagues_league_team_count * ef.league.price;
 
 
-            if (getRounds)
-            {
-                IEnumerable<round> roundDTOs = db.rounds.Where(r => r.game_type_id == ef.league.game_type_id).ToList();
-                IEnumerable<round_summary> sumarryDTOs = db.round_summary.Where(rs => rs.league_team_id == dto.id).ToList();
-
-                foreach (round rnd in roundDTOs)
+                if (getRounds)
                 {
-                    RoundDTO newRnd = new RoundDTO();
-                    round_summary newRS = sumarryDTOs.Where(rs => rs.round_id == rnd.id).FirstOrDefault();
 
-                    newRnd.id = rnd.id;
-                    newRnd.name = rnd.name;
-                    newRnd.round_number = rnd.round_number;
-                    newRnd.short_name = rnd.short_name;
-                    newRnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
-                    newRnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
-
-                    if (newRS != null)
+                    foreach (round rnd in gameRounds)
                     {
-                        newRnd.round_points_sum = newRS.round_sum;
-                        newRnd.round_winnings = newRS.winnings_sum;
-                        newRnd.is_winner = newRS.is_winner == 0 ? false : true;
-                    }
-                    else
-                    {
-                        newRnd.round_points_sum = 0;
-                        newRnd.round_winnings = 0;
-                        newRnd.is_winner = false;
-                    }
+                        RoundDTO newRnd = new RoundDTO();
+                        round_summary roundSum = myRoundSums.Where(rs => rs.round_id == rnd.id).FirstOrDefault();
 
-                    dto.rounds.Add(newRnd);
+                        newRnd.id = rnd.id;
+                        newRnd.name = rnd.name;
+                        newRnd.round_number = rnd.round_number;
+                        newRnd.short_name = rnd.short_name;
+                        newRnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
+                        newRnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
+
+                        if (roundSum != null)
+                        {
+                            newRnd.round_points_sum = roundSum.round_sum;
+                            newRnd.round_winnings = roundSum.winnings_sum;
+                            newRnd.is_winner = roundSum.is_winner == 0 ? false : true;
+                        }
+                        else
+                        {
+                            newRnd.round_points_sum = 0;
+                            newRnd.round_winnings = 0;
+                            newRnd.is_winner = false;
+                        }
+
+                        dto.rounds.Add(newRnd);
+                    }
                 }
             }
 
-            //if (getRounds)
-            //{
-            //    IList<round_calculations> roundCalcs = db.round_calculations.Where(rc => rc.league_team_id == dto.id).ToList();
-            //    dto.rounds = (from r in db.rounds.Where(r => r.game_type_id == ef.league.game_type_id)
-            //                  from rc in roundCalcs.Where(rc => rc.round_id == r.id).DefaultIfEmpty()
-            //                  select new RoundDTO()
-            //                  {
-            //                      id = r.id,
-            //                      name = r.name,
-            //                      round_number = r.round_number,
-            //                      round_points_sum = rc == null ? 0 : rc.round_sum,
-            //                      start_date = r.start_date,
-            //                      end_date = r.end_date,
-            //                      short_name = r.short_name
-            //                  }).ToList();
 
-            //    foreach (RoundDTO rnd in dto.rounds)
-            //    {
-            //        rnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
-            //        rnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
-            //    }
-            //}
+
 
             return dto;
 
         }
 
-        //private User_League_TeamDTO EFtoDTOForUser(league_team ef, bool getRounds)
-        //{
-        //    User_League_TeamDTO dto = new User_League_TeamDTO();
-        //    //RoundDAL roundDAL = new RoundDAL();
-
-        //    //league l = db.leagues.Where(le => le.id == ef.league_id).FirstOrDefault();
-        //    league_summary ls = db.league_summary.Where(lec => lec.league_team_id == ef.id).FirstOrDefault();
-
-
-        //    dto.id = ef.id;
-        //    dto.name = ef.name;
-        //    dto.user_id = ef.user_id;
-        //    dto.user_name = ef.user == null ? null : ef.user.username;
-        //    dto.league_id = ef.league_id;
-        //    dto.league_name = ef.league == null ? null : ef.league.name;
-        //    dto.league_team_points_sum = ls == null ? 0 : ls.league_team_sum;
-        //    dto.league_is_completed = ls == null ? false : ls.is_completed;
-        //    dto.total_winnings = ls.total_winnings == null ? 0 : ls.total_winnings;
-        //    //dto.league_total_pot = l.league_team.Count() * l.price;
-        //    dto.league_ranking = ls == null ? 0 : ls.league_team_rank;
-        //    dto.leagues_league_team_count = ls == null ? 0 : ls.league_team_count;
-        //    dto.league_points_per_pick = ls == null ? null : ls.points_per_pick;
-        //    if (getRounds)
-        //    {
-        //        IEnumerable<round> roundDTOs = db.rounds.Where(r => r.game_type_id == ef.league.game_type_id).ToList();
-        //        IEnumerable<round_summary> sumarryDTOs = db.round_summary.Where(rs => rs.league_team_id == dto.id).ToList();
-
-        //        foreach (round rnd in roundDTOs)
-        //        {
-        //            RoundDTO newRnd = new RoundDTO();
-        //            round_summary newRS = sumarryDTOs.Where(rs => rs.round_id == rnd.id).FirstOrDefault();
-
-        //            newRnd.id = rnd.id;
-        //            newRnd.name = rnd.name;
-        //            newRnd.round_number = rnd.round_number;
-        //            newRnd.short_name = rnd.short_name;
-        //            newRnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
-        //            newRnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
-
-        //            if (newRS != null)
-        //            {
-        //                newRnd.round_points_sum = newRS.round_sum;
-        //                newRnd.round_winnings = newRS.winnings_sum;
-        //                newRnd.is_winner = newRS.is_winner == 0 ? false : true;
-        //            }
-        //            else
-        //            {
-        //                newRnd.round_points_sum = 0;
-        //                newRnd.round_winnings = 0;
-        //                newRnd.is_winner = false;
-        //            }
-
-        //            dto.rounds.Add(newRnd);
-        //        }
-
-
-        //        //dto.rounds = (from r in roundDTOs.Where(r => r.game_type_id == ef.league.game_type_id)
-        //        //              from rs in sumarryDTOs.Where(rs => rs.round_id == r.id).DefaultIfEmpty()
-        //        //              select new RoundDTO()
-        //        //              {
-        //        //                  id = r.id,
-        //        //                  name = r.name,
-        //        //                  round_number = r.round_number,
-        //        //                  round_points_sum = rs == null ? 0 : rs.round_sum,
-        //        //                  round_winnings = rs == null ? 0 : rs.winnings_sum,
-        //        //                  is_winner = rs.is_winner == 0 ? false : true,
-        //        //                  start_date = r.start_date,
-        //        //                  end_date = r.end_date,
-        //        //                  short_name = r.short_name
-        //        //              }).ToList();
-
-        //        //foreach (RoundDTO rnd in dto.rounds)
-        //        //{
-        //        //    rnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
-        //        //    rnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
-        //        //}
-        //    }
-
-        //    return dto;
-
-        //}
 
         /// <summary>
         /// Convert DTO to EF
@@ -201,7 +104,11 @@ namespace LineUpLibrary.DALs
         /// </summary>
         public IList<League_TeamDTO> GetList()
         {
-            return db.league_team.Select(l => EFtoDTO(l, true, true)).OrderBy(ul => ul.league_is_completed).ToList();
+            return db.league_team
+                .Select(l => EFtoDTO(l, true, true))
+                .OrderBy(ul => ul.league_is_completed)
+                .AsNoTracking()
+                .ToList();
         }
 
         /// <summary>
@@ -209,7 +116,12 @@ namespace LineUpLibrary.DALs
         /// </summary>
         public IList<League_TeamDTO> GetListByUser(int userID, bool getCalculations, bool getRounds)
         {
-            return db.league_team.Where(l => l.user_id == userID).ToList().Select(l => EFtoDTO(l, getCalculations, getRounds)).OrderBy(ul => ul.league_is_completed).ToList();
+            IList<league_team> teams = db.league_team
+                .Where(l => l.user_id == userID)
+                .AsNoTracking()
+                .ToList();
+
+            return teams.Select(l => EFtoDTO(l, getCalculations, getRounds)).OrderBy(ul => ul.league_is_completed).ToList();
         }
 
         /// <summary>
@@ -219,9 +131,11 @@ namespace LineUpLibrary.DALs
         {
             league_team myLeague_Team = db.league_team
                                         .Where(l => l.id == id)
+                                        .Include(l => l.league)
                                         //.Include(l => l.picks)
                                         //.Include(l => l.picks.Select(p => p.match))
                                         //.Include(l => l.picks.Select(p => p.match.round))
+                                        .AsNoTracking()
                                         .FirstOrDefault();
 
             if (myLeague_Team == null)

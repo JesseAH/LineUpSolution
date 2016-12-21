@@ -261,6 +261,7 @@
     <Compile Include="Models\user.cs">
       <DependentUpon>AdminModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\user_partial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -498,7 +499,6 @@
     <Content Include="lib\jquery\.bower.json" />
     <Content Include="lib\jquery\dist\jquery.min.map" />
     <None Include="Properties\PublishProfiles\LineUp-Admin - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\LineUp-App.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

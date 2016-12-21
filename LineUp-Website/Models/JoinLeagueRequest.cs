@@ -16,4 +16,22 @@ namespace LineUp_Website.Models
         [Required]
         public string password { get; set; }
     }
+
+    public class InviteRequest
+    {
+        [Required]
+        public string emails { get; set; }
+        [Required]
+        public int league_id { get; set; }
+    }
+
+    public class EmailRequest
+    {
+        [Required]
+        public string subject { get; set; }
+        [Required]
+        public string body { get; set; }
+        [Required]
+        public int league_id { get; set; }
+    }
 }

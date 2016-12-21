@@ -18,6 +18,7 @@ namespace LineUpLibrary.Model
         public user()
         {
             this.league_team = new HashSet<league_team>();
+            this.Errors = new HashSet<Error>();
         }
     
         public int id { get; set; }
@@ -30,5 +31,7 @@ namespace LineUpLibrary.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<league_team> league_team { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Error> Errors { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace LineUpLibrary.DTOs
         [Required]
         public string name { get; set; }
         [Required]
+        public int manager_id { get; set; }
         public bool is_private { get; set; }
         public Nullable<int> max_players { get; set; }
         public Nullable<decimal> price { get; set; }
@@ -34,8 +35,12 @@ namespace LineUpLibrary.DTOs
         public int round_winnings_percentage { get; set; }
         public int number_of_rounds { get; set; }
 
-        public int team_count { get { return league_teams.Count(); } }
+
+
+        public int team_count { get; set; }
         public bool is_full { get { return league_teams.Count() >= max_players; } }
+
+        public bool is_manager { get; set; }
         public decimal? total_pot { get { return league_teams.Count() * price; } }
 
 

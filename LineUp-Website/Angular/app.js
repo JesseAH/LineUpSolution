@@ -158,6 +158,9 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', '
             .when('/user/league/create', {
                 templateUrl: 'Angular/Partials/League/leagueCreate.html'
             })
+            .when('/user/league/manage/:id', {
+                templateUrl: 'Angular/Partials/League/leagueManage.html'
+            })
 
             //League_Team routes
             .when('/user/team/list', {
@@ -170,6 +173,14 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', '
             //Round routes
             .when('/user/round/details/:leagueTeamID/:roundID', {
                 templateUrl: 'Angular/Partials/round/roundDetails.html'
+            })
+
+            //Game routes
+            .when('/user/game/details/:id', {
+                templateUrl: 'Angular/Partials/game/gameDetails.html'
+            })
+            .when('/user/game/details', {
+                templateUrl: 'Angular/Partials/game/gameDetails.html'
             })
 
             //Default route is dashboard

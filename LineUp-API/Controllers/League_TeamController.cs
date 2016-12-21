@@ -21,6 +21,14 @@ namespace LineUp_API.Controllers
     {
         League_TeamDAL myDAL = new League_TeamDAL();
         UserDAL myUserDAL = new UserDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public League_TeamController()
+        {
+            err.controller = "League_Team";
+            err.source = "lineup-api";
+        }
 
 
         /// <summary>
@@ -40,6 +48,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(" + id + "," + getCalculations + "," + getRounds + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting league team record");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -100,6 +112,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Post";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error creating new record");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -121,6 +137,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "UserID(" + getCalculations + "," + getRounds + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting users list");
                 return this.BadRequest(ex.Message.ToString());
             }
 
@@ -184,6 +204,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Put";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving league team");
                 return this.BadRequest(ex.Message.ToString());
             }
         }

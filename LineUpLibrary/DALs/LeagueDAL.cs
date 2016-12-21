@@ -2,6 +2,7 @@
 using LineUpLibrary.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +39,10 @@ namespace LineUpLibrary.DALs
             dto.description = ef.description;
             dto.max_players = ef.max_players;
             dto.price = ef.price;
+            dto.manager_id = ef.admin_user_id;
             dto.lock_date = ef.lock_date == null ? (DateTime?)null : new DateTime(ef.lock_date.Value.Year, ef.lock_date.Value.Month, ef.lock_date.Value.Day, ef.lock_date.Value.Hour, ef.lock_date.Value.Minute, 0, DateTimeKind.Utc);
             dto.round_winnings_percentage = ef.round_winnings_percentage;
+            dto.team_count = ef.league_team == null ? 0 : ef.league_team.Count();
 
             if (getTeams)
             {
@@ -54,56 +57,94 @@ namespace LineUpLibrary.DALs
                     }).ToList();
                 else
                 {
-                    IList<league_summary> summaryDTOs = db.league_summary.Where(ls => ls.league_id == ef.id).ToList();
 
-                    dto.league_teams = (from lt in ef.league_team
-                                        from ls in summaryDTOs.Where(ltc => ltc.league_team_id == lt.id).DefaultIfEmpty()
-                                        select new League_TeamDTO()
-                                        {
-                                            id = lt.id,
-                                            league_name = ef.name,
-                                            league_id = lt.league_id,
-                                            name = lt.name,
-                                            user_id = lt.user_id,
-                                            user_name = lt.user == null ? null : lt.user.username,
-                                            is_paid_up = lt.is_paid_up,
-                                            league_team_points_sum = ls.league_team_sum == null ? 0 : ls.league_team_sum,
-                                            league_points_per_pick = ls.correct_pick_count == null ? 0 : ls.correct_pick_count,
-                                            total_winnings = ls.total_winnings == null ? 0 : ls.total_winnings,
-                                            league_ranking = ls == null ? 0 : ls.league_team_rank,
-                                            leagues_league_team_count = ls == null ? 0 : ls.league_team_count,
-                                        }).OrderByDescending(t => t.league_team_points_sum).ToList();
+                    //Get all the round summaries for this league
+                    IList<round_summary> roundSums = db.round_summary.Where(l => l.league_id == ef.id).AsNoTracking().ToList();
+                    IList<round> gameRounds = db.rounds.Where(r => r.game_type_id == ef.game_type_id).AsNoTracking().ToList();
 
-                    if (getRounds)
+                    foreach (league_team lt in ef.league_team)
                     {
-                        foreach (League_TeamDTO lt in dto.league_teams)
-                        {
-                            lt.rounds = (from r in db.rounds.Where(r => r.game_type_id == ef.game_type_id)
-                                         from rs in db.round_summary.Where(rs => rs.round_id == r.id && rs.league_team_id == lt.id).DefaultIfEmpty()
-                                         select new RoundDTO()
-                                         {
-                                             id = r.id,
-                                             name = r.name,
-                                             round_number = r.round_number,
-                                             short_name = r.short_name,
-                                             round_points_sum = rs == null ? 0 : rs.round_sum,
-                                             round_open_sum = rs == null ? 0 : rs.open_points,
-                                             lock_date = r.lock_date,
-                                             start_date = r.start_date,
-                                             end_date = r.end_date,
-                                             is_winner = rs.is_winner == 0 ? false : true,
-                                             round_winnings = rs.winnings_sum
-                                         }).OrderBy(r => r.round_number).ToList();
+                        League_TeamDTO teamDTO = new League_TeamDTO();
+                        IList<round_summary> myRoundSums = roundSums.Where(r => r.league_team_id == lt.id).ToList();
 
-                            foreach (RoundDTO rnd in lt.rounds)
-                            {
-                                rnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
-                                rnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
-                            }
+                        teamDTO.id = lt.id;
+                        teamDTO.league_name = ef.name;
+                        teamDTO.league_id = lt.league_id;
+                        teamDTO.name = lt.name;
+                        teamDTO.user_id = lt.user_id;
+                        teamDTO.user_name = lt == null ? null : lt.user.username;
+                        teamDTO.is_paid_up = lt.is_paid_up;
+                        teamDTO.league_team_points_sum = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.round_sum);
+                        teamDTO.league_points_per_pick = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.correct_pick_count);
+                        teamDTO.total_winnings = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.winnings_sum);
+                        teamDTO.leagues_league_team_count = dto.team_count;
+
+
+
+                        if (getRounds)
+                        {
+
+                            teamDTO.rounds = (from r in gameRounds
+                                              from rs in myRoundSums.Where(rs => rs.round_id == r.id).DefaultIfEmpty()
+                                             select new RoundDTO()
+                                             {
+                                                 id = r.id,
+                                                 name = r.name,
+                                                 round_number = r.round_number,
+                                                 short_name = r.short_name,
+                                                 round_points_sum = rs == null ? 0 : rs.round_sum,
+                                                 round_open_sum = rs == null ? 0 : rs.open_points,
+                                                 lock_date = r.lock_date,
+                                                 start_date = r.start_date,
+                                                 end_date = r.end_date,
+                                                 is_winner = rs.is_winner == 0 ? false : true,
+                                                 round_winnings = rs.winnings_sum
+                                             })
+                                             .OrderBy(r => r.round_number).ToList();
+
+                                foreach (RoundDTO rnd in teamDTO.rounds)
+                                {
+                                    rnd.start_date = rnd.start_date == null ? (DateTime?)null : new DateTime(rnd.start_date.Value.Year, rnd.start_date.Value.Month, rnd.start_date.Value.Day, rnd.start_date.Value.Hour, rnd.start_date.Value.Minute, 0, DateTimeKind.Utc);
+                                    rnd.end_date = rnd.end_date == null ? (DateTime?)null : new DateTime(rnd.end_date.Value.Year, rnd.end_date.Value.Month, rnd.end_date.Value.Day, rnd.end_date.Value.Hour, rnd.end_date.Value.Minute, 0, DateTimeKind.Utc);
+                                }
+
                         }
+
+
+
+
+                        dto.league_teams.Add(teamDTO);
                     }
+
+                    //Loop through the teams and rank them
+                    dto.league_teams = dto.league_teams.OrderByDescending(x => x.league_team_points_sum)
+                   .GroupBy(x => x)
+                   .SelectMany((g, i) =>
+                       g.Select(lt => new League_TeamDTO()
+                       {
+                           id = lt.id,
+                           league_ranking = i+1,
+                           league_name = lt.league_name,
+                           league_id = lt.league_id,
+                           name = lt.name,
+                           user_id = lt.user_id,
+                           is_paid_up = lt.is_paid_up,
+                           league_team_points_sum = lt.league_team_points_sum,
+                           league_points_per_pick = lt.league_points_per_pick,
+                           total_winnings = lt.total_winnings,
+                           leagues_league_team_count = lt.leagues_league_team_count,
+                           rounds = lt.rounds
+                       }
+                       ))
+                   .ToList();
+
+
+         
                 }
             }
+
+            if (dto.league_teams != null)
+                dto.league_teams = dto.league_teams.OrderBy(t => t.league_ranking).ToList();
 
             return dto;
         }
@@ -150,17 +191,20 @@ namespace LineUpLibrary.DALs
             return list.Select(l => EFtoDTO(l.league, getTeams, getTeamsCalculations, getRounds)).ToList();
         }
 
-        public LeagueDTO Get(int id)
+        public LeagueDTO Get(int id, bool getTeams = true, bool getCalcs = true, bool getRounds = true)
         {
             if (id == 0)
                 return new LeagueDTO();
 
-            league myLeague = db.leagues.Where(l => l.id == id).FirstOrDefault();
+            league myLeague = db.leagues
+                    .Where(l => l.id == id)
+                    .AsNoTracking()
+                    .FirstOrDefault();
 
             if (myLeague == null)
                 throw new System.ArgumentException("A league with this id does not exist: " + id, " league.id");
 
-            return EFtoDTO(myLeague, true, true, true);
+            return EFtoDTO(myLeague, getTeams, getCalcs, getRounds);
         }
 
         public int AddLeagueTeam(string name, int leagueID, int userID)
@@ -207,13 +251,14 @@ namespace LineUpLibrary.DALs
             db.SaveChanges();
         }
 
-        public LeagueDTO Create(LeagueDTO dto)
+        public LeagueDTO Create(LeagueDTO dto, int userID = 0)
         {
             league newleague = new league();
 
             newleague = DTOtoEF(dto, newleague);
             newleague.created_on = DateTime.Today.ToUniversalTime();
             newleague.modified_on = DateTime.Today.ToUniversalTime();
+            newleague.admin_user_id = userID;
 
             db.leagues.Add(newleague);
             db.SaveChanges();

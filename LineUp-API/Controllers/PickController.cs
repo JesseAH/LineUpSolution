@@ -17,6 +17,14 @@ namespace LineUp_API.Controllers
     {
         PickDAL myDAL = new PickDAL();
         UserDAL myUserDAL = new UserDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public PickController()
+        {
+            err.controller = "Pick";
+            err.source = "lineup-api";
+        }
 
         /// <summary>
         /// Get a pick by its id
@@ -34,6 +42,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(" + id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting pick " + id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -57,6 +69,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Team(" + team_id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting picks for team " + team_id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -80,6 +96,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Post";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error creating pick");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -103,6 +123,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Put";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving pick");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -123,6 +147,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Delete";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error deleting pick");
                 return this.BadRequest(ex.Message.ToString());
             }
         }

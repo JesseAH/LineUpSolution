@@ -17,7 +17,7 @@ namespace LineUp_Website.APIs
         {
             try
             {
-                return this.Json(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),true,false), JsonRequestBehavior.AllowGet);
+                return this.Json(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name),false,false), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

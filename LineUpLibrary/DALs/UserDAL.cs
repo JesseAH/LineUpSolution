@@ -2,6 +2,7 @@
 using LineUpLibrary.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,12 @@ namespace LineUpLibrary.DALs
 
             var x = db.users.ToList();
             return db.users.Select(u => EFtoDTO(u)).AsEnumerable();
+        }
+
+        public IList<user> GetListOfLeague(int leagueID)
+        {
+            IList<user> users = db.league_team.Where(lt => lt.league_id == leagueID).Include(lt => lt.user).Select(lt => lt.user).ToList();
+            return users;
         }
 
         public userDTO Get(int id)

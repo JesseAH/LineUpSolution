@@ -25,7 +25,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <ApplicationInsightsResourceId>/subscriptions/2495d548-0711-4769-90f2-687f130b515a/resourcegroups/LineUp-ResourceGroup/providers/microsoft.insights/components/LineUp-API</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>
+    </ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -380,6 +381,7 @@
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\PickController.cs" />
     <Compile Include="Controllers\RoundController.cs" />
+    <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -436,9 +438,12 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <None Include="Properties\PublishProfiles\LineUp-API - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-API - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-API - Web Deploy %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-API - Web Deploy %285%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-API - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-API-Test - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\LineUp-API-TEST.pubxml" />
-    <None Include="Properties\PublishProfiles\LineUp-API.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -15,6 +15,14 @@ namespace LineUp_API.Controllers
     {
         UserDAL myUserDAL = new UserDAL();
         Game_TypeDAL myGameDAL = new Game_TypeDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public Game_TypeController()
+        {
+            err.controller = "Game_Type";
+            err.source = "lineup-api";
+        }
 
         /// <summary>
         /// Get a game_type by its id
@@ -32,6 +40,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(id)";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), null);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -52,6 +64,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), null);
                 return this.BadRequest(ex.Message.ToString());
             }
         }

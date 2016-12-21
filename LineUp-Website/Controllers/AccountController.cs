@@ -154,12 +154,6 @@ namespace LineUp_Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                Regex reg = new Regex(@"\d");
-                if (!reg.IsMatch(model.Password))
-                {
-                    //If we got here something is wrong
-                    return View(model);
-                }
 
                 if (model.Password != model.ConfirmPassword)
                 {

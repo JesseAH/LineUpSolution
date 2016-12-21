@@ -1,0 +1,95 @@
+﻿
+
+
+<div class="container-fluid" ng-controller="leagueManageCtrl">
+
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>League Pot: {{detailsScope.detailsObject.total_pot | currency }}</li>
+                                    <li>Total Teams: {{detailsScope.detailsObject.league_teams.length }} </li>
+                                </ul>
+                            </div>
+                            <div class="row col-md-6">
+                                <ul>
+                                    <li>Round Pot: {{detailsScope.detailsObject.round_winnings_percentage}}% </li>
+                                    <li>Total Rounds: {{detailsScope.detailsObject.number_of_rounds}} </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/#price-table2     8/27/2016 11:30:00 AM-->
+
+    </div>
+
+    <div class="row" ng-hide="detailsScope.loading">
+
+        <div ng-if="detailsScope.detailsObject.is_manager">
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="form-group" ng-class="{ 'has-error' : detailsForm.gameTypeID.$invalid && detailsScope.submitted }">
+                        <div class="col-md-4">
+                            Email League Invites (separate emails with commas)
+                        </div>
+                        <div class="col-md-6">
+                            Email Addresses
+                            <textarea rows="4" style="min-width: 100%" ng-model="$parent.emailAddresses">
+                            </textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary" ng-disabled="sending" ng-click="invite()">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+
+                    <div class="form-group" ng-class="{ 'has-error' : detailsForm.gameTypeID.$invalid && detailsScope.submitted }">
+                        <div class="col-md-4">
+                            Email League (sends an email to each team)
+                        </div>
+                        <div class="col-md-6">
+                            Subject <input name="name" class="form-control" type="text" ng-model="$parent.subject">
+                            <br />
+                            Body<textarea rows="4" style="min-width: 100%" ng-model="$parent.body">
+                            </textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary" ng-disabled="sending" ng-click="send()">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+
+                    <div class="form-group" ng-class="{ 'has-error' : detailsForm.gameTypeID.$invalid && detailsScope.submitted }">
+                        <div class="col-md-12">
+                            <i>More League Manager Options Coming Soon</i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div ng-if="!detailsScope.detailsObject.is_manager">
+            <h3>You do not have permissions to manage this league.</h3>
+        </div>
+    </div>
+</div>

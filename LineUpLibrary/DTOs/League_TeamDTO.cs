@@ -27,6 +27,7 @@ namespace LineUpLibrary.DTOs
         public bool is_paid_up { get; set; }
         public bool is_logged_in_users_team { get; set; }
         public string league_name { get; set; }
+        public string game_name { get; set; }
         public Nullable<int> league_team_points_sum { get; set; }
         public Nullable<int> leagues_league_team_count { get; set; }
         public Nullable<long> league_ranking { get; set; }

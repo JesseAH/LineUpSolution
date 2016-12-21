@@ -21,6 +21,14 @@ namespace LineUp_API.Controllers
 
         RoundDAL myDAL = new RoundDAL();
         UserDAL myUserDAL = new UserDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public RoundController()
+        {
+            err.controller = "Round";
+            err.source = "lineup-api";
+        }
 
         /// <summary>
         /// Get a Round by its id
@@ -38,6 +46,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Get(" + id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting round " + id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -61,6 +73,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Team(" + team_id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting round for team " + team_id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -84,6 +100,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "League(" + league_id + ")";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting round for league " + league_id);
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -104,6 +124,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Post";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error creating round");
                 return this.BadRequest(ex.Message.ToString());
             }
         }
@@ -124,6 +148,10 @@ namespace LineUp_API.Controllers
             }
             catch (Exception ex)
             {
+                err.method = "Put";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving round");
                 return this.BadRequest(ex.Message.ToString());
             }
         }

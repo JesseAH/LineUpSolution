@@ -13,6 +13,14 @@ namespace LineUp_Website.APIs
     {
         PickDAL myDAL = new PickDAL();
         UserDAL myUserDAL = new UserDAL();
+        ErrorDAL myErrorDAL = new ErrorDAL();
+        ErrorDTO err = new ErrorDTO();
+
+        public PickController()
+        {
+            err.controller = "Pick";
+            err.source = "lineup-webapp";
+        }
 
         public JsonResult Index()
         {
@@ -22,6 +30,10 @@ namespace LineUp_Website.APIs
             }
             catch (Exception ex)
             {
+                err.method = "Index";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting list");
                 return null;
             }
         }
@@ -34,6 +46,10 @@ namespace LineUp_Website.APIs
             }
             catch (Exception ex)
             {
+                err.method = "Teams";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting teams that are open for picking");
                 return null;
             }
         }
@@ -61,6 +77,10 @@ namespace LineUp_Website.APIs
             }
             catch (Exception ex)
             {
+                err.method = "Post";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving pick");
                 return null;
             }
 

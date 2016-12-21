@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DALs\ErrorDAL.cs" />
     <Compile Include="DALs\Game_TypeDAL.cs" />
     <Compile Include="DALs\LeagueDAL.cs" />
     <Compile Include="DALs\League_TeamDAL.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="DALs\PickDAL.cs" />
     <Compile Include="DALs\RoundDAL.cs" />
     <Compile Include="DALs\UserDAL.cs" />
+    <Compile Include="DTOs\ErrorDTO.cs" />
     <Compile Include="DTOs\Game_TypeDTO.cs" />
     <Compile Include="DTOs\LeagueDTO.cs" />
     <Compile Include="DTOs\League_TeamDTO.cs" />
@@ -66,6 +68,9 @@
     <Compile Include="DTOs\PickDTO.cs" />
     <Compile Include="DTOs\RoundDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
+    <Compile Include="Model\Error.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\game_type.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
@@ -73,6 +78,12 @@
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\league_calculations.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\league_calculations_team_count.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\league_rank.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\league_summary.cs">

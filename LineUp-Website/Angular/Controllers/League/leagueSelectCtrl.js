@@ -6,10 +6,11 @@ app.controller("leagueSelectCtrl", function ($scope, $rootScope, $routeParams, D
     //#region Variables
     //$scope.lookupOptions = [];
     $scope.detailsScope = {
-        detailsObject: {},
+        detailsObject: null,
         header: "Select a League to Join",
         loading: true
     };
+
 
     //#endregion
 
@@ -22,6 +23,7 @@ app.controller("leagueSelectCtrl", function ($scope, $rootScope, $routeParams, D
         $scope.lookupOptions = dtos;
 
     });
+
 
     $scope.select = function (league) {
         $scope.detailsScope.detailsObject = league;
