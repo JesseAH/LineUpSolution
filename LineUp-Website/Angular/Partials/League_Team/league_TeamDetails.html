@@ -18,14 +18,14 @@
                             <div class="row col-md-6">
                                 <ul>
                                     <li>Username: {{detailsScope.detailsObject.user_name}}  </li>
-                                    <li>Total Points: {{detailsScope.detailsObject.league_team_points_sum}}  </li>
-                                    <li>Total Winnings: {{detailsScope.detailsObject.total_winnings | currency}}</li>
+                                    <li>League Pot: {{detailsScope.detailsObject.league_total_pot | currency}}  </li>
+                                    <li>My Winnings: {{detailsScope.detailsObject.total_winnings | currency}}</li>
                                 </ul>
                             </div>
                             <div class="row col-md-6">
                                 <ul>
                                     <li>League: <a href="/user/league/details/{{detailsScope.detailsObject.league_id}}">{{detailsScope.detailsObject.league_name}}</a></li>
-                                    <li>League Pot: {{detailsScope.detailsObject.league_total_pot | currency}}</li>
+                                    <li>Total Points: {{detailsScope.detailsObject.league_team_points_sum}} </li>
                                     <li>Points Per Pick: {{detailsScope.detailsObject.league_points_per_pick}}</li>
                                 </ul>
                             </div>

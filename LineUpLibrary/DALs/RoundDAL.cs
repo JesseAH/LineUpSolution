@@ -80,6 +80,7 @@ namespace LineUpLibrary.DALs
             dto.id = ef.id;
             dto.name = ef.name;
             dto.game_type_id = ef.game_type_id;
+            dto.round_number = ef.round_number;
             dto.start_date = ef.start_date == null ? (DateTime?)null : new DateTime(ef.start_date.Value.Year, ef.start_date.Value.Month, ef.start_date.Value.Day, ef.start_date.Value.Hour, ef.start_date.Value.Minute, 0, DateTimeKind.Utc);
             dto.end_date = ef.end_date == null ? (DateTime?)null : new DateTime(ef.end_date.Value.Year, ef.end_date.Value.Month, ef.end_date.Value.Day, ef.end_date.Value.Hour, ef.end_date.Value.Minute, 0, DateTimeKind.Utc);
             dto.lock_date = ef.lock_date == null ? (DateTime?)null : new DateTime(ef.lock_date.Value.Year, ef.lock_date.Value.Month, ef.lock_date.Value.Day, ef.lock_date.Value.Hour, ef.lock_date.Value.Minute, 0, DateTimeKind.Utc);
@@ -150,7 +151,6 @@ namespace LineUpLibrary.DALs
         {
             ef.name = dto.name;
             ef.game_type_id = dto.game_type_id;
-            ef.start_date = dto.start_date;
             ef.short_name = dto.short_name;
             ef.start_date = dto.start_date == null ? (DateTime?)null : dto.start_date.Value.ToUniversalTime();
             ef.end_date = dto.end_date == null ? (DateTime?)null : dto.end_date.Value.ToUniversalTime();
@@ -178,6 +178,9 @@ namespace LineUpLibrary.DALs
 
         public RoundDTO Get(int roundID, int? leagueID = null, int? leagueTeamID = null)
         {
+            if (roundID == 0)
+                return new RoundDTO();
+
             round myRound = db.rounds
                                 .Where(p => p.id == roundID)
                                 .Include(w => w.game_type)
@@ -188,6 +191,7 @@ namespace LineUpLibrary.DALs
                                 .Include(m => m.matches.Select(t => t.match_type))
                                 .Include(m => m.matches.Select(t => t.picks))
                                 .Include(m => m.matches.Select(t => t.picks.Select(p => p.team)))
+                                .AsNoTracking()
                                 .FirstOrDefault();
 
             if (myRound == null)
@@ -196,14 +200,45 @@ namespace LineUpLibrary.DALs
             return EFtoDTO(myRound, leagueID, leagueTeamID);
         }
 
-        public void Save(RoundDTO dto)
+        public RoundDTO GetRoundMatches(int roundID)
         {
-            round existinground = db.rounds.Where(l => l.id == dto.id).FirstOrDefault();
+            round myRound = db.rounds
+                                .Where(p => p.id == roundID)
+                                .Include(w => w.game_type)
+                                .Include(w => w.matches)
+                                .Include(m => m.matches.Select(t => t.team))
+                                .Include(m => m.matches.Select(t => t.team1))
+                                .Include(m => m.matches.Select(t => t.team2))
+                                .Include(m => m.matches.Select(t => t.match_type))
+                                .Include(m => m.matches.Select(t => t.picks))
+                                .Include(m => m.matches.Select(t => t.picks.Select(p => p.team)))
+                                .AsNoTracking()
+                                .FirstOrDefault();
 
-            existinground = DTOtoEF(dto, existinground);
-            existinground.modified_on = DateTime.Now.ToUniversalTime();
+            if (myRound == null)
+                throw new System.ArgumentException("A round with this id does not exist: " + roundID, "pick.id");
+
+            return EFtoDTO(myRound, null, null);
+        }
+
+        public int Save(RoundDTO dto)
+        {
+            round ef;
+
+            if (dto.id == 0)
+                ef = new round();
+            else
+                ef = db.rounds.Where(l => l.id == dto.id).FirstOrDefault();
+
+            ef = DTOtoEF(dto, ef);
+            ef.modified_on = DateTime.Now.ToUniversalTime();
+
+            if (ef.id == 0)
+                db.rounds.Add(ef);
 
             db.SaveChanges();
+
+            return ef.id;
         }
 
         public IList<RoundDTO> GetListByLeague(int leagueID)
@@ -267,6 +302,38 @@ namespace LineUpLibrary.DALs
         {
             db.rounds.Remove(db.rounds.Where(l => l.id == id).FirstOrDefault());
             db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Does the user have permission to edit this round
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="gameID"></param>
+        /// <param name="roundID"></param>
+        /// <returns></returns>
+        public bool RoundSecurityCheck(int userID, int gameID, int roundID)
+        {
+            game_type myGame = null;
+
+            if (gameID != 0)
+            {
+                myGame = db.game_type.Where(g => g.id == gameID).FirstOrDefault();
+
+                //Is the user the admin of this game?
+                if (myGame.admin_user_id != userID)
+                    return false;
+            }
+
+            //Is the round in this game?
+            if(roundID != 0 && myGame != null)
+            {
+                round myRound = db.rounds.Where(r => r.id == roundID).FirstOrDefault();
+
+                if (myRound.game_type_id != myGame.id)
+                    return false;
+            }
+
+            return true;
         }
 
     }

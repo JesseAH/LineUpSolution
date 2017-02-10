@@ -30,6 +30,7 @@
           <Property Name="modified_on" Type="datetime" />
           <Property Name="number_of_rounds" Type="int" Nullable="false" />
           <Property Name="lock_date" Type="datetime" />
+          <Property Name="completed" Type="bit" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -89,6 +90,33 @@
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
         </EntityType>
+        <EntityType Name="payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="payment_total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="paypal" Type="bit" Nullable="false" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+          <Property Name="braintree_id" Type="nvarchar" MaxLength="150" />
+          <Property Name="braintree_payment_date" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="payout">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payout_amount" Type="float" Nullable="false" />
+          <Property Name="payout_date" Type="datetime" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="venmo" Type="bit" />
+          <Property Name="paypal" Type="bit" />
+          <Property Name="other" Type="bit" />
+          <Property Name="note" Type="text" />
+        </EntityType>
         <EntityType Name="pick">
           <Key>
             <PropertyRef Name="id" />
@@ -99,6 +127,20 @@
           <Property Name="picked_team_id" Type="int" Nullable="false" />
           <Property Name="confidence_value" Type="int" />
           <Property Name="created_on" Type="datetime" />
+          <Property Name="modified_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="league_id" Type="int" Nullable="false" />
+          <Property Name="league_team_id" Type="int" />
+          <Property Name="rank" Type="int" Nullable="false" />
+          <Property Name="winnings" Type="float" />
+          <Property Name="payment_sent" Type="bit" />
+          <Property Name="modified_by" Type="int" />
           <Property Name="modified_on" Type="datetime" />
         </EntityType>
         <EntityType Name="round">
@@ -125,6 +167,7 @@
           <Property Name="description" Type="varchar" MaxLength="150" />
           <Property Name="created_on" Type="datetime" />
           <Property Name="modified_on" Type="datetime" />
+          <Property Name="game_type_id" Type="int" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -303,6 +346,18 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_game_type_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="game_type" Type="Self.game_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game_type">
+              <PropertyRef Name="admin_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_league_game_type">
           <End Role="game_type" Type="Self.game_type" Multiplicity="1" />
           <End Role="league" Type="Self.league" Multiplicity="*" />
@@ -399,6 +454,42 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_payment_league_team">
+          <End Role="league_team" Type="Self.league_team" Multiplicity="0..1" />
+          <End Role="payment" Type="Self.payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_payment_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="payment" Type="Self.payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_payout_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="payout" Type="Self.payout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payout">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_pick_Toleagueteam">
           <End Role="league_team" Type="Self.league_team" Multiplicity="1" />
           <End Role="pick" Type="Self.pick" Multiplicity="*" />
@@ -435,6 +526,42 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_result_league">
+          <End Role="league" Type="Self.league" Multiplicity="1" />
+          <End Role="result" Type="Self.result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="league_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_result_league_team">
+          <End Role="league_team" Type="Self.league_team" Multiplicity="0..1" />
+          <End Role="result" Type="Self.result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_result_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="result" Type="Self.result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_round_game_type">
           <End Role="game_type" Type="Self.game_type" Multiplicity="1" />
           <End Role="round" Type="Self.round" Multiplicity="*" />
@@ -447,6 +574,18 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_team_game_type">
+          <End Role="game_type" Type="Self.game_type" Multiplicity="0..1" />
+          <End Role="team" Type="Self.team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="team">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Error" EntityType="Self.Error" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="game_type" EntityType="Self.game_type" Schema="dbo" store:Type="Tables" />
@@ -454,7 +593,10 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySet Name="league_team" EntityType="Self.league_team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="match" EntityType="Self.match" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="match_type" EntityType="Self.match_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="payment" EntityType="Self.payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="payout" EntityType="Self.payout" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pick" EntityType="Self.pick" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="result" EntityType="Self.result" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="round" EntityType="Self.round" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="team" EntityType="Self.team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
@@ -579,6 +721,10 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             <End Role="user" EntitySet="user" />
             <End Role="Error" EntitySet="Error" />
           </AssociationSet>
+          <AssociationSet Name="FK_game_type_user" Association="Self.FK_game_type_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="game_type" EntitySet="game_type" />
+          </AssociationSet>
           <AssociationSet Name="FK_league_game_type" Association="Self.FK_league_game_type">
             <End Role="game_type" EntitySet="game_type" />
             <End Role="league" EntitySet="league" />
@@ -611,6 +757,18 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             <End Role="team" EntitySet="team" />
             <End Role="match" EntitySet="match" />
           </AssociationSet>
+          <AssociationSet Name="FK_payment_league_team" Association="Self.FK_payment_league_team">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="payment" EntitySet="payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_payment_user" Association="Self.FK_payment_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="payment" EntitySet="payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_payout_user" Association="Self.FK_payout_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="payout" EntitySet="payout" />
+          </AssociationSet>
           <AssociationSet Name="FK_pick_Toleagueteam" Association="Self.FK_pick_Toleagueteam">
             <End Role="league_team" EntitySet="league_team" />
             <End Role="pick" EntitySet="pick" />
@@ -623,9 +781,25 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
             <End Role="team" EntitySet="team" />
             <End Role="pick" EntitySet="pick" />
           </AssociationSet>
+          <AssociationSet Name="FK_result_league" Association="Self.FK_result_league">
+            <End Role="league" EntitySet="league" />
+            <End Role="result" EntitySet="result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_result_league_team" Association="Self.FK_result_league_team">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="result" EntitySet="result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_result_user" Association="Self.FK_result_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="result" EntitySet="result" />
+          </AssociationSet>
           <AssociationSet Name="FK_round_game_type" Association="Self.FK_round_game_type">
             <End Role="game_type" EntitySet="game_type" />
             <End Role="round" EntitySet="round" />
+          </AssociationSet>
+          <AssociationSet Name="FK_team_game_type" Association="Self.FK_team_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="team" EntitySet="team" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -645,6 +819,10 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="modified_on" Type="DateTime" Precision="3" />
           <NavigationProperty Name="league_team" Relationship="Model.FK_LeagueTeam_ToUser" FromRole="user" ToRole="league_team" />
           <NavigationProperty Name="Errors" Relationship="Model.FK_Error_user" FromRole="user" ToRole="Error" />
+          <NavigationProperty Name="game_type" Relationship="Model.FK_game_type_user" FromRole="user" ToRole="game_type" />
+          <NavigationProperty Name="results" Relationship="Model.FK_result_user" FromRole="user" ToRole="result" />
+          <NavigationProperty Name="payouts" Relationship="Model.FK_payout_user" FromRole="user" ToRole="payout" />
+          <NavigationProperty Name="payments" Relationship="Model.FK_payment_user" FromRole="user" ToRole="payment" />
         </EntityType>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="users" EntityType="Self.user" />
@@ -717,7 +895,42 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           </AssociationSet>
           <EntitySet Name="league_calculations_team_count" EntityType="Model.league_calculations_team_count" />
           <EntitySet Name="league_rank" EntityType="Model.league_rank" />
-        </EntityContainer>
+          <AssociationSet Name="FK_game_type_user" Association="Model.FK_game_type_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="game_type" EntitySet="game_type" />
+          </AssociationSet>
+          <AssociationSet Name="FK_team_game_type" Association="Model.FK_team_game_type">
+            <End Role="game_type" EntitySet="game_type" />
+            <End Role="team" EntitySet="teams" />
+          </AssociationSet>
+          <EntitySet Name="results" EntityType="Model.result" />
+          <AssociationSet Name="FK_result_league" Association="Model.FK_result_league">
+            <End Role="league" EntitySet="leagues" />
+            <End Role="result" EntitySet="results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_result_user" Association="Model.FK_result_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="result" EntitySet="results" />
+          </AssociationSet>
+          <EntitySet Name="payouts" EntityType="Model.payout" />
+          <AssociationSet Name="FK_result_league_team" Association="Model.FK_result_league_team">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="result" EntitySet="results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_payout_user" Association="Model.FK_payout_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="payout" EntitySet="payouts" />
+          </AssociationSet>
+          <EntitySet Name="payments" EntityType="Model.payment" />
+          <AssociationSet Name="FK_payment_league_team" Association="Model.FK_payment_league_team">
+            <End Role="league_team" EntitySet="league_team" />
+            <End Role="payment" EntitySet="payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_payment_user" Association="Model.FK_payment_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="payment" EntitySet="payments" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="game_type">
           <Key>
             <PropertyRef Name="id" />
@@ -732,6 +945,9 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <NavigationProperty Name="rounds" Relationship="Model.FK_round_game_type" FromRole="game_type" ToRole="round" />
           <Property Name="number_of_rounds" Type="Int32" Nullable="false" />
           <Property Name="lock_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="user" Relationship="Model.FK_game_type_user" FromRole="game_type" ToRole="user" />
+          <NavigationProperty Name="teams" Relationship="Model.FK_team_game_type" FromRole="game_type" ToRole="team" />
+          <Property Name="completed" Type="Boolean" />
         </EntityType>
         <EntityType Name="league">
           <Key>
@@ -753,6 +969,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="lock_date" Type="DateTime" Precision="3" />
           <Property Name="round_winnings_percentage" Type="Int32" Nullable="false" />
           <Property Name="admin_user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="results" Relationship="Model.FK_result_league" FromRole="league" ToRole="result" />
         </EntityType>
         <EntityType Name="league_team">
           <Key>
@@ -768,6 +985,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <NavigationProperty Name="league" Relationship="Model.FK_League_ToLeague" FromRole="league_team" ToRole="league" />
           <NavigationProperty Name="user" Relationship="Model.FK_LeagueTeam_ToUser" FromRole="league_team" ToRole="user" />
           <NavigationProperty Name="picks" Relationship="Model.FK_pick_Toleagueteam" FromRole="league_team" ToRole="pick" />
+          <NavigationProperty Name="results" Relationship="Model.FK_result_league_team" FromRole="league_team" ToRole="result" />
+          <NavigationProperty Name="payments" Relationship="Model.FK_payment_league_team" FromRole="league_team" ToRole="payment" />
         </EntityType>
         <EntityType Name="match">
           <Key>
@@ -848,6 +1067,8 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <NavigationProperty Name="matches1" Relationship="Model.FK_match_ToOption2Team" FromRole="team" ToRole="match" />
           <NavigationProperty Name="matches2" Relationship="Model.FK_match_ToWinner" FromRole="team" ToRole="match" />
           <NavigationProperty Name="picks" Relationship="Model.FK_pick_Toteam" FromRole="team" ToRole="pick" />
+          <Property Name="game_type_id" Type="Int32" />
+          <NavigationProperty Name="game_type" Relationship="Model.FK_team_game_type" FromRole="team" ToRole="game_type" />
         </EntityType>
         <Association Name="FK_league_game_type">
           <End Type="Model.game_type" Role="game_type" Multiplicity="1" />
@@ -1154,7 +1375,150 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <Property Name="total_winnings" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="league_team_rank" Type="Int64" />
         </EntityType>
-      </Schema>
+        <Association Name="FK_game_type_user">
+          <End Type="Model.user" Role="user" Multiplicity="0..1" />
+          <End Type="Model.game_type" Role="game_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="game_type">
+              <PropertyRef Name="admin_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_team_game_type">
+          <End Type="Model.game_type" Role="game_type" Multiplicity="0..1" />
+          <End Type="Model.team" Role="team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="team">
+              <PropertyRef Name="game_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="league_id" Type="Int32" Nullable="false" />
+          <Property Name="rank" Type="Int32" Nullable="false" />
+          <Property Name="winnings" Type="Double" />
+          <Property Name="payment_sent" Type="Boolean" />
+          <Property Name="modified_by" Type="Int32" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="league" Relationship="Model.FK_result_league" FromRole="result" ToRole="league" />
+          <NavigationProperty Name="user" Relationship="Model.FK_result_user" FromRole="result" ToRole="user" />
+          <Property Name="league_team_id" Type="Int32" />
+          <NavigationProperty Name="league_team" Relationship="Model.FK_result_league_team" FromRole="result" ToRole="league_team" />
+        </EntityType>
+        <Association Name="FK_result_league">
+          <End Type="Model.league" Role="league" Multiplicity="1" />
+          <End Type="Model.result" Role="result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="league_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_result_user">
+          <End Type="Model.user" Role="user" Multiplicity="1" />
+          <End Type="Model.result" Role="result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="payout">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payout_amount" Type="Double" Nullable="false" />
+          <Property Name="payout_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="venmo" Type="Boolean" />
+          <Property Name="paypal" Type="Boolean" />
+          <Property Name="other" Type="Boolean" />
+          <NavigationProperty Name="user" Relationship="Model.FK_payout_user" FromRole="payout" ToRole="user" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_result_league_team">
+          <End Type="Model.league_team" Role="league_team" Multiplicity="0..1" />
+          <End Type="Model.result" Role="result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_payout_user">
+          <End Type="Model.user" Role="user" Multiplicity="1" />
+          <End Type="Model.payout" Role="payout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payout">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="league_team_id" Type="Int32" />
+          <Property Name="payment_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="paypal" Type="Boolean" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="modified_on" Type="DateTime" Precision="3" />
+          <Property Name="braintree_id" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="braintree_payment_date" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="league_team" Relationship="Model.FK_payment_league_team" FromRole="payment" ToRole="league_team" />
+          <NavigationProperty Name="user" Relationship="Model.FK_payment_user" FromRole="payment" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_payment_league_team">
+          <End Type="Model.league_team" Role="league_team" Multiplicity="0..1" />
+          <End Type="Model.payment" Role="payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="league_team">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="league_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_payment_user">
+          <End Type="Model.user" Role="user" Multiplicity="0..1" />
+          <End Type="Model.payment" Role="payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1176,6 +1540,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="game_type">
             <EntityTypeMapping TypeName="Model.game_type">
               <MappingFragment StoreEntitySet="game_type">
+                <ScalarProperty Name="completed" ColumnName="completed" />
                 <ScalarProperty Name="lock_date" ColumnName="lock_date" />
                 <ScalarProperty Name="number_of_rounds" ColumnName="number_of_rounds" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
@@ -1281,6 +1646,7 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
           <EntitySetMapping Name="teams">
             <EntityTypeMapping TypeName="Model.team">
               <MappingFragment StoreEntitySet="team">
+                <ScalarProperty Name="game_type_id" ColumnName="game_type_id" />
                 <ScalarProperty Name="modified_on" ColumnName="modified_on" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="description" ColumnName="description" />
@@ -1432,6 +1798,50 @@ warning 6002: The table/view 'LineUp-Database.dbo.round_winnings_calculations' d
                 <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
                 <ScalarProperty Name="league_name" ColumnName="league_name" />
                 <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="results">
+            <EntityTypeMapping TypeName="Model.result">
+              <MappingFragment StoreEntitySet="result">
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="modified_by" ColumnName="modified_by" />
+                <ScalarProperty Name="payment_sent" ColumnName="payment_sent" />
+                <ScalarProperty Name="winnings" ColumnName="winnings" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+                <ScalarProperty Name="league_id" ColumnName="league_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="payouts">
+            <EntityTypeMapping TypeName="Model.payout">
+              <MappingFragment StoreEntitySet="payout">
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="other" ColumnName="other" />
+                <ScalarProperty Name="paypal" ColumnName="paypal" />
+                <ScalarProperty Name="venmo" ColumnName="venmo" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="payout_date" ColumnName="payout_date" />
+                <ScalarProperty Name="payout_amount" ColumnName="payout_amount" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="payments">
+            <EntityTypeMapping TypeName="Model.payment">
+              <MappingFragment StoreEntitySet="payment">
+                <ScalarProperty Name="braintree_payment_date" ColumnName="braintree_payment_date" />
+                <ScalarProperty Name="braintree_id" ColumnName="braintree_id" />
+                <ScalarProperty Name="modified_on" ColumnName="modified_on" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="paypal" ColumnName="paypal" />
+                <ScalarProperty Name="payment_total" ColumnName="payment_total" />
+                <ScalarProperty Name="league_team_id" ColumnName="league_team_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

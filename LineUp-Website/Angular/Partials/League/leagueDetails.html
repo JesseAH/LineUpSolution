@@ -20,7 +20,7 @@
                                     <li>League Pot: {{detailsScope.detailsObject.total_pot | currency }}</li>
                                     <li>Total Teams: {{detailsScope.detailsObject.league_teams.length }} </li>
                                     <li ng-if="detailsScope.detailsObject.is_manager">
-                                        <b><a href="/user/league/manage/{{detailsScope.detailsObject.id}}">Manage League Settings (New!)</a></b>
+                                        <b><a href="/user/league/manage/{{detailsScope.detailsObject.id}}"><i class="fa fa-cog" aria-hidden="true"></i> League Settings</a></b>
                                     </li>
                                 </ul>
                             </div>

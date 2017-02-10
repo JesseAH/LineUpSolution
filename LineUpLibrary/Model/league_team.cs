@@ -18,6 +18,8 @@ namespace LineUpLibrary.Model
         public league_team()
         {
             this.picks = new HashSet<pick>();
+            this.results = new HashSet<result>();
+            this.payments = new HashSet<payment>();
         }
     
         public int id { get; set; }
@@ -32,5 +34,9 @@ namespace LineUpLibrary.Model
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<pick> picks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<result> results { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<payment> payments { get; set; }
     }
 }

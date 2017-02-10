@@ -19,6 +19,7 @@ namespace LineUpLibrary.Model
         {
             this.leagues = new HashSet<league>();
             this.rounds = new HashSet<round>();
+            this.teams = new HashSet<team>();
         }
     
         public int id { get; set; }
@@ -29,10 +30,14 @@ namespace LineUpLibrary.Model
         public Nullable<System.DateTime> modified_on { get; set; }
         public int number_of_rounds { get; set; }
         public Nullable<System.DateTime> lock_date { get; set; }
+        public Nullable<bool> completed { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<league> leagues { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<round> rounds { get; set; }
+        public virtual user user { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<team> teams { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 
 
-var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', 'angular-input-stars', 'vAccordion', 'ngAnimate', 'vTabs'])
+var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', 'angular-input-stars', 'vAccordion', 'ngAnimate', 'vTabs','ADM-dateTimePicker'])
 
         // run is similar to a C# class constructor.  we will set our application/constant variables here
         .run(function ($rootScope, $http) {
@@ -78,6 +78,20 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', '
                     return true;
                 else
                     return false;
+            }
+
+            $rootScope.convertToServerTimeZone = function (clientDate) {
+
+                //Server Timezone: EST
+                var offset = -5.0
+
+                clientDate = new Date(clientDate);
+
+                var utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
+
+                var serverDate = new Date(utc + (3600000 * offset));
+
+                return serverDate;
             }
 
             // used to parse date strings in JSON being passed into Kendo grids:
@@ -174,17 +188,37 @@ var app = angular.module('myApp', ['ngRoute', 'DefaultFactory', 'smart-table', '
             .when('/user/round/details/:leagueTeamID/:roundID', {
                 templateUrl: 'Angular/Partials/round/roundDetails.html'
             })
+            .when('/user/round/manager/:gameId/:roundId', {
+                templateUrl: 'Angular/Partials/round/roundManager.html'
+            })
 
             //Game routes
             .when('/user/game/details/:id', {
                 templateUrl: 'Angular/Partials/game/gameDetails.html'
             })
-            .when('/user/game/details', {
-                templateUrl: 'Angular/Partials/game/gameDetails.html'
+            .when('/user/game/dashboard/:id', {
+                templateUrl: 'Angular/Partials/game/gameDashboard.html'
             })
+            .when('/user/game/list', {
+                templateUrl: 'Angular/Partials/game/gameList.html'
+            })
+
+            //Team routes
+            .when('/user/game/:gameid/team/:teamid', {
+                templateUrl: 'Angular/Partials/team/teamDetails.html'
+            })
+
+            //Account routes
+            .when('/user/account', {
+                templateUrl: 'Angular/Partials/account/accountDetails.html'
+            })
+
 
             //Default route is dashboard
             .otherwise({ redirectTo: '/user/dashboard' });
 
             $locationProvider.html5Mode(true);
         }]);
+
+
+

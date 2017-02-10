@@ -1,0 +1,191 @@
+﻿<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<div class="container-fluid" ng-controller="roundManagerCtrl">
+
+    <!-- Row 1 -->
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+
+        <h2 class="page-header">
+            Round Details
+            <button type="button" class="btn btn-primary pull-right" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.id == 0" ng-disabled="detailsScope.submitted">Create Round</button>
+            <button type="button" class="btn btn-primary pull-right" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.id > 0" ng-disabled="detailsScope.submitted">Save Round</button>
+        </h2>
+        <div ng-form="detailsForm" ng-hide="detailsScope.loading">
+            <div class="col-md-12">
+                <div class="row" ng-class="{ 'has-error' : detailsForm.name.$invalid }">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Name
+                        </div>
+                        <div class="col-md-8">
+                            <input name="name" class="form-control" type="text" ng-model="detailsScope.detailsObject.name" required maxlength="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.number.$invalid}">
+                    <div class="form-group">
+                        <div class="col-md-4"> 
+                            Round Number
+                        </div>
+                        <div class="col-md-8">
+                            <input name="number" type="number" class="form-control" ng-model="detailsScope.detailsObject.round_number" min="0" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.shortname.$invalid}">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Short Name
+                        </div>
+                        <div class="col-md-8">
+                            <input name="shortname" type="text" class="form-control" ng-model="detailsScope.detailsObject.short_name" required maxlength="5">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div  class="form-group">
+                        <div class="col-md-4">
+                            <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="This round will show up in the 'Make Picks' section after this date."></i>
+                            Start Date and Time
+                        </div>
+                        <div class="col-md-8">
+                            <adm-dtp ng-model='detailsScope.detailsObject.start_date' style="width:300px;"></adm-dtp>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="This round will be locked and no picks will be able to be made after this date."></i>
+                            Lock Date and Time
+                        </div>
+                        <div class="col-md-8">
+                            <adm-dtp ng-model='detailsScope.detailsObject.lock_date' style="width:300px;"></adm-dtp>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="The date and time that this round is over."></i>
+                            End Date
+                        </div>
+                        <div class="col-md-8">
+                            <adm-dtp ng-model='detailsScope.detailsObject.end_date' style="width:300px;"></adm-dtp>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Row 4 -->
+    <div class="row" style="padding-top:20px;">
+
+        <h2 class="page-header">
+            Match Details
+        </h2>
+        <div class="container-fluid well">
+            <div class="row">
+                <div class="col-md-3">
+                    Side 1
+                    <select name="team1"
+                            class="form-control"
+                            ng-model="newMatch.team1_id"
+                            ng-options="team.id as team.name for team in lookupOptions.Teams" />
+                </div>
+                <div class="col-md-3">
+                    Side 2
+                    <select name="team2"
+                            class="form-control"
+                            ng-model="newMatch.team2_id"
+                            ng-options="team.id as team.name for team in lookupOptions.Teams" />
+                </div>
+                <div class="col-md-5">
+                    <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="This match will show up as 'Side 1' vs. 'Side 2' if you dont enter anything here."></i> Question
+                    <input name="name" class="form-control" type="text" ng-model="newMatch.description" maxlength="150">
+                </div>
+                <div class="col-md-1">
+                    <a href="#" ng-click="addMatchClick()"><i class="fa fa-plus-square-o fa-3x text-success" aria-hidden="true" style="padding-top:22px;"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Row 5 -->
+    <div class="row" style="padding-top:10px;">
+        Total Matches: {{detailsScope.detailsObject.matches.length}}
+        <hr />
+    </div>
+
+    <div class="row">
+
+        <div class="single-price price-one">
+            <ul ng-repeat="match in detailsScope.detailsObject.matches">
+                <li>
+                    <div class="row">
+                        <div class="col-md-3">
+                            Side 1
+                            <select name="team1"
+                                    class="form-control"
+                                    ng-model="match.team1_id"
+                                    ng-options="team.id as team.name for team in lookupOptions.Teams" />
+                        </div>
+                        <div class="col-md-3">
+                            Side 2
+                            <select name="team1"
+                                    class="form-control"
+                                    ng-model="match.team2_id"
+                                    ng-options="team.id as team.name for team in lookupOptions.Teams" />
+                        </div>
+                        <div class="col-md-3">
+                            Question
+                            <input name="name" class="form-control" type="text" ng-model="match.description" maxlength="150">
+                        </div>
+                        <div class="col-md-2">
+                            Winning Side
+                            <select name="team1"
+                                    class="form-control"
+                                    ng-model="match.winning_team_id"
+                                    ng-options="team.id as team.name for team in lookupOptions.Teams | filter:winnerFilter(match.team1_id,match.team2_id)" />
+                        </div>
+                        <div class="col-md-1">
+                            <a href="#" ng-click="removeMatchClick(match)"><i class="fa fa-times text-danger" aria-hidden="true" style="padding-top:35px;"></i></a>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+</div>
+
+

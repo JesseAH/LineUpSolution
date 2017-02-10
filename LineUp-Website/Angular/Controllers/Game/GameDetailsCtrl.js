@@ -1,57 +1,70 @@
 ﻿
 
-//app.controller("gameDetailsCtrl", function ($scope, $rootScope, $routeParams, DefaultFactory) {
+
+app.controller("gameDetailsCtrl", function ($scope, $rootScope, $routeParams, DefaultFactory) {
 
 
-//    ////#region Variables
-//    ////$scope.lookupOptions = [];
-//    //$scope.detailsScope = {
-//    //    detailsObject: {},
-//    //    header: "Loading...",
-//    //    loading: true,
-//    //    submitted: false
-//    //};
-
-//    ////#endregion
-
-//    ////#region Get Data
-
-//    //DefaultFactory.ObjectLookupList("Game")
-//    //.then(function (dtos) {
-//    //    $scope.detailsScope.loading = false;
-//    //    $scope.lookupOptions = dtos;
-//    //});
+    //#region Variables
+    //$scope.lookupOptions = [];
+    $scope.detailsScope = {
+        id: $routeParams.id,
+        detailsObject: {},
+        header: "Loading...",
+        loading: true,
+        submitted: false
+    };
 
 
-//    //DefaultFactory.Details(0, "Game")
-//    //    .then(function (dto) {
-//    //        $scope.detailsScope.detailsObject = dto;
-//    //    });
+    //#endregion
 
-//    ////#endregion
+    //#region Get Data
+
+    DefaultFactory.Details($scope.detailsScope.id, "Game")
+        .then(function (dto) {
+
+            if (dto.lock_date != null)
+            {
+                var myDate = new Date(parseInt(dto.lock_date.substr(6)))
+
+                var month = myDate.getMonth() + 1; //months from 1-12
+                var day = myDate.getDate();
+                var year = myDate.getFullYear();
+
+                newdate = month + "/" + day + "/" + year;
+                dto.lock_date = newdate;
+
+            }
 
 
-//    //$scope.create = function (isValid) {
-//    //    $scope.detailsScope.submitted = true;
+            $scope.detailsScope.detailsObject = dto;
 
-//    //    //Validate combo box
-//    //    if (!$scope.detailsScope.detailsObject.game_type_id > 0)
-//    //        $scope.detailsForm.gameTypeID.$invalid = true;
-//    //    else
-//    //        $scope.detailsForm.gameTypeID.$invalid = false;
+            if ($routeParams.id == 0)
+                $scope.detailsScope.header = "Create New Game";
+            else
+                $scope.detailsScope.header = dto.name;
+            $scope.detailsScope.loading = false;
+        });
 
-//    //    if (isValid && !$scope.detailsForm.gameTypeID.$invalid) {
+    //#endregion
 
 
-//    //        DefaultFactory.Save($scope.detailsScope.detailsObject, "Game")
-//    //        .then(function (data) {
-//    //            window.location.href = '../user/league/join/' + data.data.id;
-//    //        });
+    //#region Button Clicks
 
-//    //    }
-//    //    else {
-//    //        //toastr warning
-//    //    }
-//    //}
-//});
+    $scope.save = function (isValid) {
+        if (!isValid) {
+            toastr.warning('One or more of the fields is not properly filled in.')
+            return;
+        }
 
+        $scope.detailsScope.submitted = true;
+
+        //call save then navigate to game dashboard
+        DefaultFactory.Save($scope.detailsScope.detailsObject, "Game")
+        .then(function (data) {
+            window.location.href = '../user/game/dashboard/' + data.data;
+        });
+    }
+
+
+    //#endregion
+});

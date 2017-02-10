@@ -36,7 +36,13 @@ namespace LineUp_Website
                       "~/Angular/Controllers/League_Team/League_TeamDetailsCtrl.js",
                       "~/Angular/Controllers/Round/RoundDetailsCtrl.js",
                       "~/Angular/Controllers/Round/RoundListCtrl.js",
-                      "~/Angular/Controllers/SideBar/Make_PicksCtrl.js"
+                      "~/Angular/Controllers/Round/RoundManagerCtrl.js",
+                      "~/Angular/Controllers/SideBar/Make_PicksCtrl.js",
+                      "~/Angular/Controllers/Game/GameDetailsCtrl.js",
+                      "~/Angular/Controllers/Game/GameDashboardCtrl.js",
+                      "~/Angular/Controllers/Game/GameListCtrl.js",
+                      "~/Angular/Controllers/Team/TeamDetailsCtrl.js",
+                      "~/Angular/Controllers/Account/AccountDetailsCtrl.js"
                       )); 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

@@ -61,7 +61,7 @@ namespace LineUpLibrary.DALs
         {
             IList<objects_with_open_rounds> list = db.objects_with_open_rounds
                 .Where(o => o.user_id == userID)
-                .Where(o => o.start_date <= DateTime.UtcNow && o.end_date > DateTime.UtcNow)
+                .Where(o => o.start_date <= DateTime.UtcNow && o.lock_date > DateTime.UtcNow)
                 .ToList();
             return list;
         }

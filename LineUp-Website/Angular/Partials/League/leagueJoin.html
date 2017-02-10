@@ -1,6 +1,7 @@
 ﻿<div class="container-fluid" ng-controller="leagueJoinCtrl">
-    <div class="row">
 
+    <!-- Header -->
+    <div class="row">
         <div class="price-table2">
             <div class="row">
                 <div>
@@ -15,28 +16,19 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 
     <div ng-show="detailsScope.loaded" ng-form="detailsForm">
 
-        <div class="row" ng-show="detailsScope.detailsObject.lock_date">
-            <div class="form-group">
-                <div class="col-md-3">
-                    Lock Date
-                </div>
-                <div class="col-md-9">
-                    {{detailsScope.detailsObject.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm'}} UTC
-                </div>
-            </div>
-        </div>
+        <!-- Input Fields -->
         <div class="row" ng-show="detailsScope.detailsObject.is_private" ng-class="{ 'has-error' : detailsScope.detailsObject.is_private && detailsForm.pass.$invalid && detailsScope.submitted }">
             <div class="form-group">
                 <div class="col-md-3">
                     League Password
                 </div>
                 <div class="col-md-9">
-                    <input name="pass" type="password" class="form-control" ng-model="joinObject.password" ng-required="detailsScope.detailsObject.is_private">
+                    <input type="password" class="form-control" ng-model="joinObject.password" ng-required="detailsScope.detailsObject.is_private">
                 </div>
             </div>
         </div>
@@ -50,52 +42,92 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-3">
-                    League Buy-In
-                </div>
-                <div class="col-md-9">
-                    <span>$10.00</span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-3">
-                    LineUp Fee
-                </div>
-                <div class="col-md-9">
-                    <span>$2.00</span>
-                </div>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-3">
-                    Total
-                </div>
-                <div class="col-md-9">
-                    <span>$12.00</span>
-                </div>
-            </div>
-        </div>
 
-        <br />
-        <br />
+        <hr />
+
         <!--<button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>-->
 
-        <div class="well" style="background-color:white">
+        <!-- Free League UI -->
+        <div ng-if="leagueFee == null || leagueFee == 0">
 
-            <form id="checkout" method="post" action="/League/JoinAndPay">
-                <div id="payment-form"></div>
-                <br />
-                <input class="btn btn-primary" type="submit" value="Join and Pay $12" ng-disabled="disableJoin()">
-            </form>
+            <hr />
 
+            <p>
+                This is a FREE league!
+            </p>
+
+            <button type="button" class="btn btn-primary" ng-disabled="disableJoin()" ng-click="join(detailsForm.$valid)">Join</button>
         </div>
 
+
+        <!-- Paid League UI -->
+        <div ng-if="detailsScope.detailsObject.price != null && detailsScope.detailsObject.price > 0">
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        League payment
+                    </div>
+                    <div class="col-md-9">
+                        <span>${{leagueFee}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Trasaction Fee
+                    </div>
+                    <div class="col-md-9">
+                        <span>${{transactionFee(leagueFee)}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        LineUp Fee
+                    </div>
+                    <div class="col-md-9">
+                        <span>${{lineupFee}}</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Total
+                    </div>
+                    <div class="col-md-9">
+                        <span>${{totalPayment(leagueFee,transactionFee(leagueFee),lineupFee)}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+
+
+            <div class="well" style="background-color:white">
+
+                <!-- braintree form -->
+                <form id="checkout" method="post" action="/League/JoinAndPay">
+                    <div ng-hide="true">
+                        <input name="id" id="id" class="form-control" ng-model="detailsScope.id">
+                        <input name="name" id="name" class="form-control" type="text" ng-model="joinObject.league_team_name">
+                        <input name="password" id="password" type="password" class="form-control" ng-model="joinObject.password">
+                        <input name="amount" id="amount" class="form-control" ng-model="totalPayment(leagueFee,transactionFee(leagueFee),lineupFee)">
+                    </div>
+
+                    <div id="payment-form"></div>
+                    <br />
+                    <input class="btn btn-primary" type="submit" value="Join and Pay ${{totalPayment(leagueFee,transactionFee(leagueFee),lineupFee)}}" ng-disabled="disableJoin()">
+
+                </form>
+
+            </div>
+        </div>
     </div>
 
 </div>

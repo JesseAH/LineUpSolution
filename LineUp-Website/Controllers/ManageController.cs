@@ -107,6 +107,21 @@ namespace LineUp_Website.Controllers
         }
 
         //
+        // GET: /Manage/TransactionDeclined
+        public ActionResult TransactionDeclined(string message)
+        {
+            ViewBag.Message = message;
+            return View();
+        }
+
+        //
+        // GET: /Manage/IncorrectPassword
+        public ActionResult IncorrectPassword()
+        {
+            return View();
+        }
+
+        //
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]

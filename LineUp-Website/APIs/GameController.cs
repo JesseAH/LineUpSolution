@@ -21,7 +21,17 @@ namespace LineUp_Website.APIs
             err.source = "lineup-webapp";
         }
 
-
+        public JsonResult Index()
+        {
+            try
+            {
+                return this.Json(myDAL.GetListByUser(myUserDAL.GetUserID(User.Identity.Name)), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
         public JsonResult Details(int id)
         {
@@ -31,7 +41,7 @@ namespace LineUp_Website.APIs
             }
             catch (Exception ex)
             {
-                err.method = "Teams";
+                err.method = "Games";
                 if (User != null)
                     err.user_id = myUserDAL.GetUserID(User.Identity.Name);
                 myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting teams that are open for picking");
@@ -44,21 +54,16 @@ namespace LineUp_Website.APIs
         {
             try
             {
-                //int myID = myUserDAL.GetUserID(User.Identity.Name);
+                int myID = myUserDAL.GetUserID(User.Identity.Name);
 
-                //foreach (PickDTO pick in dtos)
-                //{
-                //    if (myDAL.IsMyTeam(pick.league_team_id, myID))
-                //    {
-                //        myDAL.DeleteDuplicatePicks(pick.league_team_id, pick.match_id);
-                //        myDAL.Create(pick);
-                //    }
-                //    else
-                //    {
-                //        return this.Json(false);
-                //    }
-                //}
-                return this.Json(true);
+                if (myID == 0)
+                    throw new Exception();
+
+                dto.adminUserId = myID;
+
+                var retId = myDAL.DTOSave(dto);
+
+                return this.Json(retId);
             }
             catch (Exception ex)
             {
@@ -88,6 +93,22 @@ namespace LineUp_Website.APIs
                 if (User != null)
                     err.user_id = myUserDAL.GetUserID(User.Identity.Name);
                 myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting lookup options");
+                return null;
+            }
+        }
+
+        public JsonResult Complete(int id)
+        {
+            try
+            {
+                return this.Json(myDAL.CompletedGame(id), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                err.method = "Complete";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error completing game");
                 return null;
             }
         }

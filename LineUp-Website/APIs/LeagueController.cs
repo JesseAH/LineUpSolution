@@ -24,6 +24,7 @@ namespace LineUp_Website.APIs
         Game_TypeDAL myGameTypeDAL = new Game_TypeDAL();
         AuthMessageSender myMessageSender = new AuthMessageSender();
         ErrorDAL myErrorDAL = new ErrorDAL();
+        TransactionDAL myTransactionDAL = new TransactionDAL();
         ErrorDTO err = new ErrorDTO();
         public IBraintreeConfig config = new BraintreeConfig();
 
@@ -58,9 +59,9 @@ namespace LineUp_Website.APIs
             catch (Exception ex)
             {
                 err.method = "Index";
-                if(User != null)
+                if (User != null)
                     err.user_id = myUserDAL.GetUserID(User.Identity.Name);
-                myErrorDAL.ReportError(err,ex.Message.ToString(),"Error getting list");
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error getting list");
                 return null;
             }
         }
@@ -90,11 +91,44 @@ namespace LineUp_Website.APIs
         {
             try
             {
-                var league = myDAL.Get(id,false,false,false);
+                var league = myDAL.Get(id, false, false, false);
                 if (myUserDAL.GetUserID(User.Identity.Name) == league.manager_id)
                     league.is_manager = true;
 
                 var selrialized = this.Json(league, JsonRequestBehavior.AllowGet);
+                return selrialized;
+            }
+            catch (Exception ex)
+            {
+                err.method = "Details";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message, "Error getting details of league " + id);
+                return null;
+            }
+        }
+
+        public ActionResult JoinDetails(int id)
+        {
+            try
+            {
+                var league = myDAL.Get(id, false, false, false);
+
+                //Braintree client token
+                //Your server is responsible for generating the client token, which contains all of the necessary configuration information to set up the client SDKs.
+                //When your server provides a client token to your client, it authenticates the application to communicate directly to Braintree.
+                //Your client is responsible for obtaining the client token from your server and initializing the client SDK.If this succeeds, the client will generate a payment method nonce.
+                var gateway = config.GetGateway();
+                var clientToken = gateway.ClientToken.generate();
+
+                var result = new
+                {
+                    league = league,
+                    clientToken = clientToken
+                };
+
+                var selrialized = this.Json(result, JsonRequestBehavior.AllowGet);
+
                 return selrialized;
             }
             catch (Exception ex)
@@ -142,6 +176,24 @@ namespace LineUp_Website.APIs
                 err.method = "Post";
                 if (User != null)
                     err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                myErrorDAL.ReportError(err, ex.Message.ToString(), "Error creating");
+                return null;
+            }
+        }
+
+        [HttpPut]
+        public JsonResult Put(LeagueDTO dto)
+        {
+            try
+            {
+                myDAL.Save(dto);
+                return this.Json(dto, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                err.method = "Put";
+                if (User != null)
+                    err.user_id = myUserDAL.GetUserID(User.Identity.Name);
                 myErrorDAL.ReportError(err, ex.Message.ToString(), "Error saving");
                 return null;
             }
@@ -177,20 +229,21 @@ namespace LineUp_Website.APIs
                 var gateway = config.GetGateway();
                 var clientToken = gateway.ClientToken.generate();
 
-                Decimal amount;
+                //Get values from form
+                string teamName = Request["name"];
+                string password = Request["password"];
+                int leagueId = Convert.ToInt32(Request["id"]);
+                decimal amount = Convert.ToDecimal(Request["amount"]);
 
-                try
-                {
-                    amount = Convert.ToDecimal(10);
-                }
-                catch (FormatException e)
-                {
-                    TempData["Flash"] = "Error: 81503: Amount is an invalid format.";
-                    return null;
-                }
+                if (myDAL.leagueAuthorization(leagueId, password) == false)
+                    return RedirectToAction("IncorrectPassword", "Manage");
 
-                //var nonce = Request["payment_method_nonce"];
-                var nonce = "fake-valid-nonce";
+
+                //Braintree nonce
+                //The payment method nonce is a string returned by the client SDK to represent a payment method. 
+                //This string is a reference to the customer payment method details that were provided in your payment form and should be sent to your server 
+                //where it can be used with the server SDKs to create a new transaction request.
+                var nonce = Request["payment_method_nonce"];
 
                 var request = new TransactionRequest
                 {
@@ -208,20 +261,29 @@ namespace LineUp_Website.APIs
                 {
                     Transaction transaction = result.Target;
 
-                    //TODO: store transaction info
-                    //TODO: add team to league
+                    //Add team to league
+                    int teamid = myDAL.AddLeagueTeam(teamName, leagueId, myUserDAL.GetUserID(User.Identity.Name));
 
-                    //if (myDAL.leagueAuthorization(req.league_id, req.password) == false)
-                    //    return this.Json(false, JsonRequestBehavior.AllowGet);
+                    //Store transaction info
+                    PaymentDTO dto = new PaymentDTO();
+                    dto.braintree_id = transaction.Id;
+                    dto.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                    dto.league_team_id = teamid;
+                    dto.payment_total = amount;
+                    dto.braintree_payment_date = transaction.CreatedAt.ToString();
+                    myTransactionDAL.DTOPaymentSave(dto);
 
-                    //var id = myDAL.AddLeagueTeam(req.league_team_name, req.league_id, myUserDAL.GetUserID(User.Identity.Name));
-
-
-                    return Redirect("http://localhost:56999/user/team/list"); 
+                    //return Redirect("http://localhost:56999/user/team/details/" + teamid);
+                    return Redirect("http://lineup-website-test.azurewebsites.net/user/team/details/" + teamid);
+                    //return Redirect("http://lineupconfidence.com/user/team/details/" + teamid);
                 }
                 else if (result.Transaction != null)
                 {
-                    //return RedirectToAction("Show", new { id = result.Transaction.Id });
+                    err.method = "JoinAndPay";
+                    if (User != null)
+                        err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                    myErrorDAL.ReportError(err, result.Message, "Error Completing Transaction");
+                    return RedirectToAction("TransactionDeclined", "Manage", new { message = result.Message });
                 }
                 else
                 {
@@ -230,15 +292,18 @@ namespace LineUp_Website.APIs
                     {
                         errorMessages += "Error: " + (int)error.Code + " - " + error.Message + "\n";
                     }
-                    TempData["Flash"] = errorMessages;
-                    //return RedirectToAction("New");
-                }
 
-                return null;
+                    err.method = "JoinAndPay";
+                    if (User != null)
+                        err.user_id = myUserDAL.GetUserID(User.Identity.Name);
+                    myErrorDAL.ReportError(err, errorMessages, "Error Completing Transaction");
+
+                    return RedirectToAction("TransactionDeclined", "Manage", new { message = errorMessages });
+                }
             }
             catch (Exception ex)
             {
-                err.method = "Join";
+                err.method = "JoinAndPay";
                 if (User != null)
                     err.user_id = myUserDAL.GetUserID(User.Identity.Name);
                 myErrorDAL.ReportError(err, ex.Message.ToString(), "Error joining");

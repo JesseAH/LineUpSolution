@@ -1,0 +1,48 @@
+﻿
+<div class="container-fluid" ng-controller="gameListCtrl">
+
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="loading"></i>
+                            <h2>My Games</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/#price-table2-->
+
+    </div>
+
+    <div class="row" ng-hide="loading">
+        <a class="btn" href="/user/game/details/0">
+            <i class="fa fa-plus-square-o fa-lg"></i> Create New Game
+        </a>
+    </div>
+    <br />
+    <div class="row" ng-hide="loading">
+
+        <div ng-show="displayedCollection.length > 0">
+            <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="name">Game</th>
+                        <th st-sort="is_completed">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td><a href="/user/game/dashboard/{{row.id}}">{{row.name}}</a> </td>
+                        <td>{{row.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

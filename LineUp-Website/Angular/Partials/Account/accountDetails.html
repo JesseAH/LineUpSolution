@@ -1,0 +1,85 @@
+﻿<div class="container-fluid" ng-controller="accountDetailsCtrl">
+
+    <!-- Header -->
+    <div class="row">
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="detailsScope.loading">
+
+        <div class="row">
+            <div class="pull-left">
+                <h3>Unpaid Winnings: {{detailsScope.detailsObject.unpaid_winnings | currency}}</h3>
+                <h5>total winnings: {{detailsScope.detailsObject.total_winnings | currency}}</h5>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-success btn-lg" style="padding-top:10px;" ng-click="collectClick()">
+                    <span class="fa fa-usd"></span> Collect Winnings
+                </a>
+            </div>
+        </div>
+
+        <br />
+
+        <!-- add `multiple` attribute to allow multiple sections to open at once -->
+        <v-accordion class="vAccordion--default" multiple>
+
+            <!-- add expanded attribute to open the section -->
+            <v-pane >
+                <v-pane-header>
+                    Payments
+                </v-pane-header>
+
+                <v-pane-content>
+                    <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="name">Team</th>
+                                <th st-sort="description">Payment</th>
+                                <th st-sort="description">Payment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in detailsScope.detailsObject.payments">
+                                <td>{{row.league_team_name}}</td>
+                                <td>{{row.payment_total}}</td>
+                                <td>{{row.braintree_payment_date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+                <v-pane-header>
+                    Payouts
+                </v-pane-header>
+
+                <v-pane-content>
+                    <h2>Payouts</h2>
+                    <h5>A list of what we paid out to you - Comming Soon</h5>
+                </v-pane-content>
+            </v-pane>
+
+        </v-accordion>
+
+
+    </div>
+</div>
+
+
+
+

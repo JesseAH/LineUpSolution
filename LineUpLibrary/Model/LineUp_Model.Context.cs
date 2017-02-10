@@ -43,5 +43,8 @@ namespace LineUpLibrary.Model
         public virtual DbSet<Error> Errors { get; set; }
         public virtual DbSet<league_calculations_team_count> league_calculations_team_count { get; set; }
         public virtual DbSet<league_rank> league_rank { get; set; }
+        public virtual DbSet<result> results { get; set; }
+        public virtual DbSet<payout> payouts { get; set; }
+        public virtual DbSet<payment> payments { get; set; }
     }
 }

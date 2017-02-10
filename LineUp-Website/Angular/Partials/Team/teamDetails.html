@@ -1,0 +1,54 @@
+﻿<div class="container-fluid" ng-controller="teamDetailsCtrl">
+
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                            <p class="plan-price"><span class="dollar-sign"></span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" style="padding-top:40px;">
+
+        <div ng-form="detailsForm" ng-hide="detailsScope.loading">
+            <div class="col-md-12">
+                <div class="row" ng-class="{ 'has-error' : detailsForm.name.$invalid }">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Name
+                        </div>
+                        <div class="col-md-8">
+                            <input name="name" class="form-control" type="text" ng-model="detailsScope.detailsObject.name" required maxlength="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.description.$invalid }">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Description
+                        </div>
+                        <div class="col-md-8">
+                            <input name="description" class="form-control" type="text" ng-model="detailsScope.detailsObject.description" maxlength="250">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <button type="button" class="btn btn-primary" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.teamid == 0">Create</button>
+                <button type="button" class="btn btn-primary" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.teamid > 0">Save</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>

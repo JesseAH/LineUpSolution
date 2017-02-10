@@ -59,14 +59,19 @@
     <Compile Include="DALs\MatchDAL.cs" />
     <Compile Include="DALs\PickDAL.cs" />
     <Compile Include="DALs\RoundDAL.cs" />
+    <Compile Include="DALs\TeamDAL.cs" />
+    <Compile Include="DALs\TransactionDAL.cs" />
     <Compile Include="DALs\UserDAL.cs" />
     <Compile Include="DTOs\ErrorDTO.cs" />
     <Compile Include="DTOs\Game_TypeDTO.cs" />
     <Compile Include="DTOs\LeagueDTO.cs" />
     <Compile Include="DTOs\League_TeamDTO.cs" />
     <Compile Include="DTOs\MatchDTO.cs" />
+    <Compile Include="DTOs\PaymentDTO.cs" />
     <Compile Include="DTOs\PickDTO.cs" />
+    <Compile Include="DTOs\ResultDTO.cs" />
     <Compile Include="DTOs\RoundDTO.cs" />
+    <Compile Include="DTOs\TeamDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Model\Error.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
@@ -116,10 +121,19 @@
     <Compile Include="Model\objects_with_open_rounds.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\payment.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\payout.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\pick.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RegisterBindingModel.cs" />
+    <Compile Include="Model\result.cs">
+      <DependentUpon>LineUp_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\round.cs">
       <DependentUpon>LineUp_Model.tt</DependentUpon>
     </Compile>

@@ -51,6 +51,17 @@ app.controller("leagueManageCtrl", function ($scope, $rootScope, $routeParams, $
     DefaultFactory.Details($routeParams.id, "League")
         .then(function (dto) {
 
+            if (dto.lock_date != null) {
+                var myDate = new Date(parseInt(dto.lock_date.substr(6)))
+
+                var month = myDate.getMonth() + 1; //months from 1-12
+                var day = myDate.getDate();
+                var year = myDate.getFullYear();
+
+                newdate = month + "/" + day + "/" + year;
+                dto.lock_date = newdate;
+            }
+
             $scope.detailsScope.detailsObject = dto;
             $scope.detailsScope.header = "Manage: " + dto.name;
             $scope.displayedCollection = dto.rounds;
@@ -61,6 +72,24 @@ app.controller("leagueManageCtrl", function ($scope, $rootScope, $routeParams, $
 
 
     //#region Click Events
+
+    $scope.save = function (isValid) {
+        $scope.detailsScope.submitted = true;
+
+        if (isValid) {
+
+            $http.put('../League/Put', $scope.detailsScope.detailsObject)
+               .success(function (id) {
+                   toastr.success('Save Successful!');
+               })
+               .error(function (error) {
+                   toastr.warning('Error saving. Contact TeamLineUp@LineUpConfidence.com for help.');
+               });
+        }
+        else {
+            toastr.warning('One or more fields are invalid.');
+        }
+    }
 
     $scope.invite = function ()
     {

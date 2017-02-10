@@ -23,11 +23,11 @@ namespace LineUpLibrary.DTOs
         public Nullable<int> round_number { get; set; }
         [Required]
         public DateTime? start_date { get; set; }
-        [Required]
         public Nullable<System.DateTime> end_date { get; set; }
         [Required]
         public int game_type_id { get; set; }
         public Nullable<System.DateTime> lock_date { get; set; }
+
 
         public string short_name { get; set; }
         public string game_type_name { get; set; }

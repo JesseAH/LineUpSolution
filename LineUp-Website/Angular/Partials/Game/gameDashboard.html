@@ -1,0 +1,245 @@
+﻿
+<div class="container-fluid" ng-controller="gameDashboardCtrl">
+    <div class="row">
+
+        <div class="price-table2">
+            <div class="row">
+                <div>
+                    <div class="single-table table-one">
+                        <div class="table-header">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loader pull-right" ng-show="detailsScope.loading"></i>
+                            <h2>{{detailsScope.header}}</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-show="!detailsScope.loading">
+
+        <!-- Row 1 -->
+        <div class="row">
+
+            <!-- Game Details -->
+            <div class="col-md-6">
+                <h2 class="page-header">Game Details</h2>
+
+                <!-- section body -->
+                <div style="padding:15px;">
+
+                    <div class="row" ng-show="openToEdit">
+                        <a class="btn" href="/user/game/details/{{detailsScope.id}}">
+                            <i class="fa fa-pencil-square-o fa-lg"></i> Edit Game Details
+                        </a>
+                    </div>
+
+                    <p ng-show="openToEdit == false"><b>This Game Has Been Marked As 'Complete'</b></p>
+                    <p ng-show="openToEdit == false">No more changes can be made to this game.  All money has been allocated to the winners of the leauges based on this game.</p>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                Name
+                            </div>
+                            <div class="col-md-8">
+                                {{detailsScope.detailsObject.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                Description
+                            </div>
+                            <div class="col-md-8">
+                                {{detailsScope.detailsObject.description}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                Number of Rounds
+                            </div>
+                            <div class="col-md-8">
+                                {{detailsScope.detailsObject.number_of_rounds}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                Lock Date
+                            </div>
+                            <div class="col-md-8">
+                                {{detailsScope.detailsObject.lock_date | jsonDate | date: 'MM-dd-yyyy' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div ng-show="openToEdit">
+                            <div style="padding-top:30px; padding-left:15px;">
+                                <a class="btn btn-success" ng-click="complete()" ng-disabled="comepleteClicked">
+                                    <i class="fa fa-check-square-o fa-lg"></i> Mark Game as Complete
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teams -->
+            <div class="col-md-6">
+                <h2 class="page-header">Sides</h2>
+
+                <!-- section body -->
+                <div style="padding:15px;">
+
+                    <div class="row" ng-show="openToEdit">
+                        <a class="btn" href="/user/game/{{detailsScope.id}}/team/0">
+                            <i class="fa fa-plus-square-o fa-lg"></i> Create Side
+                        </a>
+                    </div>
+
+                    <div class="row">
+                        <div class="single-price price-one pre-scrollable">
+                            <ul ng-repeat="team in detailsScope.detailsObject.teams">
+                                <li>
+                                    {{team.name}}
+                                    <a href="/user/game/{{detailsScope.id}}/team/{{team.id}}" ng-show="openToEdit">
+                                        <span><i class="fa fa-pencil-square-o"></i></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+
+            <!-- Rounds and Matches -->
+            <div class="col-md-12">
+                <h2 class="page-header">Rounds</h2>
+
+                <div class="row" ng-show="openToEdit">
+                    <a class="btn" href="/user/round/manager/{{detailsScope.id}}/0">
+                        <i class="fa fa-plus-square-o  fa-lg"></i> Create Round
+                    </a>
+                </div>
+
+                <br />
+
+                <v-accordion class="vAccordion--default" multiple>
+
+                    <v-pane ng-repeat="round in detailsScope.detailsObject.rounds">
+                        <v-pane-header>
+
+                            {{ ::round.name }}
+
+                        </v-pane-header>
+
+                        <v-pane-content>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <a class="btn" href="/user/round/manager/{{detailsScope.id}}/{{round.id}}" ng-show="openToEdit">
+                                        <i class="fa fa-pencil-square-o fa-lg"></i> Edit Round {{round.round_number}}
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Name
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.name}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Short Name
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.short_name}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Rounds Number
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.round_number}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Start Date
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.start_date | jsonDate | date: 'MM-dd-yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Lock Date
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.lock_date | jsonDate | date: 'MM-dd-yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        End Date
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.end_date | jsonDate | date: 'MM-dd-yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        Matches
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{round.matches.length}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </v-pane-content>
+                    </v-pane>
+
+                </v-accordion>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

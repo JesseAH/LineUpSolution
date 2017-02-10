@@ -20,6 +20,7 @@ namespace LineUpLibrary.DALs
         {
             League_TeamDTO dto = new League_TeamDTO();
             IList<round> gameRounds = db.rounds.Where(r => r.game_type_id == ef.league.game_type_id).AsNoTracking().ToList();
+            result resultsRecord = new result();
 
             dto.id = ef.id;
             dto.league_name = ef.league == null ? null : ef.league.name;
@@ -27,12 +28,22 @@ namespace LineUpLibrary.DALs
             dto.name = ef.name;
             dto.user_id = ef.user_id;
             dto.user_name = ef == null ? null : ef.user.username;
-            dto.is_paid_up = ef.is_paid_up;
+
 
             if (ef.league != null)
             {
                 dto.leagues_league_team_count = db.league_team.Where(lt => lt.league_id == ef.league_id).Count();
                 dto.league_is_completed = ef.league.is_completed;
+
+                //check to see if this game has been completed and if there is a result record for this team
+                if (dto.league_is_completed == true)
+                    if (ef.results != null && ef.results.Count() > 0)
+                    {
+                        resultsRecord = ef.results.FirstOrDefault();
+                        dto.total_winnings = (decimal)resultsRecord.winnings;
+                        dto.league_ranking = resultsRecord.rank;
+                    }
+
             }
 
             if (getCalculations)
@@ -41,10 +52,12 @@ namespace LineUpLibrary.DALs
                 IList<round_summary> myRoundSums = roundSums.Where(r => r.league_team_id == ef.id).ToList();
 
                 dto.league_team_points_sum = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.round_sum);
-                dto.league_points_per_pick = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.correct_pick_count);
-                dto.total_winnings = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.winnings_sum);
+                dto.league_points_per_pick = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.correct_pick_count);                
                 dto.league_total_pot = ef.league == null ? null : dto.leagues_league_team_count * ef.league.price;
 
+                //if the game has been completed, winnings will have already been filled in
+                if (dto.total_winnings == null)
+                    dto.total_winnings = myRoundSums == null ? 0 : myRoundSums.Sum(r => r.winnings_sum);
 
                 if (getRounds)
                 {

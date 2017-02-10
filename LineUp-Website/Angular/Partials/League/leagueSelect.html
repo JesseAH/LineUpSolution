@@ -25,9 +25,18 @@
         </div>
         <div class="row">
 
-            <select name="gameTypeID" class="form-control" ng-model="search.game_type_id">
-                <option ng-repeat="option in lookupOptions.GameTypes" value="{{option.Lookup_ID}}">{{option.Lookup_Name}}</option>
-            </select>
+            <div class="col-md-4">
+                <select class="form-control" ng-model="selected" ng-options="color.Lookup_Name for color in lookupOptions.GameTypes">
+                    <option value="">-- choose game --</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+
+            </div>
+            <div class="md-7">
+                <i>{{selected.Description}}</i>
+            </div>
+            
         </div>
 
         <div class="row" style="margin-top:20px;">
@@ -35,13 +44,13 @@
         </div>
 
 
-        <div class="row" ng-show="search.game_type_id">
+        <div class="row" ng-show="selected.Lookup_ID">
 
             <div class="col-md-4">
 
                 <v-tabs class="vTabs--default" vertical active="activeTabIndex">
-                    <v-tab ng-click="select(league)" ng-repeat="league in lookupOptions.Leagues | filter:search:strict">
-                        <i class="fa fa-lock locked-league" ng-show="league.is_private"></i><span>{{league.name}}</span>
+                    <v-tab ng-click="select(league)" ng-repeat="league in lookupOptions.Leagues | filter:{game_type_id:selected.Lookup_ID}:true">
+                        <i class="fa fa-lock locked-league" ng-show="league.is_private"></i><span>{{league.name}}</span> <!--game_type_id-->
                     </v-tab>
                 </v-tabs>
             </div>
@@ -50,9 +59,8 @@
             <div class="col-md-6" ng-show="detailsScope.detailsObject">
                 <p>
                     <b> {{detailsScope.detailsObject.name}}</b>
-                </p>
-                <p>
-                   Description: {{detailsScope.detailsObject.description}}
+                    <br />
+                    <i>{{detailsScope.detailsObject.description}}</i>
                 </p>
                 <p>
                    Rounds: {{detailsScope.detailsObject.number_of_rounds}}

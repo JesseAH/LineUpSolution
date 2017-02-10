@@ -1,10 +1,12 @@
 ﻿<script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
 
 <div class="container-fluid" ng-controller="leagueCreateCtrl">
+
+    <!-- Row 1 -->
     <div class="row">
 
         <div class="price-table2">
@@ -23,13 +25,29 @@
         </div>
 
     </div>
-    <div ng-hide="detailsScope.loading" ng-form="detailsForm" >
+
+    <!-- Row 2 -->
+    <div class="row">
+        <div class="col-sm-12 padding-top wow fadeInDown animated" data-wow-duration="1000ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 1000ms; animation-delay: 0ms; animation-name: fadeInDown;">
+            <h2>How to create a League?</h2>
+            <p>Create a league and invite your friends to join.</p>
+            <ul class="elements">
+                <li class="wow fadeInUp animated" data-wow-duration="900ms" data-wow-delay="100ms" style="visibility: visible; animation-duration: 900ms; animation-delay: 100ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> <b>Private</b>: Decide whether or not your want your league to be private.  If it is not private, then anyone can join your league.</li>
+                <li class="wow fadeInUp animated" data-wow-duration="800ms" data-wow-delay="200ms" style="visibility: visible; animation-duration: 800ms; animation-delay: 200ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> <b>Buy-In</b>: The amount each user puts in the pot. We auto calculates the winnings for your leauge based on this amount. </li>
+                <li class="wow fadeInUp animated" data-wow-duration="700ms" data-wow-delay="300ms" style="visibility: visible; animation-duration: 700ms; animation-delay: 300ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> <b>Round Winnings</b>: If you would like a portion of the pot given out to the winner of each round, enter that here.</li>
+                <li class="wow fadeInUp animated" data-wow-duration="600ms" data-wow-delay="400ms" style="visibility: visible; animation-duration: 600ms; animation-delay: 400ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> <b>Lock Date</b>: New users will be able to join your league up untill this date.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div ng-hide="detailsScope.loading" ng-form="detailsForm">
         <div class="col-md-8">
-            <div class="row">
+            <div class="row" style="padding-top:40px;">
 
                 <div class="form-group" ng-class="{ 'has-error' : detailsForm.gameTypeID.$invalid && detailsScope.submitted }">
                     <div class="col-md-4">
-                        League Type
+                        Game Type
                     </div>
                     <div class="col-md-8">
                         <select name="gameTypeID" class="form-control" ng-model="detailsScope.detailsObject.game_type_id" ng-change="gameChange(detailsScope.detailsObject.game_type_id)" required>
@@ -71,7 +89,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="The percentage of the total pot that is given to the winners of each round."></i> Percent Used for Round Winnings 
+                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="The percentage of the total pot that is given to the winners of each round."></i> Percent Used for Round Winnings
                     </div>
                     <div class="col-md-8">
                         <input type="number" class="form-control" ng-model="detailsScope.detailsObject.round_winnings_percentage" min="0" max="100" required>
@@ -81,8 +99,8 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Teams will not be able to join this league after the locked date."></i> Lock Date 
-                        
+                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Teams will not be able to join this league after the locked date."></i> Lock Date
+
                     </div>
                     <div class="col-md-8">
                         <input data-provide="datepicker" class="form-control" ng-model="detailsScope.detailsObject.lock_date" required>
@@ -111,7 +129,7 @@
                 </div>
             </div>
             <hr />
-            <button type="button" class="btn btn-primary" ng-click="create(detailsForm.$valid)" >Create</button>
+            <button type="button" class="btn btn-primary" ng-click="create(detailsForm.$valid)">Create</button>
         </div>
         <div class="col-md-4 hidden-xs" ng-show="gameDescription">
             <u>Game Description: </u>

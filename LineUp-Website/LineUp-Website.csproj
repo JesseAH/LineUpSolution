@@ -212,6 +212,8 @@
     <Compile Include="APIs\League_TeamController.cs" />
     <Compile Include="APIs\GameController.cs" />
     <Compile Include="APIs\PickController.cs" />
+    <Compile Include="APIs\TeamController.cs" />
+    <Compile Include="APIs\TransactionController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -239,7 +241,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\Controllers\Account\AccountDetailsCtrl.js" />
+    <Content Include="Angular\Controllers\Game\GameDashboardCtrl.js" />
     <Content Include="Angular\Controllers\Game\GameDetailsCtrl.js" />
+    <Content Include="Angular\Controllers\Game\GameListCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueCreateCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueDetailsCtrl.js" />
     <Content Include="Angular\Controllers\League\LeagueJoinCtrl.js" />
@@ -250,11 +255,16 @@
     <Content Include="Angular\Controllers\Pick\PickDetailsCtrl.js" />
     <Content Include="Angular\Controllers\Round\RoundDetailsCtrl.js" />
     <Content Include="Angular\Controllers\Round\RoundListCtrl.js" />
+    <Content Include="Angular\Controllers\Round\RoundManagerCtrl.js" />
     <Content Include="Angular\Controllers\SideBar\Make_PicksCtrl.js" />
+    <Content Include="Angular\Controllers\Team\TeamDetailsCtrl.js" />
     <Content Include="Angular\Controllers\test.js" />
     <Content Include="Angular\Factories\DefaultFactory.js" />
+    <Content Include="Angular\Partials\Account\accountDetails.html" />
     <Content Include="Angular\Partials\dashboard.html" />
+    <Content Include="Angular\Partials\Game\gameDashboard.html" />
     <Content Include="Angular\Partials\Game\gameDetails.html" />
+    <Content Include="Angular\Partials\Game\gameList.html" />
     <Content Include="Angular\Partials\League\leagueCreate.html" />
     <Content Include="Angular\Partials\League\leagueDetails.html" />
     <Content Include="Angular\Partials\League\LeagueJoin.html" />
@@ -266,8 +276,17 @@
     <Content Include="Angular\Partials\Pick\pickList.html" />
     <Content Include="Angular\Partials\Round\roundDetails.html" />
     <Content Include="Angular\Partials\Round\roundList.html" />
+    <Content Include="Angular\Partials\Round\roundManager.html" />
     <Content Include="Angular\Partials\SideBar\make_picks.html" />
+    <Content Include="Angular\Partials\Team\teamDetails.html" />
+    <Content Include="Content\ADM-dateTimePicker.css" />
+    <Content Include="Images\exampleRound.png" />
+    <Content Include="Images\RoundManager.png" />
+    <Content Include="Scripts\ADM-dateTimePicker.js" />
+    <Content Include="Scripts\angular.circular.timepicker.js" />
     <Content Include="Content\angular-input-stars.css" />
+    <Content Include="Content\angular-moment-picker.min.css" />
+    <Content Include="Content\angular.circular.timepicker.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-datepicker.standalone.css" />
@@ -276,8 +295,10 @@
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\datetimepicker.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
@@ -285,12 +306,14 @@
     <Content Include="Content\v-accordion.min.css" />
     <Content Include="Content\v-tabs.css" />
     <Content Include="Content\v-tabs.min.css" />
+    <Content Include="Images\example.PNG" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-input-stars.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-moment-picker.min.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-route.js" />
@@ -303,6 +326,10 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\datetime-picker.min.js" />
+    <Content Include="Scripts\datetimepicker.js" />
+    <Content Include="Scripts\datetimepicker.templates.js" />
     <Content Include="Scripts\flowtype.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.ar.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.az.min.js" />
@@ -370,6 +397,10 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\smart-table.js" />
     <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -589,11 +620,16 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %2810%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %2811%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %285%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %286%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %287%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %288%29.pubxml" />
+    <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy %289%29.pubxml" />
     <None Include="Properties\PublishProfiles\LineUp-Website-Test - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -644,6 +680,8 @@
     <Content Include="Scripts\smart-table.min.js.map" />
     <Content Include="Views\Home\MobileHelp.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <Content Include="Views\Manage\TransactionDeclined.cshtml" />
+    <Content Include="Views\Manage\IncorrectPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Angular\Directives\" />

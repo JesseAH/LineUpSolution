@@ -39,6 +39,7 @@ namespace LineUpLibrary.DALs
             dto.description = ef.description;
             dto.max_players = ef.max_players;
             dto.price = ef.price;
+            dto.password = ef.password;
             dto.manager_id = ef.admin_user_id;
             dto.lock_date = ef.lock_date == null ? (DateTime?)null : new DateTime(ef.lock_date.Value.Year, ef.lock_date.Value.Month, ef.lock_date.Value.Day, ef.lock_date.Value.Hour, ef.lock_date.Value.Minute, 0, DateTimeKind.Utc);
             dto.round_winnings_percentage = ef.round_winnings_percentage;

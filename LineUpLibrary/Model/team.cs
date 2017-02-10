@@ -28,6 +28,7 @@ namespace LineUpLibrary.Model
         public string description { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }
         public Nullable<System.DateTime> modified_on { get; set; }
+        public Nullable<int> game_type_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<match> matches { get; set; }
@@ -37,5 +38,6 @@ namespace LineUpLibrary.Model
         public virtual ICollection<match> matches2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<pick> picks { get; set; }
+        public virtual game_type game_type { get; set; }
     }
 }

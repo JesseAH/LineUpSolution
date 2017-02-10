@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="Model.user" Width="1.5" PointX="6.5" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.game_type" Width="1.5" PointX="3" PointY="7" />
         <EntityTypeShape EntityType="Model.league" Width="1.5" PointX="2.75" PointY="10.875" />
-        <EntityTypeShape EntityType="Model.league_team" Width="1.5" PointX="5.375" PointY="11.25" />
+        <EntityTypeShape EntityType="Model.league_team" Width="1.5" PointX="5.375" PointY="11.75" />
         <EntityTypeShape EntityType="Model.match" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="Model.match_type" Width="1.5" PointX="5.375" PointY="0.5" />
         <EntityTypeShape EntityType="Model.pick" Width="1.5" PointX="5.375" PointY="3.125" />
@@ -34,9 +34,20 @@
         <EntityTypeShape EntityType="Model.league_summary" Width="1.5" PointX="11.375" PointY="1" />
         <EntityTypeShape EntityType="Model.Error" Width="1.5" PointX="8.875" PointY="7.125" />
         <AssociationConnector Association="Model.FK_Error_user" />
-        <EntityTypeShape EntityType="Model.league_calculations_team_count" Width="1.5" PointX="7.5" PointY="10.75" />
-        <EntityTypeShape EntityType="Model.league_rank" Width="1.5" PointX="9.5" PointY="10.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="Model.league_calculations_team_count" Width="1.5" PointX="18" PointY="1" />
+        <EntityTypeShape EntityType="Model.league_rank" Width="1.5" PointX="19.625" PointY="1" />
+        <AssociationConnector Association="Model.FK_game_type_user" />
+        <AssociationConnector Association="Model.FK_team_game_type" />
+        <EntityTypeShape EntityType="Model.result" Width="1.5" PointX="7.75" PointY="10.75" />
+        <AssociationConnector Association="Model.FK_result_league" />
+        <AssociationConnector Association="Model.FK_result_user" />
+        <EntityTypeShape EntityType="Model.payout" Width="1.5" PointX="8.75" PointY="15.625" />
+        <AssociationConnector Association="Model.FK_result_league_team" />
+        <AssociationConnector Association="Model.FK_payout_user" />
+        <EntityTypeShape EntityType="Model.payment" Width="1.5" PointX="10.75" PointY="11.5" />
+        <AssociationConnector Association="Model.FK_payment_league_team" />
+        <AssociationConnector Association="Model.FK_payment_user" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

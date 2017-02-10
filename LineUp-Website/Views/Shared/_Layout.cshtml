@@ -19,6 +19,7 @@
     <link href="~/Content/v-accordion.css" rel="stylesheet" />
     <link href="~/Content/v-tabs.css" rel="stylesheet" />
     <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/ADM-dateTimePicker.css" rel="stylesheet" />
 
     <script type="text/javascript" src="~/Template/js/jquery.js"></script>
     <script type="text/javascript" src="~/Template/js/bootstrap.min.js"></script>
@@ -26,7 +27,9 @@
     <script type="text/javascript" src="~/Template/js/lightbox.min.js"></script>
     <script type="text/javascript" src="~/Template/js/wow.min.js"></script>
 
+
     <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
     <script src="~/Scripts/angular-input-stars.js"></script>
@@ -35,6 +38,8 @@
     <script src="~/Scripts/v-tabs.js"></script>
     <script src="~/Scripts/flowtype.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/ADM-dateTimePicker.js"></script>
+
     <script type="text/javascript" src="~/Template/js/main.js"></script>
 
     <link rel="shortcut icon" href="~/images/ico/favicon.ico">
@@ -96,7 +101,8 @@
                         @*<li><a href="Home/Contact" target="_self"> Contact </a></li>*@
                         @if (Request.IsAuthenticated)
                         {
-                            <li><a href="Manage/Index" target="_self"> Manage </a></li>
+                            <li><a href="Manage/Index" > Manage </a></li>
+                            <li><a href="/user/account"> Account </a></li>
                             <li><a href="Account/LogOff" target="_self"> Logout </a></li>
                         }
                         else

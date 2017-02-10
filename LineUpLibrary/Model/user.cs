@@ -19,6 +19,10 @@ namespace LineUpLibrary.Model
         {
             this.league_team = new HashSet<league_team>();
             this.Errors = new HashSet<Error>();
+            this.game_type = new HashSet<game_type>();
+            this.results = new HashSet<result>();
+            this.payouts = new HashSet<payout>();
+            this.payments = new HashSet<payment>();
         }
     
         public int id { get; set; }
@@ -33,5 +37,13 @@ namespace LineUpLibrary.Model
         public virtual ICollection<league_team> league_team { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Error> Errors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<game_type> game_type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<result> results { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<payout> payouts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<payment> payments { get; set; }
     }
 }

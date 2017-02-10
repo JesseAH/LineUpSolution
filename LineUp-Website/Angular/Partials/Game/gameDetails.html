@@ -1,4 +1,9 @@
-﻿
+﻿<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
 <div class="container-fluid" ng-controller="gameDetailsCtrl">
     <div class="row">
 
@@ -19,40 +24,76 @@
 
     </div>
 
+    <div class="row" ng-show="detailsScope.id == 0">
 
-    <div class="row">
-
-        <div class="panel panel-primary col-md-6">
-            <div class="panel-heading">
-                <h3 class="panel-title">Game Details</h3>
-            </div>
-            <div class="panel-body">
-                details
-            </div>
+        <div class="col-sm-6 padding-top wow fadeInDown animated" data-wow-duration="1000ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 1000ms; animation-delay: 0ms; animation-name: fadeInDown;">
+            <h2>How to create a Game?</h2>
+            <p>Once you create a 'Game', any LineUp user can create a 'League' based on your game.  As the game administrator your will have the following responsibilities</p>
+            <ul class="elements">
+                <li class="wow fadeInUp animated" data-wow-duration="900ms" data-wow-delay="100ms" style="visibility: visible; animation-duration: 900ms; animation-delay: 100ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> Create 'Sides' that will be matched up against each other.</li>
+                <li class="wow fadeInUp animated" data-wow-duration="800ms" data-wow-delay="200ms" style="visibility: visible; animation-duration: 800ms; animation-delay: 200ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> Create 'Rounds'. </li>
+                <li class="wow fadeInUp animated" data-wow-duration="700ms" data-wow-delay="300ms" style="visibility: visible; animation-duration: 700ms; animation-delay: 300ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> Create 'Matches' and mark the winners of those matches.</li>
+                <li class="wow fadeInUp animated" data-wow-duration="600ms" data-wow-delay="400ms" style="visibility: visible; animation-duration: 600ms; animation-delay: 400ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> Respond to user feedback.</li>
+                <li class="wow fadeInUp animated" data-wow-duration="500ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 500ms; animation-delay: 500ms; animation-name: fadeInUp;"><i class="fa fa-angle-right"></i> When the game is completed, mark it as finished and all of the winnings will be tallied up.</li>
+            </ul>
         </div>
 
-        <div class="panel panel-primary col-md-6">
-            <div class="panel-heading">
-                <h3 class="panel-title">Game Teams/Outcomes</h3>
-            </div>
-            <div class="panel-body">
-                teams
-            </div>
+        <div class="col-sm-6 wow fadeInDown animated" data-wow-duration="1000ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 1000ms; animation-delay: 0ms; animation-name: fadeInDown; margin-top:35px;">
+            <img src="../../../Images/exampleRound.png" class="img-responsive" alt="" />
         </div>
 
     </div>
 
-    <div class="row">
+    <div class="row" style="padding-top:40px;">
 
-        <div class="panel panel-primary col-md-12">
-            <div class="panel-heading">
-                <h3 class="panel-title">Game Details</h3>
-            </div>
-            <div class="panel-body">
-                rounds
+        <div ng-form="detailsForm" ng-hide="detailsScope.loading">
+            <div class="col-md-12">
+                <div class="row" ng-class="{ 'has-error' : detailsForm.name.$invalid }">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Game Name
+                        </div>
+                        <div class="col-md-8">
+                            <input name="name" class="form-control" type="text" ng-model="detailsScope.detailsObject.name" required maxlength="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.description.$invalid }">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Description
+                        </div>
+                        <div class="col-md-8">
+                            <input name="description" class="form-control" type="text" ng-model="detailsScope.detailsObject.description" required maxlength="250">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.number.$invalid}">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            Number Of Rounds
+                        </div>
+                        <div class="col-md-8">
+                            <input name="number" type="number" class="form-control" ng-model="detailsScope.detailsObject.number_of_rounds" min="0" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-class="{ 'has-error' : detailsForm.lockdate.$invalid}">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="New leagues of this game type will not be able to be created after the lock date."></i>
+                            Lock Date
+                        </div>
+                        <div class="col-md-8">
+                            <input name="lockdate" data-provide="datepicker" class="form-control" ng-model="detailsScope.detailsObject.lock_date" required>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <button type="button" class="btn btn-primary" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.id == 0">Create</button>
+                <button type="button" class="btn btn-primary" ng-click="save(detailsForm.$valid)" ng-show="detailsScope.id > 0">Save</button>
             </div>
         </div>
 
     </div>
-
 </div>
